@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1.PasswordReset", "1.PasswordReset\1.PasswordReset.csproj", "{0032ACEE-2554-4F08-8C88-03A595155CE7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.FancyBarcodes", "2.FancyBarcodes\2.FancyBarcodes.csproj", "{D385B2EB-7F32-45BE-A236-FCB5C2ACF3A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{0032ACEE-2554-4F08-8C88-03A595155CE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0032ACEE-2554-4F08-8C88-03A595155CE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0032ACEE-2554-4F08-8C88-03A595155CE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D385B2EB-7F32-45BE-A236-FCB5C2ACF3A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D385B2EB-7F32-45BE-A236-FCB5C2ACF3A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D385B2EB-7F32-45BE-A236-FCB5C2ACF3A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D385B2EB-7F32-45BE-A236-FCB5C2ACF3A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
