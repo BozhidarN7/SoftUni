@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3.KarateStrings", "3.Karate
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4. MorseCodeUpgraded", "4. MorseCodeUpgraded\4. MorseCodeUpgraded.csproj", "{3D1D8A11-050A-4C72-9FC8-9D7B00F6F455}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "5.OnlyLetters", "5.OnlyLetters\5.OnlyLetters.csproj", "{996F28C4-72C7-4631-96B1-97BFD708EECA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{3D1D8A11-050A-4C72-9FC8-9D7B00F6F455}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D1D8A11-050A-4C72-9FC8-9D7B00F6F455}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D1D8A11-050A-4C72-9FC8-9D7B00F6F455}.Release|Any CPU.Build.0 = Release|Any CPU
+		{996F28C4-72C7-4631-96B1-97BFD708EECA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{996F28C4-72C7-4631-96B1-97BFD708EECA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{996F28C4-72C7-4631-96B1-97BFD708EECA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{996F28C4-72C7-4631-96B1-97BFD708EECA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
