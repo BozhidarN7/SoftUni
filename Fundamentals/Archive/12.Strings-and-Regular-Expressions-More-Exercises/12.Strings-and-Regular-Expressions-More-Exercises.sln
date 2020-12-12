@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1.Censorship", "1.Censorshi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.EmailMe", "2.EmailMe\2.EmailMe.csproj", "{7567C084-1660-485A-B6AD-1584FA66B0DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3.KarateStrings", "3.KarateStrings\3.KarateStrings.csproj", "{504C54A4-21FF-4518-87E1-CA242E3BC8C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{7567C084-1660-485A-B6AD-1584FA66B0DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7567C084-1660-485A-B6AD-1584FA66B0DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7567C084-1660-485A-B6AD-1584FA66B0DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{504C54A4-21FF-4518-87E1-CA242E3BC8C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{504C54A4-21FF-4518-87E1-CA242E3BC8C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{504C54A4-21FF-4518-87E1-CA242E3BC8C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{504C54A4-21FF-4518-87E1-CA242E3BC8C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
