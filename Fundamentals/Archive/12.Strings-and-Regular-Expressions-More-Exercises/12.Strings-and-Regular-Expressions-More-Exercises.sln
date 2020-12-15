@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1.Censorship", "1.Censorship\1.Censorship.csproj", "{CF3A1D22-645A-4E42-B2C6-A489BBE0584F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "1.Censorship", "1.Censorship\1.Censorship.csproj", "{CF3A1D22-645A-4E42-B2C6-A489BBE0584F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.EmailMe", "2.EmailMe\2.EmailMe.csproj", "{7567C084-1660-485A-B6AD-1584FA66B0DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "2.EmailMe", "2.EmailMe\2.EmailMe.csproj", "{7567C084-1660-485A-B6AD-1584FA66B0DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3.KarateStrings", "3.KarateStrings\3.KarateStrings.csproj", "{504C54A4-21FF-4518-87E1-CA242E3BC8C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3.KarateStrings", "3.KarateStrings\3.KarateStrings.csproj", "{504C54A4-21FF-4518-87E1-CA242E3BC8C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4. MorseCodeUpgraded", "4. MorseCodeUpgraded\4. MorseCodeUpgraded.csproj", "{3D1D8A11-050A-4C72-9FC8-9D7B00F6F455}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "4. MorseCodeUpgraded", "4. MorseCodeUpgraded\4. MorseCodeUpgraded.csproj", "{3D1D8A11-050A-4C72-9FC8-9D7B00F6F455}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "5.OnlyLetters", "5.OnlyLetters\5.OnlyLetters.csproj", "{996F28C4-72C7-4631-96B1-97BFD708EECA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "5.OnlyLetters", "5.OnlyLetters\5.OnlyLetters.csproj", "{996F28C4-72C7-4631-96B1-97BFD708EECA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "6.EmailStatistics", "6.EmailStatistics\6.EmailStatistics.csproj", "{CF9BDE9A-29A0-48DD-B176-B2C8232D0272}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{996F28C4-72C7-4631-96B1-97BFD708EECA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{996F28C4-72C7-4631-96B1-97BFD708EECA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{996F28C4-72C7-4631-96B1-97BFD708EECA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF9BDE9A-29A0-48DD-B176-B2C8232D0272}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF9BDE9A-29A0-48DD-B176-B2C8232D0272}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF9BDE9A-29A0-48DD-B176-B2C8232D0272}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF9BDE9A-29A0-48DD-B176-B2C8232D0272}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
