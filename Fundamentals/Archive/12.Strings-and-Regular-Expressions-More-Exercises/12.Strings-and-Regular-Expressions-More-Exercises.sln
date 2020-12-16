@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "4. MorseCodeUpgraded", "4. 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "5.OnlyLetters", "5.OnlyLetters\5.OnlyLetters.csproj", "{996F28C4-72C7-4631-96B1-97BFD708EECA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "6.EmailStatistics", "6.EmailStatistics\6.EmailStatistics.csproj", "{CF9BDE9A-29A0-48DD-B176-B2C8232D0272}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "6.EmailStatistics", "6.EmailStatistics\6.EmailStatistics.csproj", "{CF9BDE9A-29A0-48DD-B176-B2C8232D0272}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "7.Hideout", "7.Hideout\7.Hideout.csproj", "{0909B3DA-9A04-4834-BFEE-5DEF8BB6B9B0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{CF9BDE9A-29A0-48DD-B176-B2C8232D0272}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF9BDE9A-29A0-48DD-B176-B2C8232D0272}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF9BDE9A-29A0-48DD-B176-B2C8232D0272}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0909B3DA-9A04-4834-BFEE-5DEF8BB6B9B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0909B3DA-9A04-4834-BFEE-5DEF8BB6B9B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0909B3DA-9A04-4834-BFEE-5DEF8BB6B9B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0909B3DA-9A04-4834-BFEE-5DEF8BB6B9B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
