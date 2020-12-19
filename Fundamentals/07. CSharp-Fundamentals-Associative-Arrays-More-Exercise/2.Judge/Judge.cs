@@ -16,15 +16,14 @@ namespace _2.Judge
             while (input != "no more time")
             {
                 string[] tokens = input.Split(" -> ");
-                string contest = tokens[1];
                 string user = tokens[0];
+                string contest = tokens[1];
                 int points = int.Parse(tokens[2]);
 
                 if (!contests.ContainsKey(contest))
                 {
                     contests.Add(contest, new Dictionary<string, int>());
                 }
-
                 if (!contests[contest].ContainsKey(user))
                 {
                     contests[contest].Add(user, points);
@@ -40,7 +39,6 @@ namespace _2.Judge
                     users[user] -= contests[contest][user];
                     contests[contest][user] = points;
                 }
-
                 input = Console.ReadLine();
             }
 
