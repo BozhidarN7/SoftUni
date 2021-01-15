@@ -37,11 +37,11 @@ namespace _10.Crossroads
                     {
                         string currentCar = cars.Dequeue();
                         int index = currentCar.Length + time;
-                        time = index ;
+                        time = index;
                         if (time + freeWindow < currentCar.Length)
                         {
                             Console.WriteLine("A crash happened!");
-                            Console.WriteLine($"{currentCar} was hit at {currentCar[index + time]}.");
+                            Console.WriteLine($"{currentCar} was hit at {currentCar[index + freeWindow]}.");
                             return;
                         }
                         else
@@ -58,7 +58,7 @@ namespace _10.Crossroads
                 input = Console.ReadLine();
             }
             Console.WriteLine("Everyone is safe.");
-            Console.WriteLine($"{totalCarsPassed} total cars passed the crossroads");
+            Console.WriteLine($"{totalCarsPassed} total cars passed the crossroads.");
         }
     }
 }
