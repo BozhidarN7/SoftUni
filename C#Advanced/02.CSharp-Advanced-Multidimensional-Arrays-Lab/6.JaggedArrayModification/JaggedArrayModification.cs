@@ -20,9 +20,11 @@ namespace _6.JaggedArrayModification
                 int row = int.Parse(tokens[1]);
                 int col = int.Parse(tokens[2]);
                 int value = int.Parse(tokens[3]);
-                if (row < 0 || row > n || col < 0 || col > matrix[row].Length)
+                if (row < 0 || row >= n || col < 0 || col >= matrix[row].Length)
                 {
                     Console.WriteLine("Invalid coordinates");
+                    command = Console.ReadLine();
+                    continue;
                 }
                 if (tokens[0] == "Add")
                 {
