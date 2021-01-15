@@ -28,6 +28,7 @@ namespace _4.SymbolInMatrix
                     }
                 }
             }
+            Console.WriteLine($"{symbol} does not occur in the matrix");
         }
     }
 }
