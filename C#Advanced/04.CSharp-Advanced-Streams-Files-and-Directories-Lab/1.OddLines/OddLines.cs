@@ -7,23 +7,23 @@ namespace _1.OddLines
     {
         static void Main(string[] args)
         {
-            string directory = Environment.CurrentDirectory;
-            Console.WriteLine(directory);
-            using (StreamReader reader = new StreamReader(@"../../../../Resources/01.OddLines/input.txt")) // Use your path here
+            using (StreamWriter writer = new StreamWriter(@"../../../../Resources/01.OddLines/output.txt"))
             {
-                string line = reader.ReadLine();
-                int row = 0;
-                while (line != null)
+                using (StreamReader reader = new StreamReader(@"../../../../Resources/01.OddLines/input.txt")) // Use your path here
                 {
-                    if (row % 2 == 1)
+                    string line = reader.ReadLine();
+                    int row = 0;
+                    while (line != null)
                     {
-                        Console.WriteLine(line);
+                        if (row % 2 == 1)
+                        {
+                            writer.WriteLine(line);
+                        }
+                        row++;
+                        line = reader.ReadLine();
                     }
-                    row++;
-                    line = reader.ReadLine();
                 }
             }
-
         }
     }
 }
