@@ -27,7 +27,7 @@ namespace _1.DiagonalDifference
             int secondaryDiagonalSum = 0;
             for (int i = n - 1; i >= 0; i--)
             {
-                secondaryDiagonalSum += matrix[n -i - 1, i];
+                secondaryDiagonalSum += matrix[n - i - 1, i];
             }
 
             Console.WriteLine(Math.Abs(primaryDiagonalSum - secondaryDiagonalSum));
