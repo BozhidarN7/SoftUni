@@ -4,7 +4,7 @@ using System.Linq;
 namespace _2.KnightsOfHonor
 {
     class KnightsOfHonor
-    {
+    { 
         static void Main(string[] args)
         {
             Action<string> appendSirAndPrint = str =>

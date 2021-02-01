@@ -2,7 +2,7 @@
 {
     public class Tire
     {
-        //----------------- Fields -----------------
+        //----------------- Fiaelds -----------------
         private int year;
         private double pressure;
 

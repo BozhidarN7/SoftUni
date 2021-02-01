@@ -8,7 +8,7 @@ namespace _7.PredicateForNames
         static void Main(string[] args)
         {
             int n = int.Parse(Console.ReadLine());
-            Console.ReadLine().Split().Where(x=> x.Length <= n).ToList().ForEach(x => Console.WriteLine(x));
+            Console.ReadLine().Split().Where(x => x.Length <= n).ToList().ForEach(x => Console.WriteLine(x));
         }
     }
 }

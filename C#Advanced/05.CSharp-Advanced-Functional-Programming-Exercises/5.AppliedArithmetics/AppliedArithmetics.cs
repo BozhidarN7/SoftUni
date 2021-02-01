@@ -14,7 +14,7 @@ namespace _5.AppliedArithmetics
                 Func<int[], int[]> function = GetFunction(command);
                 if (function != null)
                 {
-                    arr =function(arr);
+                    arr = function(arr);
                 }
                 else
                 {

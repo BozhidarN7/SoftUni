@@ -12,13 +12,13 @@ namespace DefiningClasses
             List<Engine> engines = new List<Engine>();
             for (int i = 0; i < n; i++)
             {
-                string[] tokens = Console.ReadLine().Split(" ",StringSplitOptions.RemoveEmptyEntries);
+                string[] tokens = Console.ReadLine().Split(" ", StringSplitOptions.RemoveEmptyEntries);
                 string model = tokens[0];
                 string power = tokens[1];
                 string displacement = null;
                 string efficiency = null;
 
-                if (tokens.Length >= 3 && char.IsDigit(tokens[2],0))
+                if (tokens.Length >= 3 && char.IsDigit(tokens[2], 0))
                 {
                     displacement = tokens[2];
                 }
@@ -40,7 +40,7 @@ namespace DefiningClasses
             for (int i = 0; i < m; i++)
             {
 
-                string[] tokens = Console.ReadLine().Split(" ",StringSplitOptions.RemoveEmptyEntries);
+                string[] tokens = Console.ReadLine().Split(" ", StringSplitOptions.RemoveEmptyEntries);
                 string model = tokens[0];
                 string engineModel = tokens[1];
                 string weight = null;

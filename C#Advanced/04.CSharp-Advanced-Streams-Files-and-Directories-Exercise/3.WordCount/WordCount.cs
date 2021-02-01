@@ -27,7 +27,8 @@ namespace _3.WordCount
             {
                 actualResult += $"{word} - {occ}{Environment.NewLine}";
             }
-            File.WriteAllText(@"../../../../actualResult.txt", actualResult);
+            //List<string> actualResult = wordsOcc.Select(kvp => $"{kvp.Key} - {kvp.Value}").ToList();
+            //File.WriteAllText(@"../../../../actualResult.txt", string.Join(Environment.NewLine,actualResult));
 
             string expectedResult = File.ReadAllText(@"../../../../expectedResult.txt");
 
