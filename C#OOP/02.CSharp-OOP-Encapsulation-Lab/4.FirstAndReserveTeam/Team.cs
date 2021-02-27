@@ -17,7 +17,7 @@ namespace PersonsInfo
             reserveTeam = new List<Person>();
         }
 
-        public IReadOnlyCollection<Person> FirstTeam => firstTeam.AsReadOnly();
+        public List<Person> FirstTeam => firstTeam;
         public IReadOnlyCollection<Person> ReserveTeam => reserveTeam.AsReadOnly();
 
         public void AddPlayer(Person person)

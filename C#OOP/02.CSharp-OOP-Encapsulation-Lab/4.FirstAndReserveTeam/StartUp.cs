@@ -24,6 +24,8 @@ namespace PersonsInfo
 
             Console.WriteLine(team.FirstTeam.Count);
             Console.WriteLine(team.ReserveTeam.Count);
+            team.FirstTeam[0] = new Person("adasdf", "adsf", 3, 4545);
+            ;
         }
     }
 }
