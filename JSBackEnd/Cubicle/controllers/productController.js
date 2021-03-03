@@ -1,7 +1,6 @@
 const { Router } = require('express');
 
 const productService = require('../services/productService');
-const Cube = require('../models/cube');
 const router = Router();
 
 router.get('/', async(req, res) => {

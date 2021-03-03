@@ -13,4 +13,7 @@ const accessorySchema = new mongoose.Schema({
         type: String,
         required: [true, 'Accessory must have a description']
     }
-})
+});
+
+const Accessory = mongoose.model('Acessory', accessorySchema);
+module.exports = Accessory;

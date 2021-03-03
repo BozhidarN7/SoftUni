@@ -23,14 +23,19 @@ const cubeSchema = new mongoose.Schema({
     },
     imageUrl: {
         type: String,
-        required: [true, 'Cube must have an image']
+        required: [true, 'Cube must have an image'],
+        validate: /^https?/,
     },
     difficultyLevel: {
         type: Number,
         required: [true, 'Difficulty level must be specified'],
         min: 1,
         max: 6
-    }
+    },
+    accessories: [{
+        type: mongoose.Types.ObjectId,
+        ref: 'Accessory'
+    }]
 });
 
 cubeSchema.pre('save', function(next) {
