@@ -8,15 +8,10 @@
         {
         }
 
-        public override void Sleep()
+        public void Sleep()
         {
             // sleep...
         }
 
-        public override void Recharge()
-        {
-            throw new InvalidOperationException("Employees cannot recharge");
-        }
-        
     }
 }
