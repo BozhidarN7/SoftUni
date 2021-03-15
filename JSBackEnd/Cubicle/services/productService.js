@@ -46,7 +46,7 @@ function getOneWithAccessories(id) {
     return Cube.findById(id).populate('accessories').lean();
 }
 
-function createProduct(data) {
+function createProduct(data, userId) {
     /*
     const cube = new Cube(uniqid(), data.name, data.description, data.imageUrl, data.difficultyLevel);
     // console.log(path.join(__dirname, '/../config/products.json'));
@@ -59,7 +59,7 @@ function createProduct(data) {
     // });
     return fs.writeFile(path.join(__dirname, '/../config/products.json'), JSON.stringify(productsData));
     */
-    return Cube.create(data);
+    return Cube.create({...data, creator: userId });
 }
 
 async function attachAccessory(productId, accessoryId) {
@@ -69,10 +69,20 @@ async function attachAccessory(productId, accessoryId) {
     return cube.save();
 }
 
+function updateOne(productId, productData) {
+    return Cube.updateOne({ _id: productId }, productData);
+}
+
+function deleteOne(productId) {
+    return Cube.deleteOne({ _id: productId });
+}
+
 module.exports = {
     createProduct,
     getAll,
     getOne,
     attachAccessory,
-    getOneWithAccessories
+    getOneWithAccessories,
+    updateOne,
+    deleteOne,
 }

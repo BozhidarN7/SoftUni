@@ -17,7 +17,7 @@ router.route('/create')
     })
     .post(isAuthenticated, (req, res) => {
         //TODO: Validate inputs
-        productService.createProduct(req.body).then(() => res.redirect('/')).catch(() => res.status(500).end());
+        productService.createProduct(req.body, req.user._id).then(() => res.redirect('/')).catch(() => res.status(500).end());
     });
 
 router.route('/create/accessory')
@@ -43,6 +43,39 @@ router.route('/:productId/attach')
     .post(isAuthenticated, (req, res) => {
         productService.attachAccessory(req.params.productId, req.body.accessory)
             .then(() => res.redirect(`/details/${req.params.productId}`));
+    });
+
+router.route('/:productId/edit')
+    .get(isAuthenticated, (req, res) => {
+        productService.getOne(req.params.productId)
+            .then(product => {
+                res.render('editCube', { title: 'Edit cube', product });
+            })
+    })
+    .post(isAuthenticated, (req, res) => {
+        productService.updateOne(req.params.productId, req.body)
+            .then(response => {
+                res.redirect(`/details/${req.params.productId}`);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    });
+
+router.route('/:productId/delete')
+    .get(isAuthenticated, (req, res) => {
+        productService.getOne(req.params.productId)
+            .then(product => {
+                if (req.user._id !== product.creator) {
+                    res.redirect('/');
+                } else {
+                    res.render('deleteCube', { title: 'Delete cube', product });
+                }
+            });
+    })
+    .post(isAuthenticated, (req, res) => {
+        productService.deleteOne(req.params.productId)
+            .then(response => res.redirect('/'));
     });
 
 module.exports = router;
