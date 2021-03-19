@@ -14,7 +14,7 @@ namespace PlayersAndMonsters.Models.Players.Models
 
         protected Player(ICardRepository cardRepository, string username, int health)
         {
-            CardRepository = CardRepository;
+            CardRepository = cardRepository;
             Username = username;
             Health = health;
         }
@@ -60,6 +60,10 @@ namespace PlayersAndMonsters.Models.Players.Models
             {
                 health = 0;
             }
+        }
+        public override string ToString()
+        {
+            return string.Format(ConstantMessages.PlayerReportInfo, Username, Health, CardRepository.Count);
         }
     }
 }

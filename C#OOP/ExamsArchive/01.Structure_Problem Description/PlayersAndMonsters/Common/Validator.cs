@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PlayersAndMonsters.Models.Cards.Contracts;
+using PlayersAndMonsters.Models.Players.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -18,6 +20,20 @@ namespace PlayersAndMonsters.Common
             if (number < 0)
             {
                 throw new ArgumentException(message);
+            }
+        }
+        public static void ThrowIfPlayerIsNull(IPlayer player)
+        {
+            if (player is null)
+            {
+                throw new ArgumentException();
+            }
+        }
+        public static void ThrowIfCardIsNull(ICard card)
+        {
+            if (card is null)
+            {
+                throw new ArgumentException();
             }
         }
     }

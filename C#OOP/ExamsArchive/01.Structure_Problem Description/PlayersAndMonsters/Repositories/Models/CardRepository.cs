@@ -26,7 +26,7 @@ namespace PlayersAndMonsters.Repositories.Models
             {
                 throw new ArgumentException("Card cannot be null!");
             }
-            if (Find(card.Name) == null)
+            if (Find(card.Name) != null)
             {
                 throw new ArgumentException($"Card {card.Name} already exists!");
             }

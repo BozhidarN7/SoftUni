@@ -8,6 +8,7 @@
         int Count { get; }
 
         IReadOnlyCollection<IPlayer> Players { get; }
+        IPlayer First { get; }
 
         void Add(IPlayer player);
 

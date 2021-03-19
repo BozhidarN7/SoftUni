@@ -19,6 +19,18 @@ namespace PlayersAndMonsters.Repositories.Models
 
         public IReadOnlyCollection<IPlayer> Players => players.AsReadOnly();
 
+        public IPlayer First
+        {
+            get
+            {
+                if (players.Count == 0)
+                {
+                    throw new ArgumentException("There are no players");
+                }
+                return players[0];
+            }
+        }
+
         public void Add(IPlayer player)
         {
             if (player is null)

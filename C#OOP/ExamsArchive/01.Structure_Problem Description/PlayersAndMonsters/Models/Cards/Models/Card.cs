@@ -47,5 +47,10 @@ namespace PlayersAndMonsters.Models.Cards.Models
                 healthPoints = value;
             }
         }
+
+        public override string ToString()
+        {
+            return string.Format(ConstantMessages.CardReportInfo, Name, DamagePoints);
+        }
     }
 }

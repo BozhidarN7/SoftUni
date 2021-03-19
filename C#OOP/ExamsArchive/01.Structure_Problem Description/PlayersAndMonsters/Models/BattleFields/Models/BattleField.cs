@@ -22,7 +22,7 @@ namespace PlayersAndMonsters.Models.BattleFields.Models
 
             int turn = 0;
             int attackPlayerDamage = attackPlayer.CardRepository.Cards.Sum(x => x.DamagePoints);
-            int enemyPlayerDamage = attackPlayer.CardRepository.Cards.Sum(x => x.DamagePoints);
+            int enemyPlayerDamage = enemyPlayer.CardRepository.Cards.Sum(x => x.DamagePoints);
             while (attackPlayer.Health > 0 && enemyPlayer.Health > 0)
             {
                 if (turn == 0)
