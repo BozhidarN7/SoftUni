@@ -18,7 +18,7 @@
             //Console.WriteLine(managerController.Fight("BozhidarN", "Ivan"));
             //Console.WriteLine(managerController.Report());
 
-            IEngine engine = new Engine(new ConsoleReader(),new FileWriter());
+            IEngine engine = new Engine(new ConsoleReader(),new ConsoleWriter());
             engine.Run();
         }
     }

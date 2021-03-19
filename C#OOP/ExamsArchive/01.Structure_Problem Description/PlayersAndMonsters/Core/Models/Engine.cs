@@ -25,25 +25,31 @@ namespace PlayersAndMonsters.Core.Models
                 string[] tokens = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
                 string command = tokens[0];
 
-                if (command == "AddPlayer")
+                try
                 {
-                    writer.WriteLine(managerController.AddPlayer(tokens[1], tokens[2]));
-                }
-                else if (command == "AddCard")
+                    if (command == "AddPlayer")
+                    {
+                        writer.WriteLine(managerController.AddPlayer(tokens[1], tokens[2]));
+                    }
+                    else if (command == "AddCard")
+                    {
+                        writer.WriteLine(managerController.AddCard(tokens[1], tokens[2]));
+                    }
+                    else if (command == "AddPlayerCard")
+                    {
+                        writer.WriteLine(managerController.AddPlayerCard(tokens[1], tokens[2]));
+                    }
+                    else if (command == "Fight")
+                    {
+                        writer.WriteLine(managerController.Fight(tokens[1], tokens[2]));
+                    }
+                    else if (command == "Report")
+                    {
+                        writer.WriteLine(managerController.Report());
+                    }
+                }catch(ArgumentException ex)
                 {
-                    writer.WriteLine(managerController.AddCard(tokens[1], tokens[2]));
-                }
-                else if (command == "AddPlayerCard")
-                {
-                    writer.WriteLine(managerController.AddPlayerCard(tokens[1], tokens[2]));
-                }
-                else if (command == "Fight")
-                {
-                    writer.WriteLine(managerController.Fight(tokens[1], tokens[2]));
-                }
-                else if (command == "Report")
-                {
-                    writer.WriteLine(managerController.Report());
+                    writer.WriteLine(ex.Message);
                 }
                 line = reader.ReadLine();
             }
