@@ -4,9 +4,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-public class CreateHarvester : ICreateHarvester
+public class HarvesterFactory : IHarvesterFactory
 {
-    KeyValuePair<Harvester, string> ICreateHarvester.CreateHarvester(List<string> args)
+    KeyValuePair<Harvester, string> IHarvesterFactory.CreateHarvester(List<string> args)
     {
         string harvesterType = args[0];
         string id = args[1];

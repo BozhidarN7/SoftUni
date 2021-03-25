@@ -6,9 +6,9 @@ using System.Text;
 
 namespace Minedraft.Factories.Models
 {
-    public class CreateProvider : ICreateProvider
+    public class ProviderFactory : IProviderFactory
     {
-        KeyValuePair<Provider, string> ICreateProvider.CreateProvider(List<string> args)
+        KeyValuePair<Provider, string> IProviderFactory.CreateProvider(List<string> args)
         {
             string providerType = args[0];
             string id = args[1];

@@ -10,15 +10,15 @@ public class DraftManager : IDraftManager
     private double totalStoredEnergy;
     private readonly List<Harvester> harvesters;
     private readonly List<Provider> providers;
-    private readonly ICreateHarvester harvesterCreator;
-    private readonly ICreateProvider providerCreator;
+    private readonly IHarvesterFactory harvesterCreator;
+    private readonly IProviderFactory providerCreator;
     private Mode mode;
     public DraftManager()
     {
         harvesters = new List<Harvester>();
         providers = new List<Provider>();
-        harvesterCreator = new CreateHarvester();
-        providerCreator = new CreateProvider();
+        harvesterCreator = new HarvesterFactory();
+        providerCreator = new ProviderFactory();
         mode = Enum.Parse<Mode>("Full", true);
     }
     public string Check(List<string> arguments)

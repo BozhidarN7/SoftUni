@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-public interface ICreateHarvester
+public interface IHarvesterFactory
 {
     public KeyValuePair<Harvester,string> CreateHarvester(List<string> args);
 }
