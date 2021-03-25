@@ -4,7 +4,11 @@ using System.Text;
 
 public class PressureProvider : Provider
 {
-    public PressureProvider(string id, double energyOutput) : base(id, energyOutput)
+    private const double EnergyOutputModifier = 0.5;
+    public PressureProvider(string id, double energyOutput) 
+        : base(id, energyOutput)
     {
+
+        EnergyOutput += EnergyOutput * EnergyOutputModifier;
     }
 }

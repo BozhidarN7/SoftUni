@@ -4,7 +4,7 @@ using System.Text;
 
 public abstract class Harvester
 {
-    private const int MinOreOutPut = 0;
+    private const int MinOreOutput = 0;
     private const int MinEnergyRequirement = 0;
     private const int MaxEnergyRequirement = 20000;
     private double oreOutput;
@@ -13,8 +13,8 @@ public abstract class Harvester
     public Harvester(string id, double oreOutput, double energyRequirement)
     {
         Id = id;
-        this.oreOutput = oreOutput;
-        this.energyRequirement = energyRequirement;
+        OreOutput = oreOutput;
+        EnergyRequirement = energyRequirement;
     }
     public string Id { get; private set; }
     public double OreOutput
@@ -22,9 +22,9 @@ public abstract class Harvester
         get => oreOutput;
         protected set
         {
-            if (value < MinOreOutPut)
+            if (value < MinOreOutput)
             {
-                throw new ArgumentException("OreOutput cannot be negative");
+                throw new ArgumentException("OreOutput");
             }
             oreOutput = value;
         }
@@ -36,15 +36,26 @@ public abstract class Harvester
         {
             if (value < MinEnergyRequirement)
             {
-                throw new ArgumentException("Invalid command");
+                throw new ArgumentException("EnergyRequirement");
             }
             if (value > MaxEnergyRequirement)
             {
-                throw new ArgumentException("Invalid command");
+                throw new ArgumentException("EnergyRequirement");
             }
             energyRequirement = value;
         }
     }
+    public override string ToString()
+    {
+        StringBuilder result = new StringBuilder();
 
+        string type = GetType().Name;
+        int index = type.IndexOf("Harvester");
+
+        result.AppendLine($"{type.Remove(index)} Harvester - {Id}");
+        result.AppendLine($"Ore Output: {OreOutput}");
+        result.AppendLine($"Energy Requirement: {EnergyRequirement}");
+        return result.ToString().TrimEnd();
+    }
 }
 

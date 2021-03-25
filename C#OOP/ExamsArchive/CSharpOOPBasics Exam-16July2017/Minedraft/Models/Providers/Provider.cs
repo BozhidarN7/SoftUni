@@ -11,7 +11,7 @@ public abstract class Provider
     public Provider(string id, double energyOutput)
     {
         Id = id;
-        this.energyOutput = energyOutput;
+        EnergyOutput = energyOutput;
     }
     public string Id { get; private set; }
 
@@ -22,14 +22,25 @@ public abstract class Provider
         {
             if (value < MinEnergyOutput)
             {
-                throw new ArgumentException("invalid command");
+                throw new ArgumentException("EnergyOutput");
             }
             if (value > MaxEnergyOutput)
             {
-                throw new ArgumentException("Invalid command");
+                throw new ArgumentException("EnergyOutput");
             }
             energyOutput = value;
         }
+    }
+    public override string ToString()
+    {
+        StringBuilder result = new StringBuilder();
+
+        string type = GetType().Name;
+        int index = type.IndexOf("Provider");
+
+        result.AppendLine($"{type.Remove(index)} Provider - {Id}");
+        result.AppendLine($"Energy Output: {EnergyOutput}");
+        return result.ToString().TrimEnd();
     }
 }
 
