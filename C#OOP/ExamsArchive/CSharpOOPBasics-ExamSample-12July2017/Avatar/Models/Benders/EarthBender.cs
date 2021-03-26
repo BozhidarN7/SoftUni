@@ -9,7 +9,9 @@ public class EarthBender : Bender
     {
         GroundSaturation = groundSaturation;
     }
+    [Element]
     public double GroundSaturation { get; private set; }
+    public override double BenderPower => Power * GroundSaturation;
 }
 
 

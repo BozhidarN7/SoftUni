@@ -10,7 +10,7 @@ public class FireMonument : Monument
     {
         FireAffinity = fireAffinity;
     }
-
+    [Element]
     public int FireAffinity { get; private set; }
 }
 

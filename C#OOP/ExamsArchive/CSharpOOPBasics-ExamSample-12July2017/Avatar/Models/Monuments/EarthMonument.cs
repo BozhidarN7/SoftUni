@@ -9,7 +9,7 @@ public class EarthMonument : Monument
     {
         EarthAffinity = earthAffinity;
     }
-
+    [Element]
     public int EarthAffinity { get; private set; }
 }
 

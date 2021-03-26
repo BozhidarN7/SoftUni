@@ -9,7 +9,9 @@ public class FireBender : Bender
     {
         HeatAggression = heatAggression;
     }
+    [Element]
     public double HeatAggression { get; private set; }
+    public override double BenderPower => Power * HeatAggression;
 }
 
 

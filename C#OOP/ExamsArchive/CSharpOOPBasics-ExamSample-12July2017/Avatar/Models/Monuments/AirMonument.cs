@@ -9,7 +9,7 @@ public class AirMonument : Monument
     {
         AirAffinity = airAffinity;
     }
-
+    [Element]
     public int AirAffinity { get; private set; }
 }
 

@@ -4,10 +4,11 @@ using System.Text;
 
 public class WaterMonument : Monument
 {
-    public WaterMonument(string name,int waterAffinity) 
+    public WaterMonument(string name, int waterAffinity)
         : base(name)
     {
-        WaterAffinity = WaterAffinity;
+        WaterAffinity = waterAffinity;
     }
-   public int WaterAffinity { get; private set; }
+    [Element]
+    public int WaterAffinity { get; private set; }
 }
