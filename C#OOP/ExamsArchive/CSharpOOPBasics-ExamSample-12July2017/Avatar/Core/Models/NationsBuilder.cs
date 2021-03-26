@@ -79,42 +79,22 @@ public class NationsBuilder : INationsBuilder
 
         string winner = totalPowersByNation.OrderByDescending(x => x.Value).FirstOrDefault().Key;
         benders.RemoveAll(x => x.GetType().Name != (winner + "Bender"));
+        monuments.RemoveAll(x => x.GetType().Name != (winner + "Monument"));
 
         wars.Add(nationsType);
-
-        //double airNationTotalPower = CalculateTotalPower("Air");
-        //double waterNationTotalPower = CalculateTotalPower("Water");
-        //double fireNationTotalPower = CalculateTotalPower("Fire");
-        //double earthNationTotalPower = CalculateTotalPower("Earth");
-
-
     }
 
     private double CalculateTotalPower(string nation)
     {
         int monumentsTotalPower = monuments.Where(x => x.GetType().Name.StartsWith(nation))
             .Sum(x => (int)x.GetType().GetProperty(nation + "Affinity").GetValue(x));
-        //int monumentsTotalPower = monuments.Where(x => x.GetType().Name.StartsWith(nation)).Sum(x =>
-        //{
-        //    if (x.GetType().Name == "AirMonument")
-        //    {
-        //        return ((AirMonument)x).AirAffinity;
-        //    }
-        //    else if (x.GetType().Name == "EarthMonument")
-        //    {
-        //        return ((EarthMonument)x).EarthAffinity;
-        //    }
-        //    else if (x.GetType().Name == "WaterMonument")
-        //    {
-        //        return ((WaterMonument)x).WaterAffinity;
-        //    }
-        //    else
-        //    {
-        //        return ((FireMonument)x).FireAffinity;
-        //    }
-        //});
 
         double bendersTotalPower = benders.Where(x => x.GetType().Name.StartsWith(nation)).Sum(x => x.BenderPower);
+
+        if (monumentsTotalPower == 0)
+        {
+            return bendersTotalPower;
+        }
         return bendersTotalPower * monumentsTotalPower / 100;
     }
 }

@@ -11,7 +11,7 @@ public class Engine : IEngine
     public Engine()
     {
         nationBuilder = new NationsBuilder();
-        writer = new FileWriter();
+        writer = new ConsoleWriter();
         reader = new ConsoleReader();
     }
     public void Run()
