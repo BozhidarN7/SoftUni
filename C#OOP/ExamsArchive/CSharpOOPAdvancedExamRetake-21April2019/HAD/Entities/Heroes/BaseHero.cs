@@ -65,7 +65,7 @@ namespace HAD.Entities.Heroes
         }
 
 
-        public IReadOnlyCollection<IItem> Items => new List<IItem>();
+        public IReadOnlyCollection<IItem> Items => this.inventory.CommonItems; 
 
         public void AddItem(IItem item) => this.inventory.AddCommonItem(item);
 

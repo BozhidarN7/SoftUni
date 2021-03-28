@@ -7,47 +7,48 @@ namespace HAD.Entities.Miscellaneous
 {
     public class HeroInventory : IInventory
     {
-        private readonly IDictionary<string, IItem> commonItems;
-        private readonly IDictionary<string, IRecipe> recipeItems;
+        private readonly IList<IItem> commonItems;
+        private readonly IList<IRecipe> recipeItems;
 
         public HeroInventory()
         {
-            this.commonItems = new Dictionary<string, IItem>();
-            this.recipeItems = new Dictionary<string, IRecipe>();
+            this.commonItems = new List<IItem>();
+            this.recipeItems = new List<IRecipe>();
         }
 
-        public long TotalStrengthBonus => this.commonItems.Values.Sum(i => i.StrengthBonus);
+        public long TotalStrengthBonus => this.commonItems.Sum(i => i.StrengthBonus);
 
-        public long TotalAgilityBonus => this.commonItems.Values.Sum(i => i.AgilityBonus);
+        public long TotalAgilityBonus => this.commonItems.Sum(i => i.AgilityBonus);
 
-        public long TotalIntelligenceBonus => this.commonItems.Values.Sum(i => i.IntelligenceBonus);
+        public long TotalIntelligenceBonus => this.commonItems.Sum(i => i.IntelligenceBonus);
 
-        public long TotalHitPointsBonus => this.commonItems.Values.Sum(i => i.HitPointsBonus);
+        public long TotalHitPointsBonus => this.commonItems.Sum(i => i.HitPointsBonus);
 
-        public long TotalDamageBonus => this.commonItems.Values.Sum(i => i.DamageBonus);
+        public long TotalDamageBonus => this.commonItems.Sum(i => i.DamageBonus);
 
-        public IReadOnlyCollection<IItem> CommonItems => this.commonItems.Values.ToList().AsReadOnly();
+        public IReadOnlyCollection<IItem> CommonItems => this.commonItems.ToList().AsReadOnly();
 
         public void AddCommonItem(IItem item)
         {
-            this.commonItems.Add(item.Name, item);
+            this.commonItems.Add(item);
 
             this.CheckRecipes();
         }
 
         public void AddRecipeItem(IRecipe recipe)
         {
-            this.recipeItems.Add(recipe.Name, recipe);
+            this.recipeItems.Add(recipe);
             this.CheckRecipes();
         }
 
         private void CheckRecipes()
         {
-            foreach (var recipe in this.recipeItems.Values)
+            List<IRecipe> recipeItemsToRemove = new List<IRecipe>();
+            foreach (var recipe in this.recipeItems)
             {
                 var requiredItems = new List<string>(recipe.RequiredItems);
 
-                foreach (var item in this.commonItems.Values)
+                foreach (var item in this.commonItems)
                 {
                     if (requiredItems.Contains(item.Name))
                     {
@@ -58,7 +59,12 @@ namespace HAD.Entities.Miscellaneous
                 if (requiredItems.Count == 0)
                 {
                     this.CombineRecipe(recipe);
+                    recipeItemsToRemove.Add(recipe);
                 }
+            }
+            foreach (IRecipe recipeItem in recipeItemsToRemove)
+            {
+                recipeItems.Remove(recipeItem);
             }
         }
 
@@ -66,7 +72,7 @@ namespace HAD.Entities.Miscellaneous
         {
             for (int i = 0; i < recipe.RequiredItems.Count; i++)
             {
-                string item = recipe.RequiredItems[i];
+                IItem item = commonItems.FirstOrDefault(x => x.Name == recipe.RequiredItems[i]);
                 this.commonItems.Remove(item);
             }
 
@@ -77,7 +83,7 @@ namespace HAD.Entities.Miscellaneous
                 recipe.HitPointsBonus,
                 recipe.DamageBonus);
 
-            this.commonItems.Add(newItem.Name, newItem);
+            this.commonItems.Add(newItem);
         }
     }
 }

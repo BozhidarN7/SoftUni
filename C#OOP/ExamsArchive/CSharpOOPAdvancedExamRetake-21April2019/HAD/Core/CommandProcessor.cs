@@ -29,7 +29,7 @@ namespace HAD.Core
                     result = this.heroManager.AddItem(arguments);
                     break;
                 case "Recipe":
-                    result = this.heroManager.AddHero(arguments);
+                    result = this.heroManager.AddRecipe(arguments);
                     break;
                 case "Inspect":
                     result = this.heroManager.Inspect(arguments);
@@ -38,9 +38,6 @@ namespace HAD.Core
                     result = this.heroManager.Quit();
                     break;
             }
-
-            result = null;
-
             return result;
         }
     }

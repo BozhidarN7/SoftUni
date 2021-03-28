@@ -7,7 +7,7 @@ namespace HAD.IO
     {
         public string ReadLine()
         {
-            return Console.ReadKey().ToString();
+            return Console.ReadLine();
         }
     }
 }

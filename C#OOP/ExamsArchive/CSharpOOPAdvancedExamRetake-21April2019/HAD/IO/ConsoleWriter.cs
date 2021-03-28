@@ -16,7 +16,7 @@ namespace HAD.IO
 
         public void WriteLine(string text)
         {
-            File.AppendAllText(text, "");
+            Console.WriteLine(text);
         }
 
         public void Flush()

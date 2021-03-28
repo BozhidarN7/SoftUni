@@ -1,6 +1,6 @@
-﻿using HAD.Contracts;
-using HAD.Core;
+﻿using HAD.Core;
 using HAD.IO;
+using System.Collections.Generic;
 
 namespace HAD
 {
@@ -8,8 +8,9 @@ namespace HAD
     {
         public static void Main(string[] args)
         {
-            var engine = new Engine(null, null, null);
+            var engine = new Engine(new ConsoleReader(), new ConsoleWriter(), new CommandProcessor(new HeroManager()));
             engine.Run();
+
         }
     }
 }

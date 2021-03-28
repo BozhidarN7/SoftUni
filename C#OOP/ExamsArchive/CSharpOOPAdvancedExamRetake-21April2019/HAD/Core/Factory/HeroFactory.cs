@@ -11,22 +11,8 @@ namespace HAD.Core.Factory
     {
         public IHero CreateHero(string heroType, string name)
         {
-            IHero hero = null;
-
-            switch (heroType)
-            {
-                case "Assassin":
-                    hero = new Barbarian(name);
-                    break;
-                case "Barbarian":
-                    hero = new Barbarian(name);
-                    break;
-                case "Wizard":
-                    hero = new Barbarian(name);
-                    break;
-            }
-
-            return hero;
+            Type type = Assembly.GetCallingAssembly().GetTypes().FirstOrDefault(x => x.Name == heroType);
+            return (BaseHero)Activator.CreateInstance(type, name);
         }
     }
 }

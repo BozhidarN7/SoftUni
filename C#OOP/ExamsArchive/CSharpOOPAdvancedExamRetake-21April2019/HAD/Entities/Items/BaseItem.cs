@@ -18,6 +18,7 @@ namespace HAD.Entities.Items
             this.AgilityBonus = agilityBonus;
             this.IntelligenceBonus = intelligenceBonus;
             this.HitPointsBonus = hitPointsBonus;
+            this.DamageBonus = damageBonus;
         }
 
         public string Name { get; private set; }
