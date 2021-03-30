@@ -20,12 +20,6 @@ namespace _1.Prototype
             Sandwich sandwich2 = menu["ThreeMeatCombo"].Clone() as Sandwich;
             Sandwich sandwich3 = menu["Vegetarian"].Clone() as Sandwich;
 
-            sandwich3.AddVeggies("Cucumber");
-
-            Sandwich burger = new Sandwich("Wheat", "Turkey", "American", "Lettuce, Tomato");
-            Sandwich burgerCopy = burger.Clone() as Sandwich;
-            burger.AddVeggies("Cucumber");
-            ;
         }
     }
 }
