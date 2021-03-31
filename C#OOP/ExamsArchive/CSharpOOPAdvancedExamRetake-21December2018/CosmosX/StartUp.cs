@@ -4,6 +4,8 @@ using CosmosX.Entities.CommonContracts;
 using CosmosX.Entities.Containers;
 using CosmosX.Entities.Modules.Energy;
 using CosmosX.Entities.Reactors;
+using CosmosX.Entities.Reactors.Contracts;
+using CosmosX.Entities.Reactors.ReactorFactory;
 using CosmosX.IO;
 using CosmosX.IO.Contracts;
 using System;
@@ -15,15 +17,16 @@ namespace CosmosX
     {
         public static void Main()
         {
-            IReader reader = new ConsoleReader();
-            IWriter writer = new ConsoleWriter();
-            IManager reactorManager = new ReactorManager();
+            //IReader reader = new ConsoleReader();
+            //IWriter writer = new ConsoleWriter();
+            //IManager reactorManager = new ReactorManager();
 
-            ICommandParser commandParser = new CommandParser(reactorManager);
-            IEngine engine = new Engine(reader, writer, commandParser);
-            engine.Run();
+            //ICommandParser commandParser = new CommandParser(reactorManager);
+            //IEngine engine = new Engine(reader, writer, commandParser);
+            //engine.Run();
 
-
+            IReactor reactor = new ReactorFactory().CreateReactor("Test", 5, new ModuleContainer(4), 56);
+            Console.WriteLine(reactor.GetType().Name);
         }
     }
 }

@@ -12,6 +12,8 @@ using CosmosX.Entities.Modules.Energy;
 using CosmosX.Entities.Modules.Energy.Contracts;
 using CosmosX.Entities.Reactors;
 using CosmosX.Entities.Reactors.Contracts;
+using CosmosX.Entities.Reactors.ReactorFactory;
+using CosmosX.Entities.Reactors.ReactorFactory.Contracts;
 using CosmosX.Utils;
 
 namespace CosmosX.Core
@@ -22,6 +24,7 @@ namespace CosmosX.Core
         private readonly IDictionary<int, IIdentifiable> identifiableObjects;
         private readonly IDictionary<int, IReactor> reactors;
         private readonly IDictionary<int, IModule> modules;
+        private readonly IReactorFactory reactorFactory;
 
         public ReactorManager()
         {
@@ -29,6 +32,7 @@ namespace CosmosX.Core
             this.identifiableObjects = new Dictionary<int, IIdentifiable>();
             this.reactors = new Dictionary<int, IReactor>();
             this.modules = new Dictionary<int, IModule>();
+            this.reactorFactory = new ReactorFactory();
         }
 
         public string ReactorCommand(IList<string> arguments)
@@ -39,17 +43,17 @@ namespace CosmosX.Core
 
             IContainer container = new ModuleContainer(moduleCapacity);
 
-            IReactor reactor = null;
+            IReactor reactor = reactorFactory.CreateReactor(reactorType, this.currentId, container, additionalParameter);
 
-            switch (reactorType)
-            {
-                case "Cryo":
-                    reactor = new CryoReactor(this.currentId, container, additionalParameter);
-                    break;
-                case "Heat":
-                    reactor = new HeatReactor(this.currentId, container, additionalParameter);
-                    break;
-            }
+            //switch (reactorType)
+            //{
+            //    case "Cryo":
+            //        reactor = new CryoReactor(this.currentId, container, additionalParameter);
+            //        break;
+            //    case "Heat":
+            //        reactor = new HeatReactor(this.currentId, container, additionalParameter);
+            //        break;
+            //}
 
 
             this.reactors.Add(reactor.Id, reactor);
