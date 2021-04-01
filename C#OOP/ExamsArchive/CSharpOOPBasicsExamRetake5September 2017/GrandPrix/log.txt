@@ -1,0 +1,47 @@
+FirstDriver has overtaken ThirdDriver on lap 1.
+ThirdDriver has overtaken SecondDriver on lap 1.
+ThirdDriver has overtaken FirstDriver on lap 2.
+FirstDriver has overtaken ThirdDriver on lap 3.
+ThirdDriver has overtaken FirstDriver on lap 4.
+FirstDriver has overtaken ThirdDriver on lap 5.
+ThirdDriver has overtaken FirstDriver on lap 6.
+FirstDriver has overtaken ThirdDriver on lap 7.
+ThirdDriver has overtaken FirstDriver on lap 8.
+FirstDriver has overtaken ThirdDriver on lap 9.
+ThirdDriver has overtaken FirstDriver on lap 10.
+FirstDriver has overtaken ThirdDriver on lap 11.
+ThirdDriver has overtaken FirstDriver on lap 12.
+FirstDriver has overtaken ThirdDriver on lap 13.
+ThirdDriver has overtaken FirstDriver on lap 14.
+FirstDriver has overtaken ThirdDriver on lap 15.
+ThirdDriver has overtaken FirstDriver on lap 16.
+FirstDriver has overtaken ThirdDriver on lap 17.17/32
+1 FirstDriver 1198.000
+2 ThirdDriver 1285.275
+3 SecondDriver 70.875Tyre blows up
+
+
+
+
+
+Tyre blows upThirdDriver wins the race for 1434.938 seconds.FirstDriver has overtaken ThirdDriver on lap 1.
+FirstDriver has overtaken ThirdDriver on lap 2.
+FirstDriver has overtaken ThirdDriver on lap 3.
+FirstDriver has overtaken ThirdDriver on lap 4.
+FirstDriver has overtaken ThirdDriver on lap 5.
+FirstDriver has overtaken ThirdDriver on lap 6.
+FirstDriver has overtaken ThirdDriver on lap 7.
+FirstDriver has overtaken ThirdDriver on lap 8.
+FirstDriver has overtaken ThirdDriver on lap 9.
+FirstDriver has overtaken ThirdDriver on lap 10.
+FirstDriver has overtaken ThirdDriver on lap 11.
+FirstDriver has overtaken ThirdDriver on lap 12.
+FirstDriver has overtaken ThirdDriver on lap 13.
+FirstDriver has overtaken ThirdDriver on lap 14.
+FirstDriver has overtaken ThirdDriver on lap 15.
+FirstDriver has overtaken ThirdDriver on lap 16.
+FirstDriver has overtaken ThirdDriver on lap 17.17/32
+1 FirstDriver 4532.783
+2 ThirdDriver 5282.265
+3 SecondDriver 7209.032Out of fuel
+Out of fuelSecondDriver wins the race for 9818.183 seconds.
