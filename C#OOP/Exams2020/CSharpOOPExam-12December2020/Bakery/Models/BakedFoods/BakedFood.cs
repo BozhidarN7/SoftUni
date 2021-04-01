@@ -38,7 +38,7 @@ namespace Bakery.Models.BakedFoods
             get => portion;
             private set
             {
-                if (portion <= PortionMinValue)
+                if (value <= PortionMinValue)
                 {
                     throw new ArgumentException(ExceptionMessages.InvalidPortion);
                 }
@@ -51,7 +51,7 @@ namespace Bakery.Models.BakedFoods
             get => price;
             private set
             {
-                if (price <= PriceMinValue)
+                if (value <= PriceMinValue)
                 {
                     throw new ArgumentException(ExceptionMessages.InvalidPrice);
                 }

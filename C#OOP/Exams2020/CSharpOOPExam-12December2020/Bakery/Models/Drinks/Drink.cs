@@ -40,7 +40,7 @@ namespace Bakery.Models.Drinks
             get => portion;
             private set
             {
-                if (portion <= PortionMinValue)
+                if (value <= PortionMinValue)
                 {
                     throw new ArgumentException(ExceptionMessages.InvalidPortion);
                 }

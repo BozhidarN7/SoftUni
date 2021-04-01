@@ -37,7 +37,7 @@ namespace Bakery.Models.Tables
             get => capacity;
             private set
             {
-                if (value < MinCapacity)
+                if (value <= MinCapacity)
                 {
                     throw new ArgumentException(ExceptionMessages.InvalidTableCapacity);
                 }
@@ -72,7 +72,6 @@ namespace Bakery.Models.Tables
             foodOrders.Clear();
             drinkOrders.Clear();
             IsReserved = false;
-            NumberOfPeople = 0;
         }
 
         public decimal GetBill()
@@ -86,7 +85,7 @@ namespace Bakery.Models.Tables
             result.AppendLine($"Table: {TableNumber}");
             result.AppendLine($"Type: {GetType().Name}");
             result.AppendLine($"Capacity: {Capacity}");
-            result.AppendLine($"Price per Person: {PricePerPerson}");
+            result.AppendLine($"Price per Person: {PricePerPerson:f2}");
 
             return result.ToString().TrimEnd();
         }

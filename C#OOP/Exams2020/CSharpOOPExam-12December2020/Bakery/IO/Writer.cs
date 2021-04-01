@@ -3,6 +3,7 @@
     using Bakery.IO.Contracts;
     using System;
     using System.IO;
+    using System.Text;
 
     public class Writer : IWriter
     {

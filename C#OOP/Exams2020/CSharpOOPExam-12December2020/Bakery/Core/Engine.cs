@@ -15,12 +15,12 @@
         {
             this.writer = new Writer();
             this.reader = new Reader();
-            // this.controller = new Controller();
+            this.controller = new Controller();
         }
 
         public void Run()
         {
-            string input = Console.ReadLine();
+            string input = reader.ReadLine();
 
             while (input != "END")
             {
