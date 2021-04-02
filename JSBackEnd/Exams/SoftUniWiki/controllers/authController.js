@@ -11,7 +11,7 @@ router.route('/login')
     })
     .post(async(req, res) => {
         try {
-            const token = await authService.login(req.body);
+            await authService.login(req.body, res);
             res.redirect('/');
         } catch (error) {
             console.log(error);
@@ -35,7 +35,7 @@ router.route('/register')
         }
 
         try {
-            await authService.registerUser(req.body);
+            await authService.registerUser(req.body, res);
             res.redirect('/');
         } catch (err) {
             // console.log(err);
