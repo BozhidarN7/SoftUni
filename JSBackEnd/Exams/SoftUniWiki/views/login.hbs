@@ -1,12 +1,16 @@
-
+{{#if error}}
+<section id="notifications">
+    <p>{{error.message}}</p>
+</section>
+{{/if}}
 <section>
     <h2>Login</h2>
     <div class="spacer">
-        <form>
+        <form method="POST" action="/auth/login"> 
             <label>Username:</label>
-            <input type="text">
+            <input type="text" name="username">
             <label>Password:</label>
-            <input type="password">
+            <input type="password" name="password">
             <input type="submit" value="Login">
         </form>
     </div>
