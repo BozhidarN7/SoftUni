@@ -14,6 +14,10 @@
 
     using TheTankGame.Entities.Parts.Factories.Contracts;
     using TheTankGame.Entities.Vehicles.Factories.Contracts;
+    using TheTankGame.Entities.Vehicles.Factories;
+    using TheTankGame.Entities.Parts.Factories;
+    using System;
+    using System.Reflection;
 
     public class TankManager : IManager
     {
@@ -33,6 +37,8 @@
             this.vehicles = new Dictionary<string, IVehicle>();
             this.parts = new Dictionary<string, IPart>();
             this.defeatedVehicles = new List<string>();
+            vehicleFactory = new VehicleFactory();
+            partFactory = new PartFactory();
         }
 
         public string AddVehicle(IList<string> arguments)
@@ -45,17 +51,17 @@
             int defense = int.Parse(arguments[5]);
             int hitPoints = int.Parse(arguments[6]);
 
-            IVehicle vehicle = null;
+            IVehicle vehicle = vehicleFactory.CreateVehicle(vehicleType, model, weight, price, attack, defense, hitPoints);
 
-            switch (vehicleType)
-            {
-                case "Vanguard":
-                    vehicle = new Vanguard(model, weight, price, attack, defense, hitPoints, new VehicleAssembler());
-                    break;
-                case "Revenger":
-                    vehicle = new Revenger(model, weight, price, attack, defense, hitPoints, new VehicleAssembler());
-                    break;
-            }
+            //switch (vehicleType)
+            //{
+            //    case "Vanguard":
+            //        vehicle = new Vanguard(model, weight, price, attack, defense, hitPoints, new VehicleAssembler());
+            //        break;
+            //    case "Revenger":
+            //        vehicle = new Revenger(model, weight, price, attack, defense, hitPoints, new VehicleAssembler());
+            //        break;
+            //}
 
             if (vehicle != null)
             {
@@ -77,23 +83,22 @@
             decimal price = decimal.Parse(arguments[4]);
             int additionalParameter = int.Parse(arguments[5]);
 
-            IPart part = null;
+            IPart part = partFactory.CreatePart(partType, model, weight, price, additionalParameter);
 
-            switch (partType)
-            {
-                case "Arsenal":
-                    part = new ArsenalPart(model, weight, price, additionalParameter);
-                    this.vehicles[vehicleModel].AddArsenalPart(part);
-                    break;
-                case "Shell":
-                    part = new ShellPart(model, weight, price, additionalParameter);
-                    this.vehicles[vehicleModel].AddShellPart(part);
-                    break;
-                case "Endurance":
-                    part = new EndurancePart(model, weight, price, additionalParameter);
-                    this.vehicles[vehicleModel].AddEndurancePart(part);
-                    break;
-            }
+            //switch (partType)
+            //{
+            //    case "Arsenal":
+            //        part = new ArsenalPart(model, weight, price, additionalParameter);
+            //        break;
+            //    case "Shell":
+            //        part = new ShellPart(model, weight, price, additionalParameter);
+            //        break;
+            //    case "Endurance":
+            //        part = new EndurancePart(model, weight, price, additionalParameter);
+            //        break;
+            //}
+            AddPartToVehicle(part, vehicleModel);
+            //this.vehicles[vehicleModel].AddEndurancePart(part);
             this.parts.Add(part.Model, part);
 
             return string.Format(
@@ -189,5 +194,14 @@
 
             return finalResult.ToString();
         }
+
+        private void AddPartToVehicle(IPart part, string vehicleModel)
+        {
+            IVehicle vehicle = vehicles[vehicleModel];
+            Type type = vehicle.GetType();
+            MethodInfo method = type.GetMethods().FirstOrDefault(x => x.Name.Contains(part.GetType().Name.Replace("Part", "")));
+            method.Invoke(vehicle, new object[] { part });
+        }
+
     }
 }

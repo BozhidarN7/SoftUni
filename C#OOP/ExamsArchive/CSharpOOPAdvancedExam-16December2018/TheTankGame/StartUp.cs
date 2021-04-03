@@ -4,6 +4,14 @@
     using Core.Contracts;
     using IO;
     using IO.Contracts;
+    using System;
+    using System.Linq;
+    using System.Reflection;
+    using TheTankGame.Entities.Miscellaneous;
+    using TheTankGame.Entities.Parts;
+    using TheTankGame.Entities.Parts.Contracts;
+    using TheTankGame.Entities.Vehicles;
+    using TheTankGame.Entities.Vehicles.Contracts;
 
     public class StartUp
     {
