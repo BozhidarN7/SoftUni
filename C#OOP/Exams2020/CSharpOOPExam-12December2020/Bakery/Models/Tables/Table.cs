@@ -62,21 +62,18 @@ namespace Bakery.Models.Tables
 
         public bool IsReserved { get; private set; } = false;
 
-        public decimal Price
-            => foodOrders.Sum(x => x.Price) +
-            drinkOrders.Sum(x => x.Price) +
-            PricePerPerson * NumberOfPeople;
-
+        public decimal Price => PricePerPerson * NumberOfPeople;
         public void Clear()
         {
             foodOrders.Clear();
             drinkOrders.Clear();
             IsReserved = false;
+            numberOfPeople = 0;
         }
 
         public decimal GetBill()
         {
-            return Price;
+            return foodOrders.Sum(x => x.Price) + drinkOrders.Sum(x => x.Price) + Price;
         }
 
         public string GetFreeTableInfo()
