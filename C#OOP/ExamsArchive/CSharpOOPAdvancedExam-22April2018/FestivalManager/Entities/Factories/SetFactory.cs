@@ -18,18 +18,8 @@ namespace FestivalManager.Entities.Factories
     {
         public ISet CreateSet(string name, string type)
         {
-            if (type == "Short")
-            {
-                return new Short(name);
-            }
-            else if (type == "Medium")
-            {
-                return new Medium(name);
-            }
-            else
-            {
-                return new Long(name);
-            }
+            Type classType = Assembly.GetCallingAssembly().GetTypes().FirstOrDefault(x => x.Name == type);
+            return (ISet)Activator.CreateInstance(classType,name);
         }
     }
 
