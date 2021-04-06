@@ -24,7 +24,7 @@ namespace EasterRaces.Models.Drivers.Entities
             {
                 if (string.IsNullOrEmpty(value) || value.Length < MinLength)
                 {
-                    throw new ArgumentException(string.Format(ExceptionMessages.InvalidName, value,MinLength));
+                    throw new ArgumentException(string.Format(ExceptionMessages.InvalidName, value, MinLength));
                 }
                 name = value;
             }

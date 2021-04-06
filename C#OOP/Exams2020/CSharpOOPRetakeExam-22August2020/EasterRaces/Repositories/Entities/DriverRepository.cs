@@ -1,5 +1,6 @@
 ﻿using EasterRaces.Models.Drivers.Contracts;
 using EasterRaces.Repositories.Contracts;
+using EasterRaces.Utilities.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,11 @@ namespace EasterRaces.Repositories.Entities
         }
         public void Add(IDriver driver)
         {
+            if (drivers.ContainsKey(driver.Name))
+            {
+                throw new ArgumentException(string.Format(ExceptionMessages.DriversExists, driver.Name));
+            }
+
             drivers.Add(driver.Name,driver);
         }
 
@@ -27,7 +33,11 @@ namespace EasterRaces.Repositories.Entities
 
         public IDriver GetByName(string name)
         {
-            return drivers[name];
+            if (drivers.ContainsKey(name))
+            {
+                return drivers[name];
+            }
+            return null;
         }
 
         public bool Remove(IDriver driver)

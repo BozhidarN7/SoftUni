@@ -1,5 +1,6 @@
 ﻿using EasterRaces.Models.Races.Contracts;
 using EasterRaces.Repositories.Contracts;
+using EasterRaces.Utilities.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,10 @@ namespace EasterRaces.Repositories.Entities
         }
         public void Add(IRace race)
         {
+            if (races.ContainsKey(race.Name))
+            {
+                throw new InvalidOperationException(string.Format(ExceptionMessages.RaceExists, race.Name));
+            }
             races.Add(race.Name, race);
         }
 
@@ -27,7 +32,11 @@ namespace EasterRaces.Repositories.Entities
 
         public IRace GetByName(string name)
         {
-            return races[name];
+            if (races.ContainsKey(name))
+            {
+                return races[name];
+            }
+            return null;
         }
 
         public bool Remove(IRace race)

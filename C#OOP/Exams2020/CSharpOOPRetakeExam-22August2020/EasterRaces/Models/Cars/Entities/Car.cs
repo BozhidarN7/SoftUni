@@ -15,7 +15,7 @@ namespace EasterRaces.Models.Cars.Entities
         private string model;
         private int horsePower;
 
-        protected Car(string model, int horsePower,double cubicCentimeters, int minHorsePower,int maxHorsePower)
+        protected Car(string model, int horsePower, double cubicCentimeters, int minHorsePower, int maxHorsePower)
         {
             this.minHorsePower = minHorsePower;
             this.maxHorsePower = maxHorsePower;
@@ -31,7 +31,7 @@ namespace EasterRaces.Models.Cars.Entities
             {
                 if (string.IsNullOrWhiteSpace(value) || value.Length < MinLength)
                 {
-                    throw new ArgumentException(string.Format(ExceptionMessages.InvalidModel, value,MinLength));
+                    throw new ArgumentException(string.Format(ExceptionMessages.InvalidModel, value, MinLength));
                 }
                 model = value;
             }
@@ -45,7 +45,7 @@ namespace EasterRaces.Models.Cars.Entities
             {
                 if (value < minHorsePower || value > maxHorsePower)
                 {
-                    throw new ArgumentException(string.Format(ExceptionMessages.InvalidHorsePower, horsePower));
+                    throw new ArgumentException(string.Format(ExceptionMessages.InvalidHorsePower, value));
                 }
                 horsePower = value;
             }

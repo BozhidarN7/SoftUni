@@ -22,6 +22,7 @@ namespace EasterRaces.Models.Races.Entities
         {
             Name = name;
             Laps = laps;
+            drivers = new Dictionary<string, IDriver>();
         }
         public string Name
         {
