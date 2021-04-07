@@ -5,13 +5,12 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 const User = require('../models/user');
 
-const signToken = id => {
-    return jwt.sign({ id }, config.JWT_SECRET, { expiresIn: `${config.JWT_EXPIRES_IN}d` });
+const signToken = (id, username) => {
+    return jwt.sign({ id, username }, config.JWT_SECRET, { expiresIn: `${config.JWT_EXPIRES_IN}d` });
 };
 
 const createSendToken = function(user, res) {
-    const token = signToken(user._id);
-
+    const token = signToken(user._id, user.username);
     res.cookie('jwt', token, {
         expires: new Date(Date.now() + config.JWT_EXPIRES_IN * 24 * 60 * 60 * 1000),
         httpOnly: true,

@@ -26,10 +26,13 @@
         </aside>
         <div id="container">
             <header>
+                {{#unless isAuthenticated}}
                 <a href="/auth/login">Login</a>
                 <a href="/auth/register">Register</a>
-                <span>Welcome, Pesho!</span>
-                <a href="#">[Logout]</a>
+                {{else}}
+                <span>Welcome, {{user.username}}!</span>
+                <a href="/auth/logout">[Logout]</a>
+                {{/unless}}
             </header>
             <main>
                 <h1>Welcome to SoftUni Wiki!</h1>

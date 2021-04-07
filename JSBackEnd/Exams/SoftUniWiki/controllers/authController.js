@@ -41,7 +41,12 @@ router.route('/register')
             // console.log(err);
             res.render('register');
         }
-    })
+    });
 
+router.route('/logout')
+    .get((req, res) => {
+        res.clearCookie('jwt');
+        res.redirect('/');
+    })
 
 module.exports = router;
