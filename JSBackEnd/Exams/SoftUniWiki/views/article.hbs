@@ -1,13 +1,15 @@
 
 <div class="spacer">
-    <h2>Astronomy
+    <h2>{{article.title}}
+        {{#if isAuthenticated}}
         <div class="controls">
-            <a href="edit.html">[edit]</a>
+            <a href="/{{article._id}}/edit">[edit]</a>
             <a href="history.html">[delete]</a>
         </div>
+        {{/if}}
     </h2>
     <article>
-        <p>
+        {{!-- <p>
             Astronomy is a natural science that studies celestial objects and phenomena. It applies mathematics, physics, and chemistry,
             in an effort to explain the origin of those objects and phenomena and their evolution. Objects
             of interest include planets, moons, stars, galaxies, and comets; the phenomena include supernova
@@ -35,6 +37,9 @@
             Astronomy is one of the few sciences where amateurs still play an active role, especially in the discovery and observation
             of transient phenomena. Amateur astronomers have made and contributed to many important astronomical
             discoveries, such as finding new comets.
+        </p> --}}
+        <p>
+        {{article.description}}
         </p>
     </article>
 </div>
