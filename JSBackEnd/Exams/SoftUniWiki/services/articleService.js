@@ -16,4 +16,8 @@ exports.getById = async id => {
 
 exports.updateOne = (id, articleData) => {
     return Article.updateOne({ _id: id }, articleData);
+};
+
+exports.deleteById = (id) => {
+    return Article.deleteOne({ _id: id });
 }

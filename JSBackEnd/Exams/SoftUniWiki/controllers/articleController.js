@@ -32,10 +32,9 @@ router.route('/create/article')
             });
     });
 
-router.route('/:productId/edit')
+router.route('/:articleId/edit')
     .get((req, res) => {
-        console.log(req.params);
-        articleService.getById(req.params.productId)
+        articleService.getById(req.params.articleId)
             .then(article => {
                 res.render('edit', { article });
             })
@@ -44,13 +43,22 @@ router.route('/:productId/edit')
             });
     })
     .post((req, res) => {
-        articleService.updateOne(req.params.productId, req.body)
+        articleService.updateOne(req.params.articleId, req.body)
             .then(response => {
-                res.redirect(`/details/${req.params.productId}`);
+                res.redirect(`/details/${req.params.articleId}`);
             })
             .catch(err => {
                 console.log(err);
             });
     });
-
+router.route('/:articleId/delete')
+    .get((req, res) => {
+        articleService.deleteById(req.params.articleId)
+            .then((response) => {
+                res.redirect('/');
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    })
 module.exports = router;
