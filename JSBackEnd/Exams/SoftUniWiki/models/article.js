@@ -5,7 +5,7 @@ const articleSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please specify title'],
         unique: true,
-        minLength = 5,
+        minLength: 5,
     },
     description: {
         type: String,
@@ -22,5 +22,5 @@ const articleSchema = new mongoose.Schema({
     }
 });
 
-const Article = moongose.model('Article', articleSchema);
+const Article = mongoose.model('Article', articleSchema);
 module.exports = Article;
