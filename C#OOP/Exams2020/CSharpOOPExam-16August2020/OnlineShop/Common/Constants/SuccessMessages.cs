@@ -12,7 +12,7 @@
 
         public const string RemovedComponent = "Successfully removed {0} with id {1}.";
         
-        public const string ProductToString = "Overall Performance: {0}. Price: {1} - {2}: {3} {4} (Id: {5})";
+        public const string ProductToString = "Overall Performance: {0:f2}. Price: {1:f2} - {2}: {3} {4} (Id: {5})";
 
         public const string ComponentToString = " Generation: {0}";
 
@@ -20,6 +20,6 @@
 
         public const string ComputerComponentsToString = "Components ({0}):";
         
-        public const string ComputerPeripheralsToString = "Peripherals ({0}); Average Overall Performance ({1}):";
+        public const string ComputerPeripheralsToString = "Peripherals ({0}); Average Overall Performance ({1:f2}):";
     }
 }

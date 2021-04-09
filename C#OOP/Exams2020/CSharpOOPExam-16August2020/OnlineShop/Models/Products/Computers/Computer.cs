@@ -69,7 +69,7 @@ namespace OnlineShop.Models.Products.Computers
         {
             if (peripherals.Any(x => x.GetType().Name != peripheralType) || peripherals.Count == 0)
             {
-                throw new ArgumentException(string.Format(ExceptionMessages.NotExistingComponent, peripheralType, GetType().Name, Id));
+                throw new ArgumentException(string.Format(ExceptionMessages.NotExistingPeripheral, peripheralType, GetType().Name, Id));
             }
             IPeripheral peripheral = peripherals.FirstOrDefault(x => x.GetType().Name == peripheralType);
             peripherals.Remove(peripheral);
@@ -81,10 +81,11 @@ namespace OnlineShop.Models.Products.Computers
             StringBuilder result = new StringBuilder();
             result.AppendLine(base.ToString());
 
-            result.AppendLine(string.Format(SuccessMessages.ComputerComponentsToString, components.Count));
+            result.AppendLine(" " + string.Format(SuccessMessages.ComputerComponentsToString, components.Count));
             components.ForEach(x => result.AppendLine($"  {x.ToString()}"));
 
-            result.AppendLine(string.Format(SuccessMessages.ComputerPeripheralsToString, peripherals.Count, peripherals.Average(x => x.OverallPerformance)));
+            result.AppendLine(" " + string.Format(SuccessMessages.ComputerPeripheralsToString, peripherals.Count,
+                (peripherals.Count != 0 ? peripherals.Average(x => x.OverallPerformance) : 0)));
             peripherals.ForEach(x => result.AppendLine($"  {x.ToString()}"));
 
             return result.ToString().TrimEnd();
