@@ -5,8 +5,13 @@ const router = express.Router();
 const isAuthenticated = require('../middlewares/isAuthenticated');
 const articleService = require('../services/articleService');
 
-router.get('/', (req, res) => {
-    res.render('home', { title: 'SoftUni Wiki' });
+router.get('/', async(req, res) => {
+    const articles = await articleService.getLatestThree();
+    articles.forEach(x => {
+        x.description = x.description.split(' ', 50).join(' ');
+
+    });
+    res.render('home', { title: 'SoftUni Wiki', articles });
 });
 
 router.get('/all-articles', async(req, res) => {

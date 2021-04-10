@@ -20,4 +20,9 @@ exports.updateOne = (id, articleData) => {
 
 exports.deleteById = (id) => {
     return Article.deleteOne({ _id: id });
+};
+
+exports.getLatestThree = async() => {
+    const articles = await Article.find().sort({ creationData: -1 }).limit(3).lean();
+    return articles;
 }
