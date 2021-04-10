@@ -4,7 +4,9 @@
         {{#if isAuthenticated}}
         <div class="controls">
             <a href="/{{article._id}}/edit">[edit]</a>
-            <a href="/{{article._id}}/delete">[delete]</a>
+            {{#if canDelete}}
+                <a href="/{{article._id}}/delete">[delete]</a>
+            {{/if}}
         </div>
         {{/if}}
     </h2>

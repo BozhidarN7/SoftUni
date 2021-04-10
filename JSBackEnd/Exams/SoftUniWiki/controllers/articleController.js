@@ -21,6 +21,9 @@ router.get('/all-articles', async(req, res) => {
 
 router.get('/details/:articleId', async(req, res) => {
     const article = await articleService.getById(req.params.articleId);
+    if (req.user && req.user.id == article.articleAuthor) {
+        res.locals.canDelete = true;
+    }
     res.render('article', { article });
 });
 
