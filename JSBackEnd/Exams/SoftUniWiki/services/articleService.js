@@ -25,4 +25,9 @@ exports.deleteById = (id) => {
 exports.getLatestThree = async() => {
     const articles = await Article.find().sort({ creationData: -1 }).limit(3).lean();
     return articles;
+};
+
+exports.findByKeyword = async(keyword) => {
+    const articles = await Article.find({ title: { $regex: `.*${keyword}.*` } }).lean();
+    return articles;
 }

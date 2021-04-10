@@ -4,13 +4,11 @@ const router = express.Router();
 
 const isAuthenticated = require('../middlewares/isAuthenticated');
 const articleService = require('../services/articleService');
+const helpers = require('../middlewares/helpers');
 
 router.get('/', async(req, res) => {
     const articles = await articleService.getLatestThree();
-    articles.forEach(x => {
-        x.description = x.description.split(' ', 50).join(' ');
-
-    });
+    helpers.takeFiftyWords(articles);
     res.render('home', { title: 'SoftUni Wiki', articles });
 });
 
@@ -68,5 +66,13 @@ router.route('/:articleId/delete')
             .catch(err => {
                 console.log(err);
             });
-    })
+    });
+
+router.route('/search')
+    .post(async(req, res) => {
+        const articles = await articleService.findByKeyword(req.body.search);
+        helpers.takeFiftyWords(articles);
+        res.render('home', { articles });
+    });
+
 module.exports = router;
