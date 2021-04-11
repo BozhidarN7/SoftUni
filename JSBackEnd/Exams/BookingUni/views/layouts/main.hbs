@@ -15,15 +15,18 @@
             <div class="left-container">
                 <ul>
                     <li><a href="/">Home</a></li>
-                    <li><a href="/auth/login">Login</a></li>
-                    <li><a href="/auth/register">Register</a></li>
-                    {{!-- <li><a href="/create">Add +</a></li> --}}
+                    {{#if isAuthenticated}}
+                    <li><a href="/create">Add +</a></li>
                 </ul>
             </div>
-            {{!-- <div class="right-container">
-                <a href="" class="log-out">User</a>
-                <a href="" class="log-out">Logout</a>
-            </div> --}}
+            <div class="right-container">
+                <a href="" class="log-out">{{user.username}}</a>
+                <a href="/auth/logout" class="log-out">Logout</a>
+            </div>
+            {{else}}
+                    <li><a href="/auth/login">Login</a></li>
+                    <li><a href="/auth/register">Register</a></li>
+            {{/if}}
         </nav>
 
       {{{body}}}

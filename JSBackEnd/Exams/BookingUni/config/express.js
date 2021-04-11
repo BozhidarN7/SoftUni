@@ -1,6 +1,9 @@
 const express = require('express');
 const handlebars = require('express-handlebars');
 const cookieParse = require('cookie-parser');
+
+const auth = require('../middlewares/auth');
+
 module.exports = (app) => {
     app.engine('hbs', handlebars({
         extname: 'hbs'
@@ -10,4 +13,5 @@ module.exports = (app) => {
     app.use(express.static('public'));
     app.use(express.urlencoded({ extended: true }));
     app.use(cookieParse());
+    app.use(auth());
 };
