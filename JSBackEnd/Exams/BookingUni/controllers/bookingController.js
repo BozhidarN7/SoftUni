@@ -23,7 +23,7 @@ router.route('/create')
 router.route('/details/:hotelId')
     .get(isAuthenticated, async(req, res) => {
         const hotel = await bookingService.findOne(req.params.hotelId);
-        res.render('details', { title: `${hotel.name} Info`, hotel });
+        res.render('details', { title: `Hotel ${hotel.name} Info`, hotel });
     });
 
 router.route('/:hotelId/delete')
@@ -31,5 +31,24 @@ router.route('/:hotelId/delete')
         bookingService.deleteById(req.params.hotelId)
             .then(response => res.redirect('/'))
             .catch(err => console.log(err));
+    });
+
+router.route('/:hotelId/edit')
+    .get((req, res) => {
+        bookingService.findOne(req.params.hotelId)
+            .then(hotel => {
+                res.render('edit', { title: `Hotel ${hotel.name} Edit`, hotel });
+            })
+            .catch(err => console.log(err));
     })
+    .post((req, res) => {
+        bookingService.updateOne(req.params.hotelId, req.body)
+            .then(hotel => {
+                res.render('details', { title: `Hotel ${hotel.name} Info`, hotel });
+                // res.redirect(`/details/${req.params.hotelId}`);
+            })
+            .catch(err => console.log(err));
+    });
+
+
 module.exports = router;

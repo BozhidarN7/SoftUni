@@ -23,3 +23,8 @@ exports.findOne = async(id) => {
 exports.deleteById = async(id) => {
     await Hotel.deleteOne({ _id: id });
 }
+
+exports.updateOne = async(id, data) => {
+    const hotel = await Hotel.findOneAndUpdate({ _id: id }, data, { new: true }).lean();
+    return hotel;
+}

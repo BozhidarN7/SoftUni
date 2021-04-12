@@ -10,12 +10,12 @@
                 <h3>{{hotel.name}}</h3>
             </div>
             <div>
-                {{hotel.name}}
+                {{hotel.city}}
             </div>
             <p><span >Free rooms: {{hotel.freeRooms}}</span> </p>
             <p><span class="green">You already have booked a room</span> </p>
             <a href="" class="book">Book</a>
-            <a href="" class="edit">Edit</a>
+            <a href="/{{hotel._id}}/edit" class="edit">Edit</a>
             <a href="/{{hotel._id}}/delete" class="remove">Delete</a>
         </div
     </div>
