@@ -18,6 +18,9 @@
             <h3>Hotel Berlin</h3>
             <span>Free rooms: 15</span>
         </a>
+        {{#each hotels}}
+            {{>hotel}}
+        {{/each}}
     </div>
     <!-- <div class="guest">
         There are no Hotels found...

@@ -9,4 +9,17 @@ exports.createHotel = async(req) => {
     console.log(data);
     const hotel = await Hotel.create(data);
     console.log(hotel);
+};
+
+exports.getHotels = async() => {
+    return await Hotel.find().lean();
+};
+
+exports.findOne = async(id) => {
+    const hotel = await Hotel.findOne({ _id: id }).lean();
+    return hotel
+}
+
+exports.deleteById = async(id) => {
+    await Hotel.deleteOne({ _id: id });
 }
