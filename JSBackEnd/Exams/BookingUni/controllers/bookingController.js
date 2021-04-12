@@ -23,6 +23,12 @@ router.route('/create')
 router.route('/details/:hotelId')
     .get(isAuthenticated, async(req, res) => {
         const hotel = await bookingService.findOne(req.params.hotelId);
+        if (req.user.username == hotel.owner) {
+            res.locals.canDeleteAndEdit = true;
+        }
+        if (hotel.usersBookedARoom.find(x => x == req.user.id)) {
+            res.locals.booked = true;
+        }
         res.render('details', { title: `Hotel ${hotel.name} Info`, hotel });
     });
 
@@ -48,6 +54,17 @@ router.route('/:hotelId/edit')
                 // res.redirect(`/details/${req.params.hotelId}`);
             })
             .catch(err => console.log(err));
+    });
+
+router.route(('/:hotelId/book'))
+    .get((req, res) => {
+        bookingService.bookHotel(req.params.hotelId, req.user)
+            .then(response => {
+                res.redirect('/');
+            })
+            .catch(err => {
+                console.log(err);
+            })
     });
 
 
