@@ -26,4 +26,13 @@ router.route('/logout')
         res.redirect('/');
     });
 
+router.route('/profile/:userId')
+    .get((req, res) => {
+        authService.getUser(req.params.userId)
+            .then(user => {
+                res.render('profile', { title: `${user.username} Profile`, user });
+            })
+            .catch(err => console.log(err));
+    })
+
 module.exports = router;

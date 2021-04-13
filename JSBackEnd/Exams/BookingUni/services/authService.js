@@ -35,3 +35,7 @@ exports.login = async({ username, password }, res) => {
     if (!isMatch) throw { message: 'Incorrect username or password' };
     createSendToken(user, res);
 }
+
+exports.getUser = async id => {
+    return await User.findById({ _id: id }).populate('bookedHotels').lean();
+}

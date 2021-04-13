@@ -19,6 +19,7 @@ exports.findOne = async(id) => {
 
 exports.deleteById = async(id) => {
     const hotel = await Hotel.deleteOne({ _id: id });
+    await User.updateMany({ bookedHotels: id }, { $pullAll: { bookedHotels: [id] } })
 }
 
 exports.updateOne = async(id, data) => {
@@ -31,6 +32,7 @@ exports.bookHotel = async(id, user) => {
     await User.updateOne({ _id: user.id }, { '$push': { 'bookedHotels': id } });
 }
 
-// exports.deleteElementsInArray = async(id, user) => {
-//     await User.updateOne({ _id: user.id }, { $set: { bookedHotels: [] } });
-// }
+exports.deleteElementsInArray = async(id, user) => {
+    await User.updateOne({ _id: user.id }, { $set: { bookedHotels: [] } });
+    // await Hotel.updateOne({ _id: id }, { $pullAll: { usersBookedARoom: [user.id] } });
+}
