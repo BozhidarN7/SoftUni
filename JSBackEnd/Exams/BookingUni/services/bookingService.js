@@ -9,7 +9,7 @@ exports.createHotel = async(req) => {
 };
 
 exports.getHotels = async() => {
-    return await Hotel.find().lean();
+    return await Hotel.find().sort({ freeRooms: -1 }).lean();
 };
 
 exports.findOne = async(id) => {
@@ -27,7 +27,7 @@ exports.updateOne = async(id, data) => {
 };
 
 exports.bookHotel = async(id, user) => {
-    await Hotel.updateOne({ _id: id }, { '$push': { 'usersBookedARoom': user.id } })
+    await Hotel.updateOne({ _id: id }, { '$push': { 'usersBookedARoom': user.id }, $inc: { freeRooms: -1 } })
     await User.updateOne({ _id: user.id }, { '$push': { 'bookedHotels': id } });
 }
 

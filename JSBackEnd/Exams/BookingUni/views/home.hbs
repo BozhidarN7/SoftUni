@@ -1,6 +1,6 @@
 <section id="viewCatalog" class="background-img">
     <div class="added-hotels">
-        <a href="" class="added-hotel">
+        {{!-- <a href="" class="added-hotel">
             <img src="https://image.freepik.com/free-vector/flat-hotel-building_23-2148162501.jpg" alt=""
                 class="picture-added-hotel">
             <h3>Hilton Toronto</h3>
@@ -17,12 +17,15 @@
                 alt="" class="picture-added-hotel">
             <h3>Hotel Berlin</h3>
             <span>Free rooms: 15</span>
-        </a>
+        </a> --}}
+        {{#if hotels}}
         {{#each hotels}}
             {{>hotel}}
         {{/each}}
     </div>
-    <!-- <div class="guest">
+        {{else}}
+     <div class="guest">
         There are no Hotels found...
-    </div> -->
+    </div> 
+    {{/if}}
 </section>
