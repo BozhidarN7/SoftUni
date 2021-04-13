@@ -4,7 +4,13 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: [true, 'Please provide an email'],
-        unique: true
+        unique: true,
+        validate: {
+            validator: function(val) {
+                return /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/.test(val)
+            },
+            message: props => `${props.value} is not a valid email`
+        }
     },
     username: {
         type: String,
@@ -13,7 +19,8 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: [true, 'Please enter a password']
+        required: [true, 'Please enter a password'],
+        minLength: [5, 'Password should be at least 5 characters long and should consist only english letters and digits']
     },
     bookedHotels: [{
         type: mongoose.Types.ObjectId,

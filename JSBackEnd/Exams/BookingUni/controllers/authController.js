@@ -17,7 +17,12 @@ router.route('/register')
         res.render('register', { title: 'Register' });
     })
     .post((req, res) => {
-        authService.register(req.body, res).then(response => res.redirect('/')).catch(err => console.log(err));
+        authService.register(req.body, res)
+            .then(response => res.redirect('/'))
+            .catch(err => {
+                console.log(err.message);
+                res.render('register', { title: 'Register', err });
+            });
     });
 
 router.route('/logout')
