@@ -14,6 +14,20 @@ router.route('/register')
             .catch(err => {
                 console.log(err);
             });
+    });
+
+router.route('/login')
+    .get((req, res) => {
+        res.render('login', { title: 'Login' });
+    })
+    .post((req, res) => {
+        authService.login(req.body, res)
+            .then(response => {
+                res.render('home', { title: 'Shoe Shelf' });
+            })
+            .catch(err => {
+                console.log(err);
+            });
     })
 
 module.exports = router;
