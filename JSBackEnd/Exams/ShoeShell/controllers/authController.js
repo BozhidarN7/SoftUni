@@ -10,7 +10,7 @@ router.route('/register')
     })
     .post((req, res) => {
         authService.register(req.body, res)
-            .then(response => res.render('home', { title: 'Shoe Shelf' }))
+            .then(response => res.redirect('/', ))
             .catch(err => {
                 console.log(err);
             });
@@ -23,11 +23,17 @@ router.route('/login')
     .post((req, res) => {
         authService.login(req.body, res)
             .then(response => {
-                res.render('home', { title: 'Shoe Shelf' });
+                res.redirect('/', );
             })
             .catch(err => {
                 console.log(err);
             });
+    });
+
+router.route('/logout')
+    .get((req, res) => {
+        res.clearCookie('jwt');
+        res.redirect('/');
     })
 
 module.exports = router;
