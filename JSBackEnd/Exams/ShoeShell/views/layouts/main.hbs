@@ -14,16 +14,6 @@
         <nav>
             {{#if isAuthenticated}}
             <ul>
-                <li class="site-logo">Shoe</li>
-                <li>
-                    <a href="/">
-                        <img src="/sneakers.png" alt="">
-                    </a>
-                </li>
-                <li class="site-logo">Shelf</li>
-            </ul>
-            {{else}}
-            <ul>
                 <li>
                     <a href="">Create new offer</a>
                 </li> 
@@ -35,6 +25,16 @@
                 <li>Welcome, {{user.email}} | 
                     <a  href="/auth/logout">Logout</a>
                 </li>
+            </ul>
+            {{else}}
+            <ul>
+                <li class="site-logo">Shoe</li>
+                <li>
+                    <a href="/">
+                        <img src="/sneakers.png" alt="">
+                    </a>
+                </li>
+                <li class="site-logo">Shelf</li>
             </ul>
             {{/if}}
         </nav>

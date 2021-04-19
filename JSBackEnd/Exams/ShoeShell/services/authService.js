@@ -17,9 +17,12 @@ const createSendToken = function(user, res) {
 }
 
 exports.register = async(data, res) => {
-    const salt = await bcrypt.genSalt(config.SALT);
-    const hash = await bcrypt.hash(data.password, salt);
-    data.password = hash;
+    // const salt = await bcrypt.genSalt(config.SALT);
+    // const hash = await bcrypt.hash(data.password, salt);
+    // data.password = hash;
+    if (data.password !== data.repeatPassword) {
+        throw new Error('Password mismatch')
+    }
     const user = await User.create(data);
     createSendToken(user, res);
 }

@@ -13,7 +13,7 @@ module.exports = function() {
                 } else {
                     req.user = decoded;
                     res.locals.user = decoded;
-                    res.isAuthenticated = true;
+                    res.locals.isAuthenticated = true;
                 }
             })
         }
