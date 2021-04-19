@@ -21,7 +21,7 @@ router.route('/login')
     .post((req, res) => {
         authService.login(req.body, res)
             .then(response => {
-                res.redirect('/', );
+                res.redirect('/');
             })
             .catch(err => {
                 console.log(err);

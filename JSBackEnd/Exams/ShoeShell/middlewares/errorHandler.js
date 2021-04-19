@@ -6,6 +6,6 @@ module.exports = (err, req, res, next) => {
 
     console.log(err);
 
-    res.status(err.status).render('register', { error: err });
+    res.status(err.status).render('register', { title: 'Register', error: err });
 
 }

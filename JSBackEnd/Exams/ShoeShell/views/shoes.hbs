@@ -1,7 +1,7 @@
 <main>
     <!--<h1>No shoes to display. Be the first to create a new offer...</h1>-->
      <div class="shoes">
-        <div class="shoe">
+        {{!-- <div class="shoe">
             <img src="https://i1.t4s.cz/products/ar4149-001/nike-air-zoom-pegasus-36-gs-251390-ar4149-001.jpeg">
             <h3>Nike Pegasus</h3>
             <a href="">Buy it for $72,90</a>
@@ -25,6 +25,11 @@
             <img src="https://d1zkmbbkp46fmz.cloudfront.net/dbzh4XEt8gAeDWA8NmRQVkbja9Y=/fit-in/700x700/9/6/8/c/968c97afa73e54a7b1d4fcdc2caf4bc15e161e34_Asics_Gel_Lyte_V_Mantle_Green_White_1191A267_300_1.jpg">
             <h3>Asics Gel-Quantum</h3>
             <a href="">Buy it for $140,00</a>
-        </div>
+        </div> --}}
+        {{#each shoes}}
+            {{>shoe}}
+        {{else}}
+        <h1>No shoes to display. Be the first to create a new offer...</h1>
+        {{/each}}
     </div> 
 </main>
