@@ -28,7 +28,7 @@ exports.register = async(data, res) => {
 }
 
 exports.login = async(data, res) => {
-    const user = await User.findOne({ username: data.username });
+    const user = await User.findOne({ email: data.email });
     if (!user) throw new { message: 'Incorrect user or password' };
 
     const isMatch = bcrypt.compare(data.password, user.password);

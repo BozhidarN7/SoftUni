@@ -22,6 +22,18 @@ router.route('/create')
         shoeService.createOffer(req)
             .then(response => res.redirect('/'))
             .catch(err => console.log(err));
-    })
+    });
+
+router.route('/:shoeId/details')
+    .get(async(req, res) => {
+        const shoe = await shoeService.findOne(req.params.shoeId, req.user.id);
+        res.render('details', { title: `${shoe.name} Info`, shoe })
+    });
+
+router.route('/:shoeId/buy')
+    .get((req, res) => {
+        shoeService.buyOne(req.params.shoeId, req.user.id)
+            .then(() => res.redirect(`/${req.params.shoeId}/details`));
+    });
 
 module.exports = router;
