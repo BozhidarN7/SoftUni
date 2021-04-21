@@ -30,6 +30,17 @@ router.route('/:shoeId/details')
         res.render('details', { title: `${shoe.name} Info`, shoe })
     });
 
+router.route('/:shoeId/edit')
+    .get((req, res) => {
+        shoeService.getOne(req.params.shoeId)
+            .then(shoe => res.render('edit', { title: `Edit ${shoe.name}`, shoe }))
+    })
+    .post((req, res) => {
+        shoeService.editShoeOffer(req.body, req.params.shoeId)
+            .then(response => res.redirect(`/${req.params.shoeId}/details`))
+            .catch(err => console.log(err));
+    })
+
 router.route('/:shoeId/buy')
     .get((req, res) => {
         shoeService.buyOne(req.params.shoeId, req.user.id)

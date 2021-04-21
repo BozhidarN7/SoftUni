@@ -18,6 +18,10 @@ exports.findOne = async(id, userId) => {
     return shoe;
 }
 
+exports.getOne = async(id) => {
+    return await Shoe.findById({ _id: id }).lean();
+}
+
 exports.buyOne = (id, userId) => {
     return Shoe.findById({ _id: id })
         .then(shoe => {
@@ -25,6 +29,10 @@ exports.buyOne = (id, userId) => {
 
             return shoe.save();
         });
+}
+
+exports.editShoeOffer = async(data, id) => {
+    return await Shoe.updateOne({ _id: id }, data);
 }
 
 exports.deleteBuyers = async id => {
