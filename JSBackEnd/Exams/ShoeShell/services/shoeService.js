@@ -11,10 +11,10 @@ exports.createOffer = async(req) => {
 };
 
 exports.findOne = async(id, userId) => {
-    const shoe = await Shoe.findById({ _id: id }).lean();
-    shoe.isOwn = shoe.creator == userId;
-    shoe.isBought = shoe.buyers.includes(userId);
-    console.log(userId);
+    const shoe = await Shoe.findById({ _id: id }).populate('buyers').lean();
+    shoe.isOwn = shoe.creator._id == userId;
+    shoe.isBought = shoe.buyers.some(x => x._id == userId);
+    console.log(shoe);
     return shoe;
 }
 
@@ -25,4 +25,8 @@ exports.buyOne = (id, userId) => {
 
             return shoe.save();
         });
+}
+
+exports.deleteBuyers = async id => {
+    const shoe = await Shoe.updateOne({ _id: id }, { $set: { buyers: [] } });
 }

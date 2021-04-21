@@ -14,14 +14,16 @@
             </div>
         </div>
         <div class="actions">
-            {{#if shoe.isOwn}}
-            <a href="/{{shoe._id}}/edit">Edit</a>
-            <a href="/{{Shoe._id}}/delete">Delete</a> 
-            {{/if}}
-             <a href="/{{shoe._id}}/buy">Buy</a>
-             {{#if shoe.isBought}}
-            <span>You bought it</span>
-            {{/if}}
+            {{#unless shoe.isOwn}}
+                {{#if shoe.isBought}}
+                    <span>You bought it</span>
+                {{else}}
+                    <a href="/{{shoe._id}}/buy">Buy</a>
+                {{/if}}
+            {{else}}
+                <a href="/{{shoe._id}}/edit">Edit</a>
+                <a href="/{{Shoe._id}}/delete">Delete</a> 
+            {{/unless}}
         </div>
     </div>
 </main>
