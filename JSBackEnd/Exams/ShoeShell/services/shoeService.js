@@ -14,7 +14,6 @@ exports.findOne = async(id, userId) => {
     const shoe = await Shoe.findById({ _id: id }).populate('buyers').lean();
     shoe.isOwn = shoe.creator._id == userId;
     shoe.isBought = shoe.buyers.some(x => x._id == userId);
-    console.log(shoe);
     return shoe;
 }
 
@@ -33,6 +32,10 @@ exports.buyOne = (id, userId) => {
 
 exports.editShoeOffer = async(data, id) => {
     return await Shoe.updateOne({ _id: id }, data);
+}
+
+exports.deleteShoeOffer = async(id) => {
+    return await Shoe.deleteOne({ _id: id });
 }
 
 exports.deleteBuyers = async id => {

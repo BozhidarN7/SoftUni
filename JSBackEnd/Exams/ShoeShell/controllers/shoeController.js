@@ -47,4 +47,11 @@ router.route('/:shoeId/buy')
             .then(() => res.redirect(`/${req.params.shoeId}/details`));
     });
 
+router.route('/:shoeId/delete')
+    .get((req, res) => {
+        shoeService.deleteShoeOffer(req.params.shoeId)
+            .then(response => res.redirect('/'))
+            .catch(err => console.log(err));
+    });
+
 module.exports = router;
