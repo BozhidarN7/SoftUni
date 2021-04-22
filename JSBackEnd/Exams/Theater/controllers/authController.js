@@ -22,6 +22,12 @@ router.route('/login')
         authService.login(req.body, res)
             .then(response => res.redirect('/'))
             .catch(err => console.log(err));
+    });
+
+router.route('/logout')
+    .get((req, res) => {
+        res.clearCookie('jwt');
+        res.redirect('/')
     })
 
 module.exports = router;
