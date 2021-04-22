@@ -7,4 +7,5 @@ router.route('/')
         res.render('guest', { title: 'Welcome to the Theatre' });
     });
 
+
 module.exports = router;

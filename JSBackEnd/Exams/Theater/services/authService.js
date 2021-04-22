@@ -24,3 +24,13 @@ exports.register = async(data, res) => {
     const user = await User.create(data);
     createSendToken(user, res);
 };
+
+exports.login = async(data, res) => {
+    const user = await User.findOne({ username: data.username });
+    if (!user) throw { message: 'Incorrect username or password' };
+
+    const isMatch = await bcrypt.compare(data.password, user.password);
+    if (!isMatch) throw { message: 'Incorrect username or password' };
+
+    createSendToken(user, res);
+}
