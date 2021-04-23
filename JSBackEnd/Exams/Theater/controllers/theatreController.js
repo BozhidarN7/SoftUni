@@ -37,5 +37,12 @@ router.route('/:playId/like')
         playService.likePlay(req.params.playId, req.user.id)
             .then(play => res.redirect(`/${req.params.playId}/details`))
             .catch(err => console.log(err));
+    });
+
+router.route('/:playId/delete')
+    .get((req, res) => {
+        playService.deletePlay(req.params.playId)
+            .then(play => res.redirect('/'))
+            .catch(err => console.log(err));
     })
 module.exports = router;

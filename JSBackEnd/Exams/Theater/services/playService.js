@@ -17,7 +17,6 @@ exports.createPlay = async(data, req) => {
     data.createdBy = req.user.id;
     data.likes = 0;
     const play = await Play.create(data);
-    console.log(play);
     return play;
 };
 
@@ -31,4 +30,8 @@ exports.getPlay = async(id, userId) => {
 exports.likePlay = async(id, userId) => {
     await Play.updateOne({ _id: id }, { '$push': { 'usersLiked': userId }, $inc: { likes: 1 } })
     await User.updateOne({ _id: userId }, { '$push': { 'likedPlays': id } });
+}
+
+exports.deletePlay = async id => {
+    return await Play.deleteOne({ _id: id });
 }
