@@ -24,6 +24,7 @@ exports.getPlay = async(id, userId) => {
     const play = await Play.findById({ _id: id }).lean();
     play.isOwn = play.createdBy == userId;
     play.isLiked = play.usersLiked.some(x => x._id == userId);
+    play.checked = play.isPublic ? 'checked' : '';
     return play;
 }
 
@@ -34,4 +35,13 @@ exports.likePlay = async(id, userId) => {
 
 exports.deletePlay = async id => {
     return await Play.deleteOne({ _id: id });
+};
+
+exports.updatePlay = async(data, id) => {
+    if (!data.isPublic) {
+        data.isPublic = false;
+    } else {
+        data.isPublic = true;
+    }
+    return await Play.updateOne({ _id: id }, data);
 }

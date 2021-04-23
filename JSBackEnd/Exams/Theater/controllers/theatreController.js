@@ -44,5 +44,18 @@ router.route('/:playId/delete')
         playService.deletePlay(req.params.playId)
             .then(play => res.redirect('/'))
             .catch(err => console.log(err));
+    });
+
+router.route('/:playId/edit')
+    .get((req, res) => {
+        playService.getPlay(req.params.playId, req.user.id)
+            .then(play => res.render('edit', { title: `Edit ${req.params.playId}`, play }))
+            .catch(err => console.log(err));
     })
+    .post((req, res) => {
+        playService.updatePlay(req.body, req.params.playId)
+            .then(play => res.redirect(`/${req.params.playId}/details`))
+            .catch(err => console.log(err));
+    })
+
 module.exports = router;
