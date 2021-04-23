@@ -41,10 +41,13 @@
                     <h4>This Is Our Youth by Kenneth Lonergan</h4>
                 </div>
             </div> --}}
-            {{#each plays}}
-            {{>play}}
-            {{/each}}
-            <!-- <h4>No plays yet...</h4> -->
+            {{#if plays}}
+                {{#each plays}}
+                {{>play}}
+                {{/each}}
+            {{else}}
+                <h4>No plays yet...</h4>
+            {{/if}}
         </div>
     </section>
 </main>

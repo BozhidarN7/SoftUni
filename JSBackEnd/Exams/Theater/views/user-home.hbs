@@ -73,10 +73,13 @@
                     </div>
                 </div>
             </div> --}}
-            {{#each plays}}
-            {{>play isAuth =../isAuthenticated}}
-            {{/each}}
-            <!-- <h4>No plays yet...</h4> -->
+            {{#if plays}}
+                {{#each plays}}
+                    {{>play isAuth =../isAuthenticated}}
+                {{/each}}
+            {{else}}
+                <h4>No plays yet...</h4> 
+            {{/if}}
         </div>
     </section>
 </main>

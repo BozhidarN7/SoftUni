@@ -27,7 +27,9 @@ const playSchema = new mongoose.Schema({
     usersLiked: [{
         type: mongoose.Types.ObjectId,
         ref: 'User'
-    }]
+    }],
+    likes: Number,
+    createdBy: mongoose.Types.ObjectId
 });
 
 const Play = mongoose.model('Play', playSchema);
