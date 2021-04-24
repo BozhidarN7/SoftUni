@@ -5,8 +5,16 @@ const User = require('../models/userModel');
 //     return await Play.find().sort()
 // }
 
-exports.getPlays = async(req) => {
-    return await Play.find().lean();
+exports.getPlays = async({...queryString }) => {
+    let querySearch = Play.find();
+    if (queryString.sort) {
+        const sortBy = queryString.sort.split(':')[0];
+        const order = queryString.sort.split(':')[1];
+        querySearch = querySearch.sort({
+            [`${sortBy}`]: `${order}`
+        });
+    }
+    return await querySearch.lean();
 
 }
 

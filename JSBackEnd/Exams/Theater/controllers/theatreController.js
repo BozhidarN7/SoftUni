@@ -6,8 +6,7 @@ const router = express.Router();
 
 router.route('/')
     .get(async(req, res) => {
-        const plays = await playService.getPlays(req);
-
+        const plays = await playService.getPlays(req.query);
         if (!req.user) {
             res.render('guest', { title: 'Welcome to the Theatre', plays });
         } else {
