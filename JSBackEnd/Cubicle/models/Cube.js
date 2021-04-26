@@ -14,12 +14,12 @@ const mongoose = require('mongoose');
 const cubeSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, 'Cube must have a name']
+        required: [true, 'Cube must have a name'],
     },
     description: {
         type: String,
         required: [true, 'Cube must have a description'],
-        maxLength: [150, 'Description length must not exceed 150']
+        maxLength: [150, 'Description length must not exceed 150'],
     },
     imageUrl: {
         type: String,
@@ -30,19 +30,21 @@ const cubeSchema = new mongoose.Schema({
         type: Number,
         required: [true, 'Difficulty level must be specified'],
         min: 1,
-        max: 6
+        max: 6,
     },
-    accessories: [{
-        type: mongoose.Types.ObjectId,
-        ref: 'Accessory'
-    }],
+    accessories: [
+        {
+            type: mongoose.Types.ObjectId,
+            ref: 'Accessory',
+        },
+    ],
     creator: {
         type: mongoose.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
     },
 });
 
-cubeSchema.pre('save', function(next) {
+cubeSchema.pre('save', function (next) {
     const nameToLower = this.name.toLowerCase();
     this.name = nameToLower;
     next();
