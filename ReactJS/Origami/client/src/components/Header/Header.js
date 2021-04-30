@@ -8,6 +8,7 @@ const Header = () => {
                 <li className="listItem">
                     <img src="white-origami-bird.png" />
                 </li>
+
                 <NavigationItem>Going to 1</NavigationItem>
                 <NavigationItem>Going to 2</NavigationItem>
                 <NavigationItem>Going to 3</NavigationItem>
