@@ -4,6 +4,7 @@ import Header from './components/Header';
 import style from './App.module.css';
 import Menu from './components/Menu';
 import Main from './components/Main';
+import Footer from './components/Footer';
 
 import * as postService from './services/postService';
 
@@ -45,6 +46,7 @@ class App extends Component {
                     <Menu onMenuItemClick={this.onMenuItemClick.bind(this)} />
                     <Main posts={this.getPosts()} />
                 </div>
+                <Footer />
             </div>
         );
     }

@@ -1,0 +1,30 @@
+.footer .listItem a {
+    color: #234465;
+    text-decoration: none;
+}
+
+.footer .listItem {
+    display: inline-block;
+    height: auto;
+    margin-right: 2%;
+    cursor: pointer;
+    padding: 0.5%;
+    margin: 0.1%;
+    vertical-align: top;
+}
+
+.footer .listItem:nth-child(1) {
+    margin-left: 1%;
+}
+
+.footer .listItem:not(:last-child) {
+    padding: 2%;
+    margin-top: 1.5%;
+    border-bottom: 2px solid #234465;
+}
+
+.footer .listItem:hover {
+    border-bottom: none;
+    border-top: 2px solid #234465;
+    font-weight: bold;
+}
