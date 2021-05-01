@@ -7,7 +7,7 @@ const Post = ({ content, author }) => {
             <p className="post-description">{content}</p>
             <div>
                 <span>
-                    <smal>Author: {author}</smal>
+                    <small>Author: {author}</small>
                 </span>
             </div>
         </div>

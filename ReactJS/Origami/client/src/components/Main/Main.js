@@ -8,7 +8,7 @@ const Main = ({ posts }) => {
             <h1>Sooooooome Heading</h1>
             <div className="posts">
                 {posts.map((x) => (
-                    <Post key={x._id} content={x.content} author={x.author} />
+                    <Post key={x.id} content={x.content} author={x.author} />
                 ))}
             </div>
         </main>
