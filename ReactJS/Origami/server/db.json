@@ -3,12 +3,17 @@
         {
             "id": 1,
             "content": "Some content here",
-            "authro": "Pesho"
+            "author": "Pesho"
         },
         {
             "id": 2,
             "content": "Some content here 2",
-            "authro": "Gosho"
+            "author": "Gosho"
+        },
+        {
+            "id": 3,
+            "content": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, porro consectetur modi quibusdam aliquam atque nobis eos. Sint officia impedit autem sapiente blanditiis amet architecto voluptate ratione ipsam reprehenderit! Similique.",
+            "author": "Stamat"
         }
     ]
 }
