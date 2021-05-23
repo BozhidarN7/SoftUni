@@ -9,10 +9,6 @@ function solve(steps, footprint, speed) {
     const minutes = Math.trunc((time % 3600) / 60);
     const seconds = Math.round(time % 60);
 
-    console.log(hours);
-    console.log(minutes);
-    console.log(seconds);
-
     let result = '';
 
     if (hours) {
