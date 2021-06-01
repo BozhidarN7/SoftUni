@@ -1,15 +1,10 @@
 function solve(input) {
     const result = input.reduce((arr, x) => {
-        const obj = {};
-        const tokens = x.split(' / ');
-        obj.name = tokens[0];
-        obj.level = Number(tokens[1]);
-        if (tokens[2]) {
-            obj.items = tokens[2].split(', ');
-        } else {
-            obj.items = [];
-        }
-        arr.push(obj);
+        let [name, level, items] = x.split(' / ');
+        level = Number(level);
+        items = items ? items.split(', ') : [];
+
+        arr.push({ name, level, items });
         return arr;
     }, []);
 
