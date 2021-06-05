@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.6
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "04_Snake", "04_Snake\04_Snake.csproj", "{D3EDE2C4-DBD2-4A8A-8A65-0E150E7B643C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "05_Cube", "05_Cube\05_Cube.csproj", "{3406026D-0665-44C6-94B3-7D75CED4ADDD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D3EDE2C4-DBD2-4A8A-8A65-0E150E7B643C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3EDE2C4-DBD2-4A8A-8A65-0E150E7B643C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3EDE2C4-DBD2-4A8A-8A65-0E150E7B643C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3EDE2C4-DBD2-4A8A-8A65-0E150E7B643C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3406026D-0665-44C6-94B3-7D75CED4ADDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3406026D-0665-44C6-94B3-7D75CED4ADDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3406026D-0665-44C6-94B3-7D75CED4ADDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3406026D-0665-44C6-94B3-7D75CED4ADDD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

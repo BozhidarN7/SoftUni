@@ -1,0 +1,112 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace _03_CyclesInGraph
+{
+    class CyclesInGraph
+    {
+        private static Dictionary<string, List<string>> graph = new Dictionary<string, List<string>>();
+
+        static void Main(string[] args)
+        {
+            string line;
+            while ((line = Console.ReadLine()) != null)
+            {
+                var tokens = line.Split('-');
+                string vertex = tokens[0];
+
+                if (!graph.ContainsKey(vertex))
+                {
+                    graph.Add(vertex, new List<string>());
+                }
+
+                for (int i = 1; i < tokens.Count(); i++)
+                {
+                    if (tokens[i] != string.Empty)
+                    {
+                        graph[vertex].Add(tokens[i]);
+                        if (!graph.ContainsKey(tokens[i]))
+                        {
+                            graph.Add(tokens[i], new List<string>());
+                        }
+
+                        graph[tokens[i]].Add(vertex);
+                    }
+                }
+            }
+
+            Console.Write("Acyclic: ");
+            if (IsAcylic())
+            {
+                Console.WriteLine("Yes");
+            }
+            else
+            {
+                Console.WriteLine("No");
+            }
+        }
+
+        private static bool IsAcylic()
+        {
+            Dictionary<string, int> predecessorCount = GetPredecessorCount(graph);
+
+            while (true)
+            {
+                string removeNode = predecessorCount.FirstOrDefault(n => n.Value == 1).Key;
+                if (removeNode == null)
+                {
+                    break;
+                }
+
+                if (graph.ContainsKey(removeNode))
+                {
+                    foreach (var decremet in graph[removeNode])
+                    {
+                        if (predecessorCount.ContainsKey(decremet))
+                        {
+                            predecessorCount[decremet]--;
+                        }
+                    }
+                }
+
+                graph.Remove(removeNode);
+                predecessorCount.Remove(removeNode);
+            }
+
+            if (graph.Count != 1)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private static Dictionary<string, int> GetPredecessorCount(Dictionary<string, List<string>> graph)
+        {
+            Dictionary<string,int> predecessorCount = new Dictionary<string, int>();
+
+            foreach (var node in graph)
+            {
+                if (!predecessorCount.ContainsKey(node.Key))
+                {
+                    predecessorCount[node.Key] = 0;
+                }
+
+                foreach (var child in node.Value)
+                {
+                    if (!predecessorCount.ContainsKey(child))
+                    {
+                        predecessorCount[child] = 0;
+                    }
+
+                    predecessorCount[child]++;
+                }
+            }
+
+            return predecessorCount;
+        }
+    }
+}
