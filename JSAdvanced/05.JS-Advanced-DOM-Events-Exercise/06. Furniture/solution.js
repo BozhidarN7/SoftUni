@@ -21,38 +21,32 @@ function solve() {
     });
 
     buyButton.addEventListener('click', () => {
-        const names = [];
-        const prices = [];
-        const decorationFactors = [];
-        Array.from(document.querySelectorAll('input[type="checkbox"]')).forEach(
-            (input) => {
-                if (input.checked) {
-                    names.push(
-                        input.parentElement.parentElement.children[1]
-                            .children[0].textContent
-                    );
-                    prices.push(
-                        Number(
-                            input.parentElement.parentElement.children[2]
-                                .children[0].textContent
-                        )
-                    );
-                    decorationFactors.push(
-                        Number(
-                            input.parentElement.parentElement.children[3]
-                                .children[0].textContent
-                        )
-                    );
-                }
-            }
+        const tableRows = Array.from(
+            document.querySelectorAll('.table tbody tr')
         );
-        outputTextarea.value = `Bought furnitures: ${names.join(', ')}\n`;
-        outputTextarea.value += `Total price: ${prices
-            .reduce((acc, x) => (acc += x))
-            .toFixed(2)}\n`;
-        outputTextarea.value += `Average decoration factor: ${
-            decorationFactors.reduce((acc, x) => (acc += x)) /
-            decorationFactors.length
-        }`;
+        const selectedRows = tableRows.filter((row) =>
+            row.querySelector('input:checked')
+        );
+
+        const names = selectedRows
+            .map((row) => row.querySelector('td:nth-of-type(2) p'))
+            .map((x) => x.textContent)
+            .join(', ');
+        const prices = selectedRows
+            .map((row) => row.querySelector('td:nth-of-type(3) p'))
+            .map((x) => Number(x.textContent));
+        const decFactors = selectedRows
+            .map((row) => row.querySelector('td:nth-of-type(4) p'))
+            .map((x) => Number(x.textContent));
+
+        const totalPrice = prices.reduce((acc, el) => acc + el, 0).toFixed(2);
+        const averageDecFactor =
+            decFactors.reduce((acc, el) => acc + el, 0) / decFactors.length;
+
+        const furnitureText = `Bought furniture: ${names}`;
+        const priceText = `Total price: ${totalPrice}`;
+        const decFactorText = `Average decoration factor: ${averageDecFactor}`;
+
+        outputTextarea.textContent = `${furnitureText}\n${priceText}\n${decFactorText}`;
     });
 }
