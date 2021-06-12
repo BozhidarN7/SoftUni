@@ -1,62 +1,33 @@
 function solve(commands) {
-    const objects = [];
+    const objects = {};
+
+    function getProperties(obj = {}) {
+        const output = [];
+        for (const prop in obj) {
+            output.push(`${prop}:${obj[prop]}`);
+        }
+        return output.join(', ');
+    }
 
     const processor = {
-        create(name) {
-            objects.push({ name });
+        create(name1, inherit, name2) {
+            let obj = {};
+            if (inherit) {
+                obj = objects[name2];
+            }
+            objects[name1] = Object.create(obj);
         },
-        inherit(value1, value2) {
-            const newObj = Object.create(
-                objects.find((obj) => obj.name === value2)
-            );
-            newObj.name = value1;
-            objects.push(newObj);
-        },
-        set(value1, opr2, value2) {
-            const obj = objects.find((x) => x.name === value1);
-            obj[opr2] = value2;
+        set(name, prop, value) {
+            objects[name][prop] = value;
         },
         print(name) {
-            const target = objects.find((obj) => obj.name === name);
-
-            const result1 = Object.entries(target)
-                .map(([key, value]) => {
-                    if (key !== 'name') return `${key}:${value}`;
-                    return '';
-                })
-                .filter((x) => x !== '')
-                .join(', ');
-
-            const result2 = Object.entries(target.__proto__)
-                .map(([key, value]) => {
-                    if (key !== 'name') return `${key}:${value}`;
-                    return '';
-                })
-                .filter((x) => x !== '')
-                .join(', ');
-
-            if (result1 && result2) {
-                console.log(`${result1}, ${result2}`);
-            } else if (result1) {
-                console.log(result1);
-            } else {
-                console.log(result2);
-            }
+            console.log(getProperties(objects[name]));
         },
     };
 
     commands.forEach((command) => {
-        const [opr1, value1, opr2, value2] = command.split(' ');
-
-        if (opr2 && opr2 === 'inherit') {
-            processor[opr2](value1, value2);
-        } else if (opr1 === 'set') {
-            processor[opr1](value1, opr2, value2);
-        } else if (opr1 === 'print') {
-            processor[opr1](value1);
-        } else {
-            processor[opr1](value1);
-        }
+        const [cmd, ...args] = command.split(' ');
+        processor[cmd](...args);
     });
 }
 
