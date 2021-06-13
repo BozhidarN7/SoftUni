@@ -23,7 +23,13 @@ function createCard(face, suit) {
     if (!faces.includes(face) || !suits.has(suit)) {
         throw new Error('Error');
     }
-    return { face, suit, toString: () => face + suits.get(suit) };
+    return {
+        face,
+        suit,
+        toString: function () {
+            return this.face + suits.get(this.suit);
+        },
+    };
 }
 
 const card1 = createCard('A', 'S');
