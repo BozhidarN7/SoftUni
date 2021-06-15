@@ -19,7 +19,7 @@ function solve(req) {
     if (!req.hasOwnProperty('version') || !versions.includes(req.version)) {
         throw new Error(generateErrorMessage('Version'));
     }
-    if (!req.hasOwnProperty('message') || !req.message.match(/^[^<>/\&'"]*$/)) {
+    if (!req.hasOwnProperty('message') || !req.message.match(/^[^<>\\&'"]*$/)) {
         throw new Error(generateErrorMessage('Message'));
     }
 
