@@ -22,6 +22,7 @@ const game = {
     speed: 2,
     movingMultiplier: 4,
     fireballMultiplier: 5,
+    bugMultiplier: 3,
     fireInterval: 1000,
     cloudSpawnInterval: 3000,
     bugSpawnInterval: 1000,
@@ -128,7 +129,7 @@ function gameAction(timestamp) {
     // spawn bugs
     if (
         timestamp - scene.lastBugSpawn >
-        game.bugSpawnInterval + 5000 * Math.random()
+        game.bugSpawnInterval // + 5000 * Math.random()
     ) {
         const bug = document.createElement('div');
         bug.classList.add('bug');
@@ -137,14 +138,22 @@ function gameAction(timestamp) {
         bug.style.top = (gameArea.offsetHeight - 60) * Math.random() + 'px';
         gameArea.appendChild(bug);
         scene.lastBugSpawn = timestamp;
+
+        if (game.bugSpawnInterval >= 200) {
+            game.bugSpawnInterval -= 20;
+        }
     }
 
     const bugs = document.querySelectorAll('.bug');
     bugs.forEach((bug) => {
-        bug.x -= game.speed * 3;
+        bug.x -= game.speed * game.bugMultiplier;
         bug.style.left = bug.x + 'px';
         if (bug.x + bug.offsetWidth <= 0) {
             bug.parentElement.removeChild(bug);
+        }
+
+        if (game.bugMultiplier < 4) {
+            game.bugMultiplier += 0.001;
         }
     });
 
@@ -218,6 +227,9 @@ function startGameFromBegining() {
     player.y = 100;
     player.width = 0;
     player.height = 0;
+
+    game.bugSpawnInterval = 1000;
+    game.bugMultiplier = 3;
 
     document
         .querySelectorAll('.fire-ball')
