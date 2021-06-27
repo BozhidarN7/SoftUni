@@ -2,7 +2,7 @@ function solve() {
     const lectureField = document.querySelector('input[type="text"');
     const dateField = document.querySelector('input[type="datetime-local"]');
     const selectModuleEl = document.querySelector('select');
-    const addBtn = document.querySelector('button');
+    const addBtn = document.querySelector('.admin-view button:last-of-type');
     const modulesDiv = document.querySelector('.modules');
 
     const registeredModules = new Set();
