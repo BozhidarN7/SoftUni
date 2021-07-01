@@ -1,0 +1,132 @@
+{
+	"info": {
+		"_postman_id": "928dd5a3-6012-420d-b761-b1dc07d43363",
+		"name": "SoftUniRESTServicesAndAJAX",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get bus by id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3030/jsonstore/bus/businfo/2334",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3030",
+					"path": [
+						"jsonstore",
+						"bus",
+						"businfo",
+						"2334"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get people phones",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3030/jsonstore/phonebook",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3030",
+					"path": [
+						"jsonstore",
+						"phonebook"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a new record",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"person\": \"Ivan\",\r\n    \"phone\": \"023423423\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3030/jsonstore/phonebook",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3030",
+					"path": [
+						"jsonstore",
+						"phonebook"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Books Firebase",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"genre\": \"Romance\",\r\n    \"title\": \"The Proposal\",\r\n    \"author\": \"Gillian Flynn\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://library-6b802-default-rtdb.europe-west1.firebasedatabase.app/books.json",
+					"protocol": "https",
+					"host": [
+						"library-6b802-default-rtdb",
+						"europe-west1",
+						"firebasedatabase",
+						"app"
+					],
+					"path": [
+						"books.json"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
