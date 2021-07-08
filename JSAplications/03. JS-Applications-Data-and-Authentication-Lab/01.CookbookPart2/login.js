@@ -32,3 +32,7 @@ loginForm.addEventListener('submit', (e) => {
 
     window.location.href = 'index.html';
 });
+
+function saveToken(token) {
+    localStorage.setItem('auth_token', token);
+}
