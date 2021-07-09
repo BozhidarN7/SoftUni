@@ -26,6 +26,9 @@ function attachEvents() {
             .then((response) => response.json())
             .then((data) => console.log(data))
             .catch((error) => console.log(error));
+
+        nameField.value = '';
+        messageField.value = '';
     });
 
     refreshBtn.addEventListener('click', () => {
