@@ -31,7 +31,7 @@ registerForm.addEventListener('submit', (e) => {
         })
         .then((data) => {
             saveToken(data.accessToken);
-            settUserId(data._id);
+            setUserId(data._id);
             e.target.reset();
             window.location.href = 'index.html';
         })

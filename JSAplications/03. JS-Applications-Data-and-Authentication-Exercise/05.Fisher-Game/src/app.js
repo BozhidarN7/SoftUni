@@ -9,6 +9,7 @@ if (getToken()) {
     guestDiv.children[0].classList.toggle('hidden');
     guestDiv.children[1].classList.toggle('hidden');
     addBtn.disabled = false;
+    addBtn.classList.add('green');
 }
 
 guestDiv.children[1].addEventListener('click', async (e) => {
@@ -31,17 +32,7 @@ async function getAllCatches() {
     const data = await (await fetch(`${baseUrl}/data/catches`)).json();
 
     data.forEach((curCatch) => {
-        const catchDiv = createCatchRecord(curCatch);
-        if (catchDiv.dataset.ownerId === getUserId()) {
-            const editBtn = catchDiv.querySelector('.update');
-            const delBtn = catchDiv.querySelector('.delete');
-
-            editBtn.disabled = false;
-            editBtn.classList.add('yellow');
-
-            delBtn.disabled = false;
-            delBtn.classList.add('red');
-        }
+        createCatchRecord(curCatch);
     });
 }
 
@@ -143,7 +134,7 @@ function createCatchRecord(curCatch) {
     );
 
     updateBtn.addEventListener('click', updateCatch);
-    deleteBtn.addEventListener('click', deleteBtn);
+    deleteBtn.addEventListener('click', deleteCatch);
 
     catchDiv.appendChild(anglerLabel);
     catchDiv.appendChild(anglerInput);
@@ -173,13 +164,61 @@ function createCatchRecord(curCatch) {
     catchDiv.appendChild(deleteBtn);
 
     catchDiv.dataset.ownerId = curCatch._ownerId;
+    catchDiv.dataset.id = curCatch._id;
     catchesDiv.appendChild(catchDiv);
+
+    if (catchDiv.dataset.ownerId === getUserId()) {
+        const editBtn = catchDiv.querySelector('.update');
+        const delBtn = catchDiv.querySelector('.delete');
+
+        editBtn.disabled = false;
+        editBtn.classList.add('yellow');
+
+        delBtn.disabled = false;
+        delBtn.classList.add('red');
+    }
+
     return catchDiv;
 }
 
-async function updateCatch() {}
-async function deleteCatch() {
-    // const res = await fetch(`${baseUrl}/data/catches/`)
+async function updateCatch(e) {
+    const catchDiv = e.target.parentElement;
+
+    const angler = catchDiv.querySelector('.angler').value;
+    const weight = Number(catchDiv.querySelector('.weight').value);
+    const species = catchDiv.querySelector('.species').value;
+    const location = catchDiv.querySelector('.location').value;
+    const bait = catchDiv.querySelector('.bait').value;
+    const captureTime = Number(catchDiv.querySelector('.captureTime').value);
+    const res = await fetch(`${baseUrl}/data/catches/${catchDiv.dataset.id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-Authorization': getToken(),
+        },
+        body: JSON.stringify({
+            angler,
+            weight,
+            species,
+            location,
+            bait,
+            captureTime,
+        }),
+    });
+    const newCatch = await res.json();
+    // click load is required to see the cnages
+}
+
+async function deleteCatch(e) {
+    const catchDiv = e.target.parentElement;
+    const res = await fetch(`${baseUrl}/data/catches/${catchDiv.dataset.id}`, {
+        method: 'DELETE',
+        headers: {
+            'X-Authorization': getToken(),
+        },
+    });
+
+    catchDiv.remove();
 }
 
 function ce(tag, attributes, ...params) {
