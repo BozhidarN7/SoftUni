@@ -4,9 +4,9 @@ import { jsonRequest } from './httpService.js';
 
 async function logout() {
     try {
-        const logoutResult = await fetch(
+        const logoutResult = await jsonRequest(
             'http://localhost:3030/users/logout',
-            'GET',
+            'Get',
             undefined,
             true,
             true

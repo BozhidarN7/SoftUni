@@ -1,7 +1,7 @@
 import { jsonRequest } from '../services/httpService.js';
 import viewFinder from '../viewFinder.js';
-import { ce } from '../helpers/htmlHelpers.js';
 import auth from '../services/authService.js';
+import { ce } from '../helpers/htmlHelper.js';
 
 let section = undefined;
 let linkClass = undefined;
@@ -13,16 +13,21 @@ export function initialize(domSection, viewLinkClass) {
 
 export async function getView(movieId) {
     try {
-        const moviePromise = jsonRequest(
+        let moviePromise = jsonRequest(
             `http://localhost:3030/data/movies/${movieId}`
         );
-        const usserid = auth.getUserId();
-        const userLikesPromise = jsonRequest(
+        let userId = auth.getUserId();
+        let userLikesPromise = jsonRequest(
             `http://localhost:3030/data/likes?where=movieId%3D%22${movieId}%22%20and%20_ownerId%3D%22${userId}%22`
         );
-        const likesPromise = jsonRequest(
+        let likesPromise = jsonRequest(
             `http://localhost:3030/data/likes?where=movieId%3D%22${movieId}%22&distinct=_ownerId&count`
         );
+        let [movie, userLikesArr, likes] = await Promise.all([
+            moviePromise,
+            userLikesPromise,
+            likesPromise,
+        ]);
 
         let userCanLike = true;
         if (userLikesArr.length > 0 || auth.getUserId() === movie._ownerId) {
@@ -37,10 +42,50 @@ export async function getView(movieId) {
         movieContainer.appendChild(htmlMovie);
         return section;
     } catch (err) {
-        console.log(err);
+        console.error(err);
         alert(err);
     }
 }
+
+export async function deleteMovie(movieId) {
+    try {
+        let deleteResult = await jsonRequest(
+            `http://localhost:3030/data/movies/${movieId}`,
+            'Delete',
+            undefined,
+            true
+        );
+        return viewFinder.redirectTo('home');
+    } catch (err) {
+        console.error(err);
+        alert(err);
+    }
+}
+
+export async function likeMovie(movieId) {
+    try {
+        let body = { movieId: movieId };
+        let likeResult = await jsonRequest(
+            `http://localhost:3030/data/likes`,
+            'Post',
+            body,
+            true
+        );
+        let movieLikes = await jsonRequest(
+            `http://localhost:3030/data/likes?where=movieId%3D%22${movieId}%22&distinct=_ownerId&count`
+        );
+
+        let likeBtn = section.querySelector('.like');
+        likeBtn.remove();
+        let likesSpan = section.querySelector('.likes');
+        likesSpan.textContent = `Liked: ${movieLikes}`;
+        return viewFinder.redirectTo('details', movieId);
+    } catch (err) {
+        console.error(err);
+        alert(err);
+    }
+}
+
 function createHtmlMovieInfo(movie, userCanLike, movieLikes) {
     let movieHeading = ce('h1', undefined, `Movie title: ${movie.title}`);
 
@@ -62,7 +107,7 @@ function createHtmlMovieInfo(movie, userCanLike, movieLikes) {
         },
         'Delete'
     );
-    deleteBtn.addEventListener('click', viewFinder.navigationHandler);
+    deleteBtn.addEventListener('click', viewFinder.navigationHangler);
     let editBtn = ce(
         'a',
         {
@@ -72,7 +117,7 @@ function createHtmlMovieInfo(movie, userCanLike, movieLikes) {
         },
         'Edit'
     );
-    editBtn.addEventListener('click', viewFinder.navigationHandler);
+    editBtn.addEventListener('click', viewFinder.navigationHangler);
     let likeBtn = ce(
         'a',
         {
@@ -82,7 +127,7 @@ function createHtmlMovieInfo(movie, userCanLike, movieLikes) {
         },
         'Like'
     );
-    likeBtn.addEventListener('click', viewFinder.navigationHandler);
+    likeBtn.addEventListener('click', viewFinder.navigationHangler);
     let likesSpan = ce(
         'span',
         { class: 'enrolled-span likes' },
@@ -123,6 +168,8 @@ function createHtmlMovieInfo(movie, userCanLike, movieLikes) {
 let movieDetailsPage = {
     initialize,
     getView,
+    likeMovie,
+    deleteMovie,
 };
 
 export default movieDetailsPage;

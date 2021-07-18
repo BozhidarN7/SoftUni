@@ -61,7 +61,7 @@ function createHTMLMovie(movie) {
     if (auth.isLoggedIn()) {
         linkAnchor.appendChild(detailsButton);
     }
-    linkAnchor.addEventListener('click', viewFinder.navigationHandler);
+    linkAnchor.addEventListener('click', viewFinder.navigationHangler);
     let cardFooterDiv = ce('div', { class: 'card-footer' }, linkAnchor);
 
     let movieCardDiv = ce(
