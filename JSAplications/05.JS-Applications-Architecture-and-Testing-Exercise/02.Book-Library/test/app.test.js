@@ -238,7 +238,7 @@ describe('E2E', () => {
         });
     });
     describe('test delete btn', () => {
-        it.only('should delete book', async () => {
+        it('should delete book', async () => {
             const bookList = {
                 original: {
                     id: '1',
