@@ -3,17 +3,13 @@ import { initializeHome } from './pages/home.js';
 import { initializeLogin } from './pages/login.js';
 import { initializeRegister } from './pages/register.js';
 import { setNavigation } from './nav.js';
+import auth from './services/authService.js';
 
 setNavigation();
-
-const views = {
-    homeView: () => initializeHome,
-    loginView: () => initializeLogin,
-    register: () => initializeRegister,
-};
 
 page('/', initializeHome);
 page('/home', initializeHome);
 page('/login', initializeLogin);
 page('/register', initializeRegister);
+page('/logout', auth.logout);
 page.start();

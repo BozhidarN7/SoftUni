@@ -52,6 +52,24 @@ async function login(context) {
     }
 }
 
+export function logout(context) {
+    try {
+        const logoutResult = jsonRequest(
+            `${baseUrl}`,
+            'GET',
+            undefined,
+            true,
+            true
+        );
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userId');
+        setNavigation();
+        context.page.redirect('/Login');
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 function getUserId() {
     return localStorage.getItem('useId');
 }
@@ -73,6 +91,7 @@ const auth = {
     getAuthToken,
     register,
     login,
+    logout,
 };
 
 export default auth;
