@@ -1,9 +1,9 @@
-import authService from './services/authService.js';
+import auth from './services/authService.js';
 
 export function setNavigation() {
     const userDiv = document.querySelector('#user');
     const guestDiv = document.querySelector('#guest');
-    if (authService.getToken()) {
+    if (auth.getAuthToken()) {
         userDiv.classList.remove('hidden');
         guestDiv.classList.add('hidden');
     } else {
