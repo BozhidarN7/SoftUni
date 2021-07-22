@@ -9,5 +9,6 @@ export function initializeDetails(context) {
 }
 
 function renderDetailsPage(furniture) {
+    console.log(furniture);
     render(detailsTemplate(furniture), document.querySelector('#root'));
 }

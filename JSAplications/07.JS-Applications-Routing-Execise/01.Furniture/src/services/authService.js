@@ -71,7 +71,7 @@ export function logout(context) {
 }
 
 function getUserId() {
-    return localStorage.getItem('useId');
+    return localStorage.getItem('userId');
 }
 
 function getAuthToken() {
