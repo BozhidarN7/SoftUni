@@ -12,6 +12,17 @@ async function getOne(id) {
 }
 
 async function create(body) {
+    validateBody(body);
+
+    return await jsonRequest(baseUrl, 'POST', body, true);
+}
+async function edit(body, id) {
+    validateBody(body);
+
+    return await jsonRequest(`${baseUrl}/${id}`, 'PUT', body, true);
+}
+
+function validateBody(body) {
     if (body.make.length < 4) {
         throw new Error('Make field must be at leat 4 symbols long');
     }
@@ -27,12 +38,28 @@ async function create(body) {
     if (!body.img) {
         throw new Error('Image field is required');
     }
+}
 
-    return await jsonRequest(baseUrl, 'POST', body, true);
+async function del(context) {
+    const id = context.params.id;
+
+    try {
+        const response = await jsonRequest(
+            `${baseUrl}/${id}`,
+            'DELETE',
+            undefined,
+            true
+        );
+        context.page.redirect('/home');
+    } catch (err) {
+        console.log(err);
+    }
 }
 
 export default {
     getAll,
     getOne,
     create,
+    del,
+    edit,
 };

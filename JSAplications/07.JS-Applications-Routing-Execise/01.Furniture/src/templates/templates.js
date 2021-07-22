@@ -1,4 +1,5 @@
 import { html } from '../../node_modules/lit-html/lit-html.js';
+import { ifDefined } from '../../node_modules/lit-html/directives/if-defined.js';
 import auth from '../services/authService.js';
 
 export const homeTemplate = (furnitures) => html`
@@ -66,14 +67,16 @@ export const detailsTemplate = (furniture) => html`
                     ? ''
                     : 'hidden'}"
             >
-                <a href="”#”" class="btn btn-info">Edit</a>
-                <a href="”#”" class="btn btn-red">Delete</a>
+                <a href="/edit/${furniture._id}" class="btn btn-info">Edit</a>
+                <a href="/delete/${furniture._id}" class="btn btn-red"
+                    >Delete</a
+                >
             </div>
         </div>
     </div>
 `;
 
-export const createTemplate = () => html`
+export const createTemplate = (furniture, isEdit) => html`
     <div class="row space-top">
         <div class="col-md-12">
             <h1>Create New Furniture</h1>
@@ -92,6 +95,7 @@ export const createTemplate = () => html`
                         id="new-make"
                         type="text"
                         name="make"
+                        .value="${ifDefined(furniture?.make)}"
                     />
                 </div>
                 <div class="form-group has-success">
@@ -103,6 +107,7 @@ export const createTemplate = () => html`
                         id="new-model"
                         type="text"
                         name="model"
+                        .value="${ifDefined(furniture?.model)}"
                     />
                 </div>
                 <div class="form-group has-danger">
@@ -114,6 +119,7 @@ export const createTemplate = () => html`
                         id="new-year"
                         type="number"
                         name="year"
+                        .value="${ifDefined(furniture?.year)}"
                     />
                 </div>
                 <div class="form-group">
@@ -125,6 +131,7 @@ export const createTemplate = () => html`
                         id="new-description"
                         type="text"
                         name="description"
+                        .value="${ifDefined(furniture?.description)}"
                     />
                 </div>
             </div>
@@ -138,6 +145,7 @@ export const createTemplate = () => html`
                         id="new-price"
                         type="number"
                         name="price"
+                        .value="${ifDefined(furniture?.price)}"
                     />
                 </div>
                 <div class="form-group">
@@ -149,6 +157,7 @@ export const createTemplate = () => html`
                         id="new-image"
                         type="text"
                         name="img"
+                        .value="${ifDefined(furniture?.img)}"
                     />
                 </div>
                 <div class="form-group">
@@ -160,9 +169,14 @@ export const createTemplate = () => html`
                         id="new-material"
                         type="text"
                         name="material"
+                        .value="${ifDefined(furniture?.material)}"
                     />
                 </div>
-                <input type="submit" class="btn btn-primary" value="Create" />
+                <input
+                    type="submit"
+                    class="btn btn-primary"
+                    .value="${isEdit ? 'Edit' : 'Create'}"
+                />
             </div>
         </div>
     </form>

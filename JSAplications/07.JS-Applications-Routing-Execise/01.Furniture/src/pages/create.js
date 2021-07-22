@@ -2,6 +2,7 @@ import { render } from '../../node_modules/lit-html/lit-html.js';
 import furnitureService from '../services/furnitureService.js';
 
 import { createTemplate, furnitureTemplate } from '../templates/templates.js';
+import { editHandler } from './edit.js';
 
 const containerDiv = document.querySelector('#root');
 
@@ -45,5 +46,5 @@ async function createFurnitureHandler(context) {
 }
 
 function renderCreatePage() {
-    render(createTemplate(), containerDiv);
+    render(createTemplate(undefined, false), containerDiv);
 }
