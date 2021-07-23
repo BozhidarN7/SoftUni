@@ -1,10 +1,17 @@
 import { jsonRequest } from './httpService.js';
 
-const baseUrl = 'http://localhost:3030/data/catalog';
+let baseUrl = 'http://localhost:3030/data/catalog';
 
-async function getAll() {
+async function getAll(querystring) {
     const data = await jsonRequest(baseUrl);
     return data;
+}
+
+async function getMyFurniture(userId) {
+    let result = await jsonRequest(
+        `${baseUrl}?where=_ownerId%3D%22${userId}%22`
+    );
+    return result;
 }
 
 async function getOne(id) {
@@ -62,4 +69,5 @@ export default {
     create,
     del,
     edit,
+    getMyFurniture,
 };
