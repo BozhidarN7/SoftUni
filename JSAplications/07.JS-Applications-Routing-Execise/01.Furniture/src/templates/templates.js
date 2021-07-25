@@ -276,3 +276,65 @@ export const registerTemplate = () => html`
         </div>
     </form>
 `;
+
+export const navTemplate = (navInfo) => html`
+    <h1><a href="/">Furniture Store</a></h1>
+    <nav>
+        <a
+            id="catalogLink"
+            href="/home"
+            class="${ifDefined(
+                navInfo.pathname.startsWith('/home') || navInfo.pathname === '/'
+                    ? 'active'
+                    : undefined
+            )}"
+            >Dashboard</a
+        >
+        ${auth.getAuthToken()
+            ? html` <div id="user">
+                  <a
+                      id="createLink"
+                      class="${ifDefined(
+                          navInfo.pathname.startsWith('/create')
+                              ? 'active'
+                              : undefined
+                      )}"
+                      href="/create"
+                      >Create Furniture</a
+                  >
+                  <a
+                      id="profileLink"
+                      class="${ifDefined(
+                          navInfo.pathname.startsWith('/myList')
+                              ? 'active'
+                              : undefined
+                      )}"
+                      href="/myList"
+                      >My Publications</a
+                  >
+                  <a id="logoutBtn" href="/logout">Logout</a>
+              </div>`
+            : html` <div id="guest">
+                  <a
+                      id="loginLink"
+                      class="${ifDefined(
+                          navInfo.pathname.startsWith('/login')
+                              ? 'active'
+                              : undefined
+                      )}"
+                      href="/login"
+                      >Login</a
+                  >
+                  <a
+                      id="registerLink"
+                      class="${ifDefined(
+                          navInfo.pathname.startsWith('/register')
+                              ? 'active'
+                              : undefined
+                      )}"
+                      href="/register"
+                      >Register</a
+                  >
+              </div>`}
+    </nav>
+`;

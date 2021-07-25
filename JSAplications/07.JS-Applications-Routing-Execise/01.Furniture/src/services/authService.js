@@ -1,4 +1,3 @@
-import { setNavigation } from '../nav.js';
 import { jsonRequest } from './httpService.js';
 
 const baseUrl = 'http://localhost:3030/users';
@@ -19,7 +18,6 @@ async function register(context) {
         setAuthToken(newUser.accessToken);
         setUserId(newUser._id);
 
-        setNavigation();
         context.page.redirect('/home');
     } catch (err) {
         this.target.reset();
@@ -43,7 +41,6 @@ async function login(context) {
         setAuthToken(newUser.accessToken);
         setUserId(newUser._id);
 
-        setNavigation();
         context.page.redirect('/home');
     } catch (err) {
         this.target.reset();
@@ -63,7 +60,6 @@ export function logout(context) {
         );
         localStorage.removeItem('authToken');
         localStorage.removeItem('userId');
-        setNavigation();
         context.page.redirect('/Login');
     } catch (err) {
         console.log(err);

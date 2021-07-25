@@ -7,11 +7,13 @@ import { initializeCreate } from './pages/create.js';
 import { initializeEdit } from './pages/edit.js';
 import { initializeMyList } from './pages/myList.js';
 import { setNavigation } from './nav.js';
+import { initializeNav } from './nav.js';
 import auth from './services/authService.js';
 import furnitureService from './services/furnitureService.js';
 
-setNavigation();
+// setNavigation();
 
+page(initializeNav);
 page('/', initializeHome);
 page('/home', initializeHome);
 page('/login', initializeLogin);
