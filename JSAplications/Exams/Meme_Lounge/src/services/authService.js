@@ -16,6 +16,18 @@ async function register(body) {
     setUsername(user.username);
 }
 
+async function logout() {
+    try {
+        await jsonRequest(`${baseUrl}/logout`, 'GET', undefined, true, true);
+        localStorage.removeItem('userId');
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('username');
+    } catch (err) {
+        alert(err);
+        console.log(err);
+    }
+}
+
 function isLoggeddIn() {
     return localStorage.getItem('accessToken') !== null;
 }
@@ -50,4 +62,5 @@ export default {
     getUsername,
     login,
     register,
+    logout,
 };
