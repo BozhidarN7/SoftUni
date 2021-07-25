@@ -48,6 +48,12 @@ function validateBody(body) {
 }
 
 async function del(context) {
+    const isConfirmed = confirm('Are you sure you want to delete this?');
+
+    if (!isConfirmed) {
+        return;
+    }
+
     const id = context.params.id;
 
     try {
