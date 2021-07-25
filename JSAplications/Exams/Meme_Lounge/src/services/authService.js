@@ -41,7 +41,7 @@ function getUsername() {
 }
 
 function getToken() {
-    return localStorage.getItem('token');
+    return localStorage.getItem('accessToken');
 }
 
 function setToken(token) {

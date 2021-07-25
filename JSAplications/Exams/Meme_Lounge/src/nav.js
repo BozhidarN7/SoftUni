@@ -6,7 +6,7 @@ const navTemplate = (navInfo) => html`
         ? html` <div class="user">
               <a href="/create">Create Meme</a>
               <div class="profile">
-                  <span>Welcome, {email}</span>
+                  <span>Welcome, ${authService.getUsername()}</span>
                   <a href="/myProfile">My Profile</a>
                   <a href="/logout">Logout</a>
               </div>

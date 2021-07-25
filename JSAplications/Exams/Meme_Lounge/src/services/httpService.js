@@ -1,3 +1,5 @@
+import authService from './authService.js';
+
 export async function jsonRequest(url, method, body, isAuthorized, skipResult) {
     const headers = {};
 
@@ -5,13 +7,14 @@ export async function jsonRequest(url, method, body, isAuthorized, skipResult) {
         method = 'GET';
     }
 
-    if (['post', 'put', 'path'].includes(method.toLowerCase())) {
+    if (['post', 'put', 'patch'].includes(method.toLowerCase())) {
         headers['Content-Type'] = 'application/json';
     }
 
     if (isAuthorized) {
-        headers['X-Authorization'] = localStorage.getItem('accessToken');
+        headers['X-Authorization'] = authService.getToken();
     }
+
     const options = {
         method,
         headers,
@@ -28,6 +31,7 @@ export async function jsonRequest(url, method, body, isAuthorized, skipResult) {
             `${response.status}: ${response.statusText}\n${message}`
         );
     }
+
     let result = undefined;
     if (!skipResult) {
         result = await response.json();
