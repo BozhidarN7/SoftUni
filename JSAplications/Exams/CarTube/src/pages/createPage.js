@@ -1,0 +1,101 @@
+import { html } from '../../node_modules/lit-html/lit-html.js';
+import carService from '../services/carService.js';
+
+const createTemplate = (formInfo) => html`
+    <section id="create-listing">
+        <div class="container">
+            <form @submit=${formInfo.submitHandler} id="create-form">
+                <h1>Create Car Listing</h1>
+                <p>Please fill in this form to create an listing.</p>
+                <hr />
+
+                <p>Car Brand</p>
+                <input type="text" placeholder="Enter Car Brand" name="brand" />
+
+                <p>Car Model</p>
+                <input type="text" placeholder="Enter Car Model" name="model" />
+
+                <p>Description</p>
+                <input
+                    type="text"
+                    placeholder="Enter Description"
+                    name="description"
+                />
+
+                <p>Car Year</p>
+                <input type="number" placeholder="Enter Car Year" name="year" />
+
+                <p>Car Image</p>
+                <input
+                    type="text"
+                    placeholder="Enter Car Image"
+                    name="imageUrl"
+                />
+
+                <p>Car Price</p>
+                <input
+                    type="number"
+                    placeholder="Enter Car Price"
+                    name="price"
+                />
+
+                <hr />
+                <input
+                    type="submit"
+                    class="registerbtn"
+                    value="Create Listing"
+                />
+            </form>
+        </div>
+    </section>
+`;
+
+async function submitHandler(context, e) {
+    e.preventDefault();
+
+    const data = new FormData(e.currentTarget);
+    const brand = data.get('brand');
+    const model = data.get('model');
+    const description = data.get('description');
+    const year = data.get('year');
+    const imageUrl = data.get('imageUrl');
+    const price = data.get('price');
+
+    if (Number(price) < 0) {
+        alert('Price must be a positive number');
+        return;
+    }
+    if (Number(year) < 0) {
+        alert('Year must be a positive number');
+        return;
+    }
+
+    if (!brand || !model || !description || !year || !imageUrl || !price) {
+        alert(`All fields are required!`);
+
+        return;
+    }
+
+    try {
+        await carService.create({
+            brand,
+            model,
+            description,
+            year,
+            imageUrl,
+            price,
+        });
+        context.page.redirect('/allListings');
+    } catch (err) {
+        alert(`Unsuccessful edit`);
+        console.log(err);
+    }
+}
+
+export function getCreatePage(context) {
+    const formInfo = {
+        submitHandler: submitHandler.bind(null, context),
+    };
+    const templateResult = createTemplate(formInfo);
+    context.renderView(templateResult);
+}
