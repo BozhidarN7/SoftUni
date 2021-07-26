@@ -1,4 +1,3 @@
-
 const { chromium } = require('playwright-chromium');
 const { expect } = require('chai');
 
@@ -14,18 +13,17 @@ const endpoints = {
     create: '/data/memes',
     details: '/data/memes/',
     delete: '/data/memes/',
-    profile: '/data/memes?where=_ownerId%3D%220002%22&sortBy=_createdOn%20desc'
+    profile: '/data/memes?where=_ownerId%3D%220002%22&sortBy=_createdOn%20desc',
 };
-
 
 function json(data) {
     return {
         status: 200,
         headers: {
             'Access-Control-Allow-Origin': '*',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
     };
 }
 
@@ -55,17 +53,20 @@ describe('E2E tests', function () {
     beforeEach(async () => {
         context = await browser.newContext();
 
-        await context.route('**' + endpoints.memes, route => route.fulfill(json(mockData)));
-        await context.route('**' + endpoints.details + '*', route => route.fulfill(json(mockData[0])));
+        await context.route('**' + endpoints.memes, (route) =>
+            route.fulfill(json(mockData))
+        );
+        await context.route('**' + endpoints.details + '*', (route) =>
+            route.fulfill(json(mockData[0]))
+        );
         // Block external calls
 
-        await context.route(url => url.href.slice(0, host.length) != host, route => {
-            if (DEBUG) {
-                console.log('aborting', route.request().url());
-            }
-            route.abort();
-        });
-
+        // await context.route(url => url.href.slice(0, host.length) != host, route => {
+        //     if (DEBUG) {
+        //         console.log('aborting', route.request().url());
+        //     }
+        //     route.abort();
+        // });
 
         page = await context.newPage();
     });
@@ -78,7 +79,7 @@ describe('E2E tests', function () {
         it('register does not work with empty fields [ 5 Points ]', async () => {
             const endpoint = '**' + endpoints.register;
             let called = false;
-            page.route(endpoint, route => called = true);
+            page.route(endpoint, (route) => (called = true));
 
             await page.goto(host);
             await page.click('text=Register');
@@ -99,14 +100,15 @@ describe('E2E tests', function () {
             const email = 'ivan@mail.bg';
             const password = '345321';
 
-            page.route(endpoint, route => route.fulfill(json({ _id: '0001', email, accessToken: 'AAAA' })));
+            page.route(endpoint, (route) =>
+                route.fulfill(json({ _id: '0001', email, accessToken: 'AAAA' }))
+            );
 
             await page.goto(host);
             await page.click('text=Register');
 
             await page.waitForTimeout(300);
             await page.waitForSelector('form');
-
 
             await page.fill('[name="username"]', username);
             await page.fill('[name="email"]', email);
@@ -118,7 +120,7 @@ describe('E2E tests', function () {
 
             const [response] = await Promise.all([
                 page.waitForResponse(endpoint),
-                page.click('[type="submit"]')
+                page.click('[type="submit"]'),
             ]);
 
             const postData = JSON.parse(response.request().postData());
@@ -132,7 +134,9 @@ describe('E2E tests', function () {
             const email = 'ivan@mail.bg';
             const password = '345321';
 
-            page.route(endpoint, route => route.fulfill(json({ _id: '0001', email, accessToken: 'AAAA' })));
+            page.route(endpoint, (route) =>
+                route.fulfill(json({ _id: '0001', email, accessToken: 'AAAA' }))
+            );
 
             await page.goto(host);
             await page.click('#button-div >> text="Login"');
@@ -147,7 +151,7 @@ describe('E2E tests', function () {
 
             const [response] = await Promise.all([
                 page.waitForResponse(endpoint),
-                page.click('[type="submit"]')
+                page.click('[type="submit"]'),
             ]);
 
             const postData = JSON.parse(response.request().postData());
@@ -160,7 +164,9 @@ describe('E2E tests', function () {
             const email = 'ivan@mail.bg';
             const password = '345321';
 
-            page.route(loginEndpoint, route => route.fulfill(json({ _id: '0001', email, accessToken: 'AAAA' })));
+            page.route(loginEndpoint, (route) =>
+                route.fulfill(json({ _id: '0001', email, accessToken: 'AAAA' }))
+            );
 
             await page.goto(host);
             await page.click('#button-div >> text="Login"');
@@ -172,10 +178,9 @@ describe('E2E tests', function () {
             await page.fill('[name="password"]', password);
             await page.waitForTimeout(300);
 
-
             await Promise.all([
                 page.waitForResponse(loginEndpoint),
-                page.click('[type="submit"]')
+                page.click('[type="submit"]'),
             ]);
 
             const endpoint = '**' + endpoints.logout;
@@ -183,7 +188,7 @@ describe('E2E tests', function () {
 
             const [request] = await Promise.all([
                 page.waitForRequest(endpoint),
-                page.click('nav >> text="Logout"')
+                page.click('nav >> text="Logout"'),
             ]);
 
             const token = request.headers()['x-authorization'];
@@ -200,7 +205,9 @@ describe('E2E tests', function () {
             // Login user
             const endpoint = '**' + endpoints.login;
 
-            page.route(endpoint, route => route.fulfill(json({ _id: '0001', email, accessToken: 'AAAA' })));
+            page.route(endpoint, (route) =>
+                route.fulfill(json({ _id: '0001', email, accessToken: 'AAAA' }))
+            );
 
             await page.goto(host);
             await page.click('#button-div >> text="Login"');
@@ -215,20 +222,20 @@ describe('E2E tests', function () {
 
             await Promise.all([
                 page.waitForResponse(endpoint),
-                page.click('[type="submit"]')
+                page.click('[type="submit"]'),
             ]);
             //Test for navigation
             await page.waitForTimeout(300);
 
             expect(await page.isVisible('nav >> text="All Memes"')).to.be.true;
-            expect(await page.isVisible('nav >> text="Create Meme"')).to.be.true;
+            expect(await page.isVisible('nav >> text="Create Meme"')).to.be
+                .true;
             expect(await page.isVisible('nav >> text="My Profile"')).to.be.true;
             expect(await page.isVisible('nav >> text="Logout"')).to.be.true;
 
             expect(await page.isVisible('nav >> text="Login"')).to.be.false;
             expect(await page.isVisible('nav >> text="Register"')).to.be.false;
             expect(await page.isVisible('nav >> text="Home Page"')).to.be.false;
-
         });
 
         it('guest user should see correct navigation [ 2.5 Points ]', async () => {
@@ -254,9 +261,12 @@ describe('E2E tests', function () {
             await page.waitForSelector('text=Welcome to Meme Lounge');
             await page.waitForTimeout(300);
 
-            expect(await page.isVisible('text=Login to see our memes')).to.be.true;
-            expect(await page.isVisible('#button-div >> text=Login')).to.be.true;
-            expect(await page.isVisible('#button-div >> text=Register')).to.be.true;
+            expect(await page.isVisible('text=Login to see our memes')).to.be
+                .true;
+            expect(await page.isVisible('#button-div >> text=Login')).to.be
+                .true;
+            expect(await page.isVisible('#button-div >> text=Register')).to.be
+                .true;
         });
 
         it('show most recent memes [ 10 Points ]', async () => {
@@ -264,7 +274,9 @@ describe('E2E tests', function () {
             await page.click('text=All Memes');
             await page.waitForTimeout(300);
 
-            const titles = await page.$$eval('#memes .meme-title', t => t.map(s => s.textContent));
+            const titles = await page.$$eval('#memes .meme-title', (t) =>
+                t.map((s) => s.textContent)
+            );
 
             await page.waitForTimeout(300);
 
@@ -277,19 +289,22 @@ describe('E2E tests', function () {
         });
 
         it('show meme details [ 5 Points ]', async () => {
-
             await page.goto(host);
             await page.click('text=All Memes');
 
             await page.waitForTimeout(300);
 
-            await page.route('**' + endpoints.details + '*', route => route.fulfill(json(mockData[3])));
+            await page.route('**' + endpoints.details + '*', (route) =>
+                route.fulfill(json(mockData[3]))
+            );
             await page.click('.meme:has-text("meme 4") >> text="Details"');
 
             await page.waitForTimeout(300);
 
             await page.waitForSelector('#meme-details > h1:has-text("meme 4")');
-            await page.waitForSelector('.meme-description >p:has-text("description 4")');
+            await page.waitForSelector(
+                '.meme-description >p:has-text("description 4")'
+            );
 
             const title = await page.textContent('h1');
             const desc = await page.textContent('.meme-description >p');
@@ -303,7 +318,6 @@ describe('E2E tests', function () {
         });
 
         it('guest does NOT see delete button [ 5 Points ]', async () => {
-
             await page.goto(host);
             await page.click('text=All Memes');
 
@@ -315,7 +329,6 @@ describe('E2E tests', function () {
 
             expect(await page.isVisible('text="Delete"')).to.be.false;
             expect(await page.isVisible('text="Edit"')).to.be.false;
-
         });
     });
 
@@ -327,7 +340,9 @@ describe('E2E tests', function () {
         beforeEach(async () => {
             const loginEndpoint = '**' + endpoints.login;
 
-            page.route(loginEndpoint, route => route.fulfill(json({ _id: '0001', email, accessToken: 'AAAA' })));
+            page.route(loginEndpoint, (route) =>
+                route.fulfill(json({ _id: '0001', email, accessToken: 'AAAA' }))
+            );
 
             await page.goto(host);
             await page.click('#button-div >> text="Login"');
@@ -339,9 +354,8 @@ describe('E2E tests', function () {
 
             await Promise.all([
                 page.waitForResponse(loginEndpoint),
-                page.click('[type="submit"]')
+                page.click('[type="submit"]'),
             ]);
-
         });
 
         it('create does NOT work with empty fields [ 5 Points ]', async () => {
@@ -352,7 +366,7 @@ describe('E2E tests', function () {
             await page.click('text="Create Meme"');
             await page.waitForSelector('form');
 
-            page.route(endpoint, route => called = true);
+            page.route(endpoint, (route) => (called = true));
 
             page.click('[type="submit"]');
 
@@ -365,7 +379,7 @@ describe('E2E tests', function () {
             const endpoint = '**' + endpoints.create;
             const mock = mockData[5];
 
-            page.route(endpoint, route => route.fulfill(json(mock)));
+            page.route(endpoint, (route) => route.fulfill(json(mock)));
             await page.waitForTimeout(300);
 
             await page.click('text=Create Meme');
@@ -380,7 +394,7 @@ describe('E2E tests', function () {
 
             const [response] = await Promise.all([
                 page.waitForResponse(endpoint),
-                page.click('[type="submit"]')
+                page.click('[type="submit"]'),
             ]);
 
             const postData = JSON.parse(response.request().postData());
@@ -397,7 +411,9 @@ describe('E2E tests', function () {
             await page.click('text=All Memes');
             await page.waitForTimeout(300);
 
-            await page.route('**' + endpoints.details + '*', route => route.fulfill(json(mock)));
+            await page.route('**' + endpoints.details + '*', (route) =>
+                route.fulfill(json(mock))
+            );
             await page.click('.meme:has-text("meme 4") >> text="Details"');
             await page.waitForTimeout(300);
 
@@ -414,12 +430,18 @@ describe('E2E tests', function () {
             await page.click('text=All Memes');
             await page.waitForTimeout(300);
 
-            await page.route('**' + endpoints.details + '*', route => route.fulfill(json(mock)));
+            await page.route('**' + endpoints.details + '*', (route) =>
+                route.fulfill(json(mock))
+            );
             await page.click('.meme:has-text("My New Meme") >> text="Details"');
             await page.waitForTimeout(300);
 
-            await page.waitForSelector('#meme-details > h1:has-text("Meme Title: My New Meme")');
-            await page.waitForSelector('.meme-description >p:has-text("some description about this Meme")');
+            await page.waitForSelector(
+                '#meme-details > h1:has-text("Meme Title: My New Meme")'
+            );
+            await page.waitForSelector(
+                '.meme-description >p:has-text("some description about this Meme")'
+            );
 
             expect(await page.isVisible('text="Delete"')).to.be.true;
             expect(await page.isEnabled('text="Delete"')).to.be.true;
@@ -434,16 +456,24 @@ describe('E2E tests', function () {
             await page.click('text=All Memes');
             await page.waitForTimeout(300);
 
-            await page.route('**' + endpoints.details + '*', route => route.fulfill(json(mock)));
+            await page.route('**' + endpoints.details + '*', (route) =>
+                route.fulfill(json(mock))
+            );
             await page.click('.meme:has-text("My New Meme") >> text="Details"');
-            await page.waitForSelector('#meme-details > h1:has-text("Meme Title: My New Meme")');
+            await page.waitForSelector(
+                '#meme-details > h1:has-text("Meme Title: My New Meme")'
+            );
 
-            page.on('dialog', dialog => dialog.accept());
+            page.on('dialog', (dialog) => dialog.accept());
             await page.waitForTimeout(300);
 
             const [request] = await Promise.all([
-                page.waitForRequest('**' + endpoints.delete + '74463e5b-b893-44e8-bd14-5fc8feeddb94'),
-                page.click('text="Delete"')
+                page.waitForRequest(
+                    '**' +
+                        endpoints.delete +
+                        '74463e5b-b893-44e8-bd14-5fc8feeddb94'
+                ),
+                page.click('text="Delete"'),
             ]);
 
             expect(request.method()).to.equal('DELETE');
@@ -457,7 +487,9 @@ describe('E2E tests', function () {
 
             await page.waitForTimeout(300);
 
-            await page.route('**' + endpoints.details + '*', route => route.fulfill(json(mockData[5])));
+            await page.route('**' + endpoints.details + '*', (route) =>
+                route.fulfill(json(mockData[5]))
+            );
             await page.click('.meme:has-text("test 5") >> text="Details"');
 
             await page.waitForTimeout(300);
@@ -466,7 +498,7 @@ describe('E2E tests', function () {
             await page.waitForTimeout(300);
 
             let called = false;
-            page.route(endpoint, route => called = true);
+            page.route(endpoint, (route) => (called = true));
 
             await page.fill('[name="title"]', '');
             await page.fill('[name="description"]', '');
@@ -487,7 +519,9 @@ describe('E2E tests', function () {
 
             await page.waitForTimeout(300);
 
-            await page.route('**' + endpoints.details + '*', route => route.fulfill(json(mockData[5])));
+            await page.route('**' + endpoints.details + '*', (route) =>
+                route.fulfill(json(mockData[5]))
+            );
             await page.click('.meme:has-text("test 5") >> text="Details"');
 
             await page.waitForTimeout(300);
@@ -496,8 +530,13 @@ describe('E2E tests', function () {
 
             await page.waitForTimeout(300);
 
-            const inputs = await page.$$eval('.container input', t => t.map(i => i.value));
-            const textArea = await page.$eval('.container textarea', i => i.value);
+            const inputs = await page.$$eval('.container input', (t) =>
+                t.map((i) => i.value)
+            );
+            const textArea = await page.$eval(
+                '.container textarea',
+                (i) => i.value
+            );
 
             await page.waitForTimeout(300);
 
@@ -513,7 +552,9 @@ describe('E2E tests', function () {
             await page.click('text=All Memes');
 
             await page.waitForTimeout(300);
-            await page.route('**' + endpoint + '*', route => route.fulfill(json(mockData[5])));
+            await page.route('**' + endpoint + '*', (route) =>
+                route.fulfill(json(mockData[5]))
+            );
             await page.click('.meme:has-text("test 5") >> text="Details"');
 
             await page.waitForTimeout(300);
@@ -528,8 +569,10 @@ describe('E2E tests', function () {
             await page.waitForTimeout(300);
 
             const [request] = await Promise.all([
-                page.waitForRequest('**' + endpoint + '74463e5b-b893-44e8-bd14-5fc8feeddb94'),
-                page.click('[type="submit"]')
+                page.waitForRequest(
+                    '**' + endpoint + '74463e5b-b893-44e8-bd14-5fc8feeddb94'
+                ),
+                page.click('[type="submit"]'),
             ]);
 
             const postData = JSON.parse(request.postData());
@@ -538,9 +581,7 @@ describe('E2E tests', function () {
             expect(postData.title).to.contains(mockData[0].title);
             expect(postData.description).to.contains(mockData[0].description);
             expect(postData.imageUrl).to.equal(mockData[0].imageUrl);
-
         });
-
     });
 
     describe('User Profile Page [ 10 Points ]', async () => {
@@ -551,7 +592,17 @@ describe('E2E tests', function () {
 
         // Login user
         beforeEach(async () => {
-            page.route(loginEndpoint, route => route.fulfill(json({ _id: '0002', gender: 'female', username, email, accessToken: 'AAAA' })));
+            page.route(loginEndpoint, (route) =>
+                route.fulfill(
+                    json({
+                        _id: '0002',
+                        gender: 'female',
+                        username,
+                        email,
+                        accessToken: 'AAAA',
+                    })
+                )
+            );
 
             await page.goto(host);
             await page.click('#button-div >> text="Login"');
@@ -566,32 +617,36 @@ describe('E2E tests', function () {
 
             await Promise.all([
                 page.waitForResponse(loginEndpoint),
-                page.click('[type="submit"]')
+                page.click('[type="submit"]'),
             ]);
-
         });
 
         it('check profile page information - with 0 memes [ 5 Points ]', async () => {
-            await page.route('**' + endpoints.profile, route => route.fulfill(json([])));
+            await page.route('**' + endpoints.profile, (route) =>
+                route.fulfill(json([]))
+            );
             await page.waitForTimeout(300);
             await page.click('text="My Profile"');
 
             await page.waitForTimeout(300);
 
-            const values = await page.$$eval('.user-info p', p => p.map(p => p.textContent));
+            const values = await page.$$eval('.user-info p', (p) =>
+                p.map((p) => p.textContent)
+            );
             const img = await page.getAttribute('#user-avatar-url', 'src');
 
             expect(values[0]).to.contains(username);
             expect(values[1]).to.contains(email);
             expect(values[2]).to.equal('My memes count: 0');
             expect(img).to.contains('/images/female.png');
-
         });
 
         it('check profile page for "No memes in database." - with 0 memes [ 2.5 Points ]', async () => {
             await page.waitForTimeout(300);
 
-            await page.route('**' + endpoints.profile, route => route.fulfill(json([])));
+            await page.route('**' + endpoints.profile, (route) =>
+                route.fulfill(json([]))
+            );
             await page.click('text="My Profile"');
 
             await page.waitForTimeout(300);
@@ -600,25 +655,27 @@ describe('E2E tests', function () {
 
             await page.waitForTimeout(300);
             expect(userMemes).to.contains('No memes in database.');
-
         });
 
         it('check profile page information - with 2 memes [ 2.5 Points ]', async () => {
-            await page.route('**' + endpoints.profile, route => route.fulfill(json([mockData[0], mockData[1]])));
+            await page.route('**' + endpoints.profile, (route) =>
+                route.fulfill(json([mockData[0], mockData[1]]))
+            );
 
             await page.waitForTimeout(300);
 
             await page.click('text="My Profile"');
             await page.waitForTimeout(300);
 
-            const memes = await page.$$eval('.user-meme-listings .user-meme', p => p.map(p => p.textContent));
+            const memes = await page.$$eval(
+                '.user-meme-listings .user-meme',
+                (p) => p.map((p) => p.textContent)
+            );
             await page.waitForTimeout(300);
 
             expect(memes.length).to.equal(2);
             expect(memes[0]).to.contains('test');
             expect(memes[1]).to.contains('meme 2');
-
-
         });
     });
 
@@ -626,7 +683,7 @@ describe('E2E tests', function () {
         it('Login notification with invalid data', async () => {
             const endpoint = '**' + endpoints.login;
             let called = false;
-            page.route(endpoint, route => called = true);
+            page.route(endpoint, (route) => (called = true));
 
             await page.goto(host);
             await page.click('#button-div >> text="Login"');
@@ -642,12 +699,11 @@ describe('E2E tests', function () {
 
             const notification = await page.isVisible('#errorBox');
             expect(notification).to.be.true;
-
         });
         it('Register notification with invalid data', async () => {
             const endpoint = '**' + endpoints.register;
             let called = false;
-            page.route(endpoint, route => called = true);
+            page.route(endpoint, (route) => (called = true));
 
             await page.goto(host);
             await page.click('#button-div >> text="Register"');
@@ -670,7 +726,9 @@ describe('E2E tests', function () {
             const password = '123456';
             const longEndpoint = '**' + endpoints.login;
 
-            page.route(longEndpoint, route => route.fulfill(json({ _id: '0001', email, accessToken: 'AAAA' })));
+            page.route(longEndpoint, (route) =>
+                route.fulfill(json({ _id: '0001', email, accessToken: 'AAAA' }))
+            );
 
             await page.goto(host);
             await page.click('#button-div >> text="Login"');
@@ -684,14 +742,14 @@ describe('E2E tests', function () {
 
             await Promise.all([
                 page.waitForResponse(longEndpoint),
-                page.click('[type="submit"]')
+                page.click('[type="submit"]'),
             ]);
 
             //Test
             await page.waitForTimeout(300);
             const endpoint = '**' + endpoints.details;
             let called = false;
-            page.route(endpoint, route => called = true);
+            page.route(endpoint, (route) => (called = true));
 
             await page.click('nav >> text="Create Meme"');
 
@@ -712,7 +770,9 @@ describe('E2E tests', function () {
             const password = '123456';
             const longEndpoint = '**' + endpoints.login;
 
-            page.route(longEndpoint, route => route.fulfill(json({ _id: '0001', email, accessToken: 'AAAA' })));
+            page.route(longEndpoint, (route) =>
+                route.fulfill(json({ _id: '0001', email, accessToken: 'AAAA' }))
+            );
 
             await page.goto(host);
             await page.click('#button-div >> text="Login"');
@@ -727,7 +787,7 @@ describe('E2E tests', function () {
 
             await Promise.all([
                 page.waitForResponse(longEndpoint),
-                page.click('[type="submit"]')
+                page.click('[type="submit"]'),
             ]);
 
             //Test
@@ -737,7 +797,9 @@ describe('E2E tests', function () {
             await page.click('text=All Memes');
 
             await page.waitForTimeout(300);
-            await page.route('**' + endpoints.details + '*', route => route.fulfill(json(mockData[5])));
+            await page.route('**' + endpoints.details + '*', (route) =>
+                route.fulfill(json(mockData[5]))
+            );
 
             await page.click('.meme:has-text("My New Meme") >> text="Details"');
 
@@ -761,5 +823,4 @@ describe('E2E tests', function () {
             expect(notification).to.be.true;
         });
     });
-
 });

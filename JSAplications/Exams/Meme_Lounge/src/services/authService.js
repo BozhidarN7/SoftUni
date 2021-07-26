@@ -7,6 +7,8 @@ async function login(body) {
     setToken(user.accessToken);
     setUserId(user._id);
     setUsername(user.username);
+    setGender(user.gender);
+    setEmail(user.email);
 }
 
 async function register(body) {
@@ -14,6 +16,8 @@ async function register(body) {
     setToken(user.accessToken);
     setUserId(user._id);
     setUsername(user.username);
+    setGender(user.gender);
+    setEmail(user.email);
 }
 
 async function logout() {
@@ -22,6 +26,8 @@ async function logout() {
         localStorage.removeItem('userId');
         localStorage.removeItem('accessToken');
         localStorage.removeItem('username');
+        localStorage.removeItem('gender');
+        localStorage.removeItem('email');
     } catch (err) {
         alert(err);
         console.log(err);
@@ -43,6 +49,21 @@ function getUsername() {
 function getToken() {
     return localStorage.getItem('accessToken');
 }
+function getGender() {
+    return localStorage.getItem('gender');
+}
+
+function getEmail() {
+    return localStorage.getItem('email');
+}
+
+function setEmail(email) {
+    localStorage.setItem('email', email);
+}
+
+function setGender(gender) {
+    localStorage.setItem('gender', gender);
+}
 
 function setToken(token) {
     localStorage.setItem('accessToken', token);
@@ -58,9 +79,11 @@ function setUserId(id) {
 export default {
     isLoggeddIn,
     getToken,
+    getGender,
     getUserId,
     getUsername,
     login,
     register,
     logout,
+    getEmail,
 };

@@ -2,7 +2,6 @@ import authService from './authService.js';
 
 export async function jsonRequest(url, method, body, isAuthorized, skipResult) {
     const headers = {};
-
     if (!method) {
         method = 'GET';
     }
@@ -25,6 +24,7 @@ export async function jsonRequest(url, method, body, isAuthorized, skipResult) {
     }
 
     const response = await fetch(url, options);
+
     if (!response.ok) {
         const message = await response.text();
         throw new Error(

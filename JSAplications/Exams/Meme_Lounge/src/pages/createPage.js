@@ -1,4 +1,5 @@
 import { html } from '../../node_modules/lit-html/lit-html.js';
+import { showNotification } from '../helpers/showNotification.js';
 import memeService from '../services/memeService.js';
 
 const createTemplate = (formInfo) => html`
@@ -45,7 +46,8 @@ async function submitHandler(context, e) {
     const imageUrl = data.get('imageUrl');
 
     if (!title || !description || !imageUrl) {
-        alert('All fields are required!');
+        showNotification(`All fields are required!`);
+
         return;
     }
 
@@ -53,7 +55,7 @@ async function submitHandler(context, e) {
         await memeService.create({ title, description, imageUrl });
         context.page.redirect('/all');
     } catch (err) {
-        alert(err);
+        showNotification(`Unsuccessful edit`);
         console.log(err);
     }
 }

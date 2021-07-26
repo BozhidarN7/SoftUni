@@ -12,6 +12,7 @@ import { getAllMemesPage } from './pages/allMemes.js';
 import { getDetailsPage } from './pages/detailsPage.js';
 import { getCreateView } from './pages/createPage.js';
 import { getEditView } from './pages/editPage.js';
+import { getMyProfileView } from './pages/myProfilePage.js';
 
 const navEl = document.querySelector('#nav');
 const mainEl = document.querySelector('#root');
@@ -23,6 +24,7 @@ page('/', decorateContext, navGetView, guestGetView);
 page('/all', decorateContext, navGetView, getAllMemesPage);
 page('/details/:id', decorateContext, navGetView, getDetailsPage);
 page('/edit/:id', decorateContext, navGetView, getEditView);
+page('/myProfile', decorateContext, navGetView, getMyProfileView);
 page('/create', decorateContext, navGetView, getCreateView);
 page('/login', decorateContext, navGetView, getLoginView);
 page('/register', decorateContext, navGetView, getRegisterView);

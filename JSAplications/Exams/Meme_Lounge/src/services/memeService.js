@@ -1,9 +1,16 @@
+import authService from './authService.js';
 import { jsonRequest } from './httpService.js';
 
 const baseUrl = 'http://localhost:3030/data/memes';
 
 async function getAll() {
     return await jsonRequest(baseUrl);
+}
+
+async function getMyMemes(id) {
+    return await jsonRequest(
+        `${baseUrl}?where=_ownerId%3D%22${id}%22&sortBy=_createdOn%20desc`
+    );
 }
 
 async function getAllOrderByCreation() {
@@ -27,6 +34,7 @@ async function edit(id, body) {
 
 export default {
     getAll,
+    getMyMemes,
     getAllOrderByCreation,
     getById,
     create,

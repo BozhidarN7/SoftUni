@@ -1,4 +1,5 @@
 import { html } from '../../node_modules/lit-html/lit-html.js';
+import { showNotification } from '../helpers/showNotification.js';
 import authService from '../services/authService.js';
 
 const registerTemplate = (formInfo) => html`
@@ -74,11 +75,11 @@ async function submitHandler(context, e) {
     const gender = data.get('gender');
 
     if (!username || !email || !password || !repeatPass || !gender) {
-        alert('All fields are required!');
+        showNotification(`All fields are required!`);
         return;
     }
     if (password !== repeatPass) {
-        alert('Password mismatch!');
+        showNotification(`Password mismatch!`);
         return;
     }
 
@@ -86,7 +87,7 @@ async function submitHandler(context, e) {
         await authService.register({ username, email, password, gender });
         context.page.redirect('/all');
     } catch (err) {
-        alert(err);
+        showNotification(`Unsuccessful registration`);
         console.log(err);
     }
 }

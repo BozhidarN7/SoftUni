@@ -1,4 +1,5 @@
 import { html } from '../../node_modules/lit-html/lit-html.js';
+import { showNotification } from '../helpers/showNotification.js';
 import authService from '../services/authService.js';
 
 const loginTemplate = (formInfo) => html`
@@ -37,7 +38,8 @@ async function submitHandler(context, e) {
     const password = data.get('password');
 
     if (!email || !password) {
-        alert('All fields are required!');
+        // alert('All fields are required!');
+        showNotification(`All fields are required!`);
         return;
     }
 
@@ -45,7 +47,7 @@ async function submitHandler(context, e) {
         await authService.login({ email, password });
         context.page.redirect('/all');
     } catch (err) {
-        alert(err);
+        showNotification(`Unsuccessful login`);
         e.target.reset();
         console.log(err);
     }
