@@ -437,7 +437,7 @@ describe('E2E tests', function () {
             await page.waitForTimeout(300);
 
             await page.waitForSelector(
-                '#meme-details > h1:has-text("Meme Title: My New Meme")'
+                '#meme-details > h1:has-text("My New Meme")'
             );
             await page.waitForSelector(
                 '.meme-description >p:has-text("some description about this Meme")'
@@ -461,7 +461,7 @@ describe('E2E tests', function () {
             );
             await page.click('.meme:has-text("My New Meme") >> text="Details"');
             await page.waitForSelector(
-                '#meme-details > h1:has-text("Meme Title: My New Meme")'
+                '#meme-details > h1:has-text("My New Meme")'
             );
 
             page.on('dialog', (dialog) => dialog.accept());
