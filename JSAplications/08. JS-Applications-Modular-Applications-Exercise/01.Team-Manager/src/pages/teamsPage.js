@@ -11,7 +11,7 @@ const allTeamsTeamplate = (info) => html`<section id="browse">
     ${info.isLoggedIn
         ? html` <article class="layout narrow">
               <div class="pad-small">
-                  <a href="#" class="action cta">Create Team</a>
+                  <a href="/create" class="action cta">Create Team</a>
               </div>
           </article>`
         : ''}
@@ -26,7 +26,7 @@ const teamTemplate = (team) => html`
             <p>${team.description}</p>
             <span class="details">${team.membersCount}</span>
             <div>
-                <a href="#" class="action">See details</a>
+                <a href="/details/${team._id}" class="action">See details</a>
             </div>
         </div>
     </article>
