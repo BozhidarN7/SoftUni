@@ -7,7 +7,7 @@ async function getAll() {
     return await jsonRequest(baseUrl);
 }
 
-async function getMyCars(id) {
+async function getMine(id) {
     return await jsonRequest(
         `${baseUrl}?where=_ownerId%3D%22${id}%22&sortBy=_createdOn%20desc`
     );
@@ -21,6 +21,10 @@ async function getById(id) {
     return await jsonRequest(`${baseUrl}/${id}`);
 }
 
+async function getByYear(year) {
+    return await jsonRequest(`${baseUrl}?where=year%3D${year}`);
+}
+
 async function create(body) {
     return await jsonRequest(baseUrl, 'POST', body, true);
 }
@@ -32,13 +36,9 @@ async function edit(id, body) {
     return await jsonRequest(`${baseUrl}/${id}`, 'PUT', body, true);
 }
 
-async function getByYear(year) {
-    return await jsonRequest(`${baseUrl}?where=year%3D${year}`);
-}
-
 export default {
     getAll,
-    getMyCars,
+    getMine,
     getAllOrderByCreation,
     getById,
     create,

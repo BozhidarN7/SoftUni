@@ -5,15 +5,15 @@ const baseUrl = 'http://localhost:3030/users';
 async function login(body) {
     const user = await jsonRequest(`${baseUrl}/login`, 'POST', body);
     setToken(user.accessToken);
-    setUserId(user._id);
     setUsername(user.username);
+    setUserId(user._id);
 }
 
 async function register(body) {
     const user = await jsonRequest(`${baseUrl}/register`, 'POST', body);
     setToken(user.accessToken);
-    setUserId(user._id);
     setUsername(user.username);
+    setUserId(user._id);
 }
 
 async function logout() {

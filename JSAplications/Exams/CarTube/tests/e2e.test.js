@@ -1,3 +1,4 @@
+
 const { chromium } = require('playwright-chromium');
 const { expect } = require('chai');
 
@@ -15,10 +16,10 @@ const endpoints = {
     create: '/data/cars',
     details: (id) => `/data/cars/${id}`,
     delete: (id) => `/data/cars/${id}`,
-    profile: (id) =>
-        `/data/cars?where=_ownerId%3D%22${id}%22&sortBy=_createdOn%20desc`,
-    search: (query) => `/data/cars?where=year%3D${query}`,
+    profile: (id) => `/data/cars?where=_ownerId%3D%22${id}%22&sortBy=_createdOn%20desc`,
+    search: (query) => `/data/cars?where=year%3D${query}`
 };
+
 
 let browser;
 let context;
@@ -27,12 +28,7 @@ let page;
 describe('E2E tests', function () {
     // Setup
     this.timeout(DEBUG ? 120000 : 6000);
-    before(
-        async () =>
-            (browser = await chromium.launch(
-                DEBUG ? { headless: false, slowMo } : {}
-            ))
-    );
+    before(async () => browser = await chromium.launch(DEBUG ? { headless: false, slowMo } : {}));
     after(async () => await browser.close());
     beforeEach(async () => {
         context = await browser.newContext();
@@ -43,6 +39,7 @@ describe('E2E tests', function () {
         await page.close();
         await context.close();
     });
+
 
     // Test proper
     describe('Authentication [ 20 Points ]', () => {
@@ -82,7 +79,7 @@ describe('E2E tests', function () {
 
             const [request] = await Promise.all([
                 onRequest(),
-                page.click('[type="submit"]'),
+                page.click('[type="submit"]')
             ]);
 
             const postData = JSON.parse(request.postData());
@@ -106,9 +103,10 @@ describe('E2E tests', function () {
             await page.fill('[name="username"]', data.username);
             await page.fill('[name="password"]', data.password);
 
+
             const [request] = await Promise.all([
                 onRequest(),
-                page.click('[type="submit"]'),
+                page.click('[type="submit"]')
             ]);
 
             const postData = JSON.parse(request.postData());
@@ -130,13 +128,16 @@ describe('E2E tests', function () {
             await page.fill('[name="username"]', data.username);
             await page.fill('[name="password"]', data.password);
 
-            await Promise.all([onResponse(), page.click('[type="submit"]')]);
+            await Promise.all([
+                onResponse(),
+                page.click('[type="submit"]')
+            ]);
 
             await page.waitForTimeout(interval);
 
             const [request] = await Promise.all([
                 onRequest(),
-                page.click('nav >> text=Logout'),
+                page.click('nav >> text=Logout')
             ]);
 
             const token = request.headers()['x-authorization'];
@@ -167,8 +168,7 @@ describe('E2E tests', function () {
             expect(await page.isVisible('nav >> text=By Year')).to.be.true;
             expect(await page.isVisible('nav >> text=Peter')).to.be.true;
             expect(await page.isVisible('nav >> text=My Listings')).to.be.true;
-            expect(await page.isVisible('nav >> text=Create Listing')).to.be
-                .true;
+            expect(await page.isVisible('nav >> text=Create Listing')).to.be.true;
             expect(await page.isVisible('nav >> text=Logout')).to.be.true;
 
             expect(await page.isVisible('nav >> text=Login')).to.be.false;
@@ -186,8 +186,7 @@ describe('E2E tests', function () {
 
             expect(await page.isVisible('nav >> text=Welcome')).to.be.false;
             expect(await page.isVisible('nav >> text=My Listings')).to.be.false;
-            expect(await page.isVisible('nav >> text=Create Listing')).to.be
-                .false;
+            expect(await page.isVisible('nav >> text=Create Listing')).to.be.false;
             expect(await page.isVisible('nav >> text=Logout')).to.be.false;
         });
     });
@@ -199,13 +198,8 @@ describe('E2E tests', function () {
 
             await page.waitForSelector('text=Welcome To Car Tube');
 
-            expect(
-                await page.isVisible(
-                    'text=To see all the listings click the link below'
-                )
-            ).to.be.true;
-            expect(await page.isVisible('#welcome-container >> text=Listings'))
-                .to.be.true;
+            expect(await page.isVisible('text=To see all the listings click the link below')).to.be.true;
+            expect(await page.isVisible('#welcome-container >> text=Listings')).to.be.true;
         });
 
         it('show all listings [ 10 Points ]', async () => {
@@ -215,9 +209,7 @@ describe('E2E tests', function () {
             await page.waitForTimeout(interval);
             await page.waitForSelector('#car-listings');
 
-            const titles = await page.$$eval('#car-listings .listing h2', (t) =>
-                t.map((s) => s.textContent)
-            );
+            const titles = await page.$$eval('#car-listings .listing h2', t => t.map(s => s.textContent));
 
             expect(titles.length).to.equal(3);
             expect(titles[0]).to.contains('brand1 model1');
@@ -237,21 +229,11 @@ describe('E2E tests', function () {
             await page.waitForTimeout(interval);
             await page.waitForSelector('.details-info');
 
-            expect(
-                await page.getAttribute('.details-info img', 'src')
-            ).to.contains(data.imageUrl);
-            expect(await page.textContent('li:has-text("Brand")')).to.contains(
-                data.brand
-            );
-            expect(await page.textContent('li:has-text("Model")')).to.contains(
-                data.model
-            );
-            expect(await page.textContent('li:has-text("Year")')).to.contains(
-                data.year
-            );
-            expect(await page.textContent('li:has-text("Price")')).to.contains(
-                data.price
-            );
+            expect(await page.getAttribute('.details-info img', 'src')).to.contains(data.imageUrl);
+            expect(await page.textContent('li:has-text("Brand")')).to.contains(data.brand);
+            expect(await page.textContent('li:has-text("Model")')).to.contains(data.model);
+            expect(await page.textContent('li:has-text("Year")')).to.contains(data.year);
+            expect(await page.textContent('li:has-text("Price")')).to.contains(data.price);
         });
 
         it('guest does NOT see edit/delete buttons [ 5 Points ]', async () => {
@@ -270,6 +252,7 @@ describe('E2E tests', function () {
     });
 
     describe('CRUD [ 40 Points ]', () => {
+
         // Login user
         beforeEach(async () => {
             const data = mockData.users[0];
@@ -317,7 +300,7 @@ describe('E2E tests', function () {
 
             const [request] = await Promise.all([
                 onRequest(),
-                page.click('[type="submit"]'),
+                page.click('[type="submit"]')
             ]);
 
             const postData = JSON.parse(request.postData());
@@ -372,9 +355,12 @@ describe('E2E tests', function () {
             await page.waitForSelector('.details-info');
             await page.waitForTimeout(interval);
 
-            page.on('dialog', (dialog) => dialog.accept());
+            page.on('dialog', dialog => dialog.accept());
 
-            await Promise.all([onResponse(), page.click('text="Delete"')]);
+            await Promise.all([
+                onResponse(),
+                page.click('text="Delete"')
+            ]);
 
             expect(isHandled()).to.be.true;
         });
@@ -425,9 +411,7 @@ describe('E2E tests', function () {
             await page.waitForTimeout(interval);
             await page.waitForSelector('form');
 
-            const inputs = await page.$$eval('.container input', (t) =>
-                t.map((i) => i.value)
-            );
+            const inputs = await page.$$eval('.container input', t => t.map(i => i.value));
             expect(inputs[0]).to.contains(data.brand);
             expect(inputs[1]).to.contains(data.model);
             expect(inputs[2]).to.contains(data.description);
@@ -461,7 +445,7 @@ describe('E2E tests', function () {
 
             const [request] = await Promise.all([
                 onRequest(),
-                page.click('[type="submit"]'),
+                page.click('[type="submit"]')
             ]);
 
             const postData = JSON.parse(request.postData());
@@ -476,6 +460,7 @@ describe('E2E tests', function () {
     });
 
     describe('User Profile Page [ 10 Points ]', async () => {
+
         // Login user
         beforeEach(async () => {
             const data = mockData.users[0];
@@ -491,32 +476,24 @@ describe('E2E tests', function () {
         });
 
         it('check profile page for with 0 listings [ 5 Points ]', async () => {
-            const { get } = await handle(
-                endpoints.profile(mockData.users[0]._id)
-            );
+            const { get } = await handle(endpoints.profile(mockData.users[0]._id));
             get([]);
 
             await page.click('text=My Listings');
             await page.waitForTimeout(interval);
 
-            const visible = await page.isVisible(
-                "text=You haven't listed any cars yet"
-            );
+            const visible = await page.isVisible('text=You haven\'t listed any cars yet');
             expect(visible).to.be.true;
         });
 
         it('check profile page with 2 listings [ 5 Points ]', async () => {
-            const { get } = await handle(
-                endpoints.profile(mockData.users[0]._id)
-            );
+            const { get } = await handle(endpoints.profile(mockData.users[0]._id));
             get(mockData.catalog.slice(0, 2));
 
             await page.click('text=My Listings');
             await page.waitForTimeout(interval);
 
-            const titles = await page.$$eval('#my-listings .listing h2', (t) =>
-                t.map((s) => s.textContent)
-            );
+            const titles = await page.$$eval('#my-listings .listing h2', t => t.map(s => s.textContent));
 
             expect(titles.length).to.equal(2);
             expect(titles[0]).to.contains('brand1 model1');
@@ -525,6 +502,7 @@ describe('E2E tests', function () {
     });
 
     describe('Search Page [ 5 Points ]', async () => {
+
         it('show no matches [ 2.5 Points ]', async () => {
             await handle(endpoints.search('2010'), { get: [] });
 
@@ -538,17 +516,13 @@ describe('E2E tests', function () {
             await page.click('button:has-text("Search")');
             await page.waitForTimeout(interval);
 
-            const matches = await page.$$eval('.listing h2', (t) =>
-                t.map((s) => s.textContent)
-            );
+            const matches = await page.$$eval('.listing h2', t => t.map(s => s.textContent));
 
             expect(matches.length).to.be.equal(0);
         });
 
         it('show results [ 2.5 Points ]', async () => {
-            await handle(endpoints.search('2010'), {
-                get: mockData.catalog.slice(0, 2),
-            });
+            await handle(endpoints.search('2010'), { get: mockData.catalog.slice(0, 2) });
 
             await page.goto(host);
             await page.waitForTimeout(interval);
@@ -560,56 +534,40 @@ describe('E2E tests', function () {
             await page.click('button:has-text("Search")');
             await page.waitForTimeout(interval);
 
-            const matches = await page.$$eval('.listing h2', (t) =>
-                t.map((s) => s.textContent)
-            );
+            const matches = await page.$$eval('.listing h2', t => t.map(s => s.textContent));
 
             expect(matches.length).to.equal(2);
             expect(matches[0]).to.contains('brand1 model1');
             expect(matches[1]).to.contains('brand2 model2');
         });
+
+
     });
+
 });
 
 async function setupContext(context) {
     // Authentication
     await handleContext(context, endpoints.login, { post: mockData.users[0] });
-    await handleContext(context, endpoints.register, {
-        post: mockData.users[0],
-    });
-    await handleContext(context, endpoints.logout, {
-        get: (h) => h('', { json: false, status: 204 }),
-    });
+    await handleContext(context, endpoints.register, { post: mockData.users[0] });
+    await handleContext(context, endpoints.logout, { get: h => h('', { json: false, status: 204 }) });
 
     // Catalog and Details
     await handleContext(context, endpoints.catalog, { get: mockData.catalog });
-    await handleContext(context, endpoints.details('1001'), {
-        get: mockData.catalog[0],
-    });
-    await handleContext(context, endpoints.details('1002'), {
-        get: mockData.catalog[1],
-    });
-    await handleContext(context, endpoints.details('1003'), {
-        get: mockData.catalog[2],
-    });
+    await handleContext(context, endpoints.details('1001'), { get: mockData.catalog[0] });
+    await handleContext(context, endpoints.details('1002'), { get: mockData.catalog[1] });
+    await handleContext(context, endpoints.details('1003'), { get: mockData.catalog[2] });
 
     // Profile Page
-    await handleContext(context, endpoints.profile('0001'), {
-        get: mockData.catalog.slice(0, 2),
-    });
+    await handleContext(context, endpoints.profile('0001'), { get: mockData.catalog.slice(0, 2) });
 
     // Block external calls
-    await context.route(
-        (url) => url.href.slice(0, host.length) != host,
-        (route) => {
-            if (DEBUG) {
-                console.log(
-                    'Preventing external call to ' + route.request().url()
-                );
-            }
-            route.abort();
+    await context.route(url => url.href.slice(0, host.length) != host, route => {
+        if (DEBUG) {
+            console.log('Preventing external call to ' + route.request().url());
         }
-    );
+        route.abort();
+    });
 }
 
 function handle(match, handlers) {
@@ -628,7 +586,7 @@ async function handleRaw(match, handlers) {
         put: (returns, options) => request('PUT', returns, options),
         patch: (returns, options) => request('PATCH', returns, options),
         del: (returns, options) => request('DELETE', returns, options),
-        delete: (returns, options) => request('DELETE', returns, options),
+        delete: (returns, options) => request('DELETE', returns, options)
     };
 
     const context = this;
@@ -680,19 +638,16 @@ async function handleRaw(match, handlers) {
             return current.url().toLowerCase().includes(match.toLowerCase());
         }
     }
-}
+};
 
 function respond(data, options = {}) {
-    options = Object.assign(
-        {
-            json: true,
-            status: 200,
-        },
-        options
-    );
+    options = Object.assign({
+        json: true,
+        status: 200
+    }, options);
 
     const headers = {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': '*'
     };
     if (options.json) {
         headers['Content-Type'] = 'application/json';
@@ -702,6 +657,6 @@ function respond(data, options = {}) {
     return {
         status: options.status,
         headers,
-        body: data,
+        body: data
     };
 }

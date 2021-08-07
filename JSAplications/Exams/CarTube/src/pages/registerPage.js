@@ -1,50 +1,45 @@
 import { html } from '../../node_modules/lit-html/lit-html.js';
 import authService from '../services/authService.js';
 
-const registerTemplate = (formInfo) => html`
-    <section id="register">
-        <div class="container">
-            <form @submit=${formInfo.submitHandler} id="register-form">
-                <h1>Register</h1>
-                <p>Please fill in this form to create an account.</p>
-                <hr />
+const registerTemplate = (formInfo) => html` <section id="register">
+    <div class="container">
+        <form @submit=${formInfo.submitHandler} id="register-form">
+            <h1>Register</h1>
+            <p>Please fill in this form to create an account.</p>
+            <hr />
 
-                <p>Username</p>
-                <input
-                    type="text"
-                    placeholder="Enter Username"
-                    name="username"
-                    required
-                />
+            <p>Username</p>
+            <input
+                type="text"
+                placeholder="Enter Username"
+                name="username"
+                required
+            />
 
-                <p>Password</p>
-                <input
-                    type="password"
-                    placeholder="Enter Password"
-                    name="password"
-                    required
-                />
+            <p>Password</p>
+            <input
+                type="password"
+                placeholder="Enter Password"
+                name="password"
+                required
+            />
 
-                <p>Repeat Password</p>
-                <input
-                    type="password"
-                    placeholder="Repeat Password"
-                    name="repeatPass"
-                    required
-                />
-                <hr />
+            <p>Repeat Password</p>
+            <input
+                type="password"
+                placeholder="Repeat Password"
+                name="repeatPass"
+                required
+            />
+            <hr />
 
-                <input type="submit" class="registerbtn" value="Register" />
-            </form>
-            <div class="signin">
-                <p>
-                    Already have an account?
-                    <a href="/login">Sign in</a>.
-                </p>
-            </div>
+            <input type="submit" class="registerbtn" value="Register" />
+        </form>
+        <div class="signin">
+            <p>Already have an account? <a href="/login">Sign in</a>.</p>
         </div>
-    </section>
-`;
+    </div>
+</section>`;
 
 async function submitHandler(context, e) {
     e.preventDefault();
@@ -54,11 +49,12 @@ async function submitHandler(context, e) {
     const repeatPass = data.get('repeatPass');
 
     if (!username || !password || !repeatPass) {
-        alert(`All fields are required!`);
+        alert('All fields are required!');
         return;
     }
+
     if (password !== repeatPass) {
-        alert(`Password mismatch!`);
+        alert('Password mismatch!');
         return;
     }
 
@@ -66,7 +62,7 @@ async function submitHandler(context, e) {
         await authService.register({ username, password });
         context.page.redirect('/allListings');
     } catch (err) {
-        alert(`Unsuccessful registration`);
+        alert(err);
         console.log(err);
     }
 }

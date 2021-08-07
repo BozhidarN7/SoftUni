@@ -1,82 +1,37 @@
 import { html } from '../node_modules/lit-html/lit-html.js';
-import { ifDefined } from '../node_modules/lit-html/directives/if-defined.js';
 import authService from './services/authService.js';
-const navTemplate = (navInfo) => html`
-    <nav>
-        <a
-            class="${ifDefined(
-                navInfo.pathname.startsWith('/home') ? 'active' : undefined
-            )}"
-            href="/home"
-            >Home</a
-        >
-        <a
-            class="${ifDefined(
-                navInfo.pathname.startsWith('/allListings')
-                    ? 'active'
-                    : undefined
-            )}"
-            href="/allListings"
-            >All Listings</a
-        >
-        <a
-            class="${ifDefined(
-                navInfo.pathname.startsWith('/byYear') ? 'active' : undefined
-            )}"
-            href="/byYear"
-            >By Year</a
-        >
-        ${navInfo.isLoggeddIn
-            ? html`<div id="profile">
-                  <a>Welcome ${navInfo.username}</a>
-                  <a
-                      class="${ifDefined(
-                          navInfo.pathname.startsWith('/myListings')
-                              ? 'active'
-                              : undefined
-                      )}"
-                      href="/myListings"
-                      >My Listings</a
-                  >
-                  <a
-                      class="${ifDefined(
-                          navInfo.pathname.startsWith('/create')
-                              ? 'active'
-                              : undefined
-                      )}"
-                      href="/create"
-                      >Create Listing</a
-                  >
-                  <a href="/logout">Logout</a>
-              </div>`
-            : html` <div id="guest">
-                  <a
-                      class="${ifDefined(
-                          navInfo.pathname.startsWith('/login')
-                              ? 'active'
-                              : undefined
-                      )}"
-                      href="/login"
-                      >Login</a
-                  >
-                  <a
-                      class="${ifDefined(
-                          navInfo.pathname.startsWith('/register')
-                              ? 'active'
-                              : undefined
-                      )}"
-                      href="/register"
-                      >Register</a
-                  >
-              </div>`}
-    </nav>
-`;
+
+const navTemplate = (navInfo) => html` <nav>
+    <a class="active" href="#">Home</a>
+    <a href="allListings">All Listings</a>
+    <a href="byYear">By Year</a>
+    ${navInfo.isLoggeddIn
+        ? html`<div id="profile">
+              <a>Welcome ${navInfo.username}</a>
+              <a href="/myListings/${navInfo.userId}">My Listings</a>
+              <a href="/create">Create Listing</a>
+              <a href="javascript:void(0)" @click=${navInfo.logoutHandler}
+                  >Logout</a
+              >
+          </div>`
+        : html`<div id="guest">
+              <a href="/login">Login</a>
+              <a href="/register">Register</a>
+          </div>`}
+</nav>`;
+
+async function logoutHandler(context, e) {
+    e.preventDefault();
+    await authService.logout();
+    context.page.redirect('/home');
+}
 
 export function navGetView(context, next) {
     const navInfo = {
         isLoggeddIn: authService.isLoggeddIn(),
+        logoutHandler: logoutHandler.bind(null, context),
         username: authService.getUsername(),
-        pathname: context.pathname,
+        userId: authService.getUserId(),
     };
     const templateResult = navTemplate(navInfo);
     context.renderNav(templateResult);

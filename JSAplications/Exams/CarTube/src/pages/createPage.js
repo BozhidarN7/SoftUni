@@ -57,22 +57,21 @@ async function submitHandler(context, e) {
     const brand = data.get('brand');
     const model = data.get('model');
     const description = data.get('description');
-    const year = data.get('year');
+    const year = Number(data.get('year'));
     const imageUrl = data.get('imageUrl');
-    const price = data.get('price');
+    const price = Number(data.get('price'));
 
-    if (Number(price) < 0) {
-        alert('Price must be a positive number');
-        return;
-    }
-    if (Number(year) < 0) {
-        alert('Year must be a positive number');
+    if (!model || !brand || !description || !price || !imageUrl || !year) {
+        alert('All fields are required!');
         return;
     }
 
-    if (!brand || !model || !description || !year || !imageUrl || !price) {
-        alert(`All fields are required!`);
-
+    if (price < 0) {
+        alert('Price must be positive value!');
+        return;
+    }
+    if (year < 0) {
+        alert('Year must be positive value');
         return;
     }
 
@@ -87,7 +86,7 @@ async function submitHandler(context, e) {
         });
         context.page.redirect('/allListings');
     } catch (err) {
-        alert(`Unsuccessful edit`);
+        alert(err);
         console.log(err);
     }
 }
