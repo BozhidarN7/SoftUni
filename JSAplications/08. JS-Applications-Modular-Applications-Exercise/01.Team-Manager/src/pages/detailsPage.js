@@ -10,7 +10,7 @@ const detailsTemplate = (info) => html`
             <div class="tm-preview">
                 <h2>${info.team.name}</h2>
                 <p>${info.team.description}</p>
-                <span class="details">${info.team.membersCount}</span>
+                <span class="details">${info.team.membersCount} members</span>
                 <div>
                     ${info.team._ownerId === info.ownerId
                         ? html`<a href="/edit/${info.team._id}" class="action"
@@ -26,17 +26,9 @@ const detailsTemplate = (info) => html`
             <div class="pad-large">
                 <h3>Members</h3>
                 <ul class="tm-members">
-                    <li>My Username</li>
-                    <li>
-                        James<a href="#" class="tm-control action"
-                            >Remove from team</a
-                        >
-                    </li>
-                    <li>
-                        Meowth<a href="#" class="tm-control action"
-                            >Remove from team</a
-                        >
-                    </li>
+                    ${info.members.map(
+                        (m) => html`<li>${m.user.username}</li>`
+                    )}
                 </ul>
             </div>
             <div class="pad-large">
@@ -58,10 +50,12 @@ const detailsTemplate = (info) => html`
 
 export async function getDetailsPage(context) {
     const team = await teamService.getById(context.params.id);
-    const members = await memberService.getAll();
-    team.membersCount = members.filter((m) => m.teamId === team._id).length;
+    const members = await memberService.getAllMemberships(team._id);
+    console.log(members);
+    team.membersCount = members.length;
     const info = {
         team,
+        members,
         ownerId: authService.getUserId(),
     };
     const templateResult = detailsTemplate(info);
