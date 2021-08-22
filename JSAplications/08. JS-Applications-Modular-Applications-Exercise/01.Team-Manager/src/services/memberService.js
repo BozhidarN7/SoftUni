@@ -12,7 +12,12 @@ async function getAllMemberships(teamId) {
     );
 }
 
+async function join(teamId) {
+    return await jsonRequest(`${baseUrl}`, 'POST', { teamId }, true, false);
+}
+
 export default {
     getAll,
     getAllMemberships,
+    join,
 };

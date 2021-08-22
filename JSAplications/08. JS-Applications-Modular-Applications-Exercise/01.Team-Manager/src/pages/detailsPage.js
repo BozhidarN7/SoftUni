@@ -11,52 +11,95 @@ const detailsTemplate = (info) => html`
                 <h2>${info.team.name}</h2>
                 <p>${info.team.description}</p>
                 <span class="details">${info.team.membersCount} members</span>
-                <div>
-                    ${info.team._ownerId === info.ownerId
-                        ? html`<a href="/edit/${info.team._id}" class="action"
-                              >Edit team</a
-                          >`
-                        : html`<a href="#" class="action">Join team</a>`}
-
-                    <a href="#" class="action invert">Leave team</a>
-                    Membership pending.
-                    <a href="#">Cancel request</a>
-                </div>
+                ${info.isLoggedIn
+                    ? html`
+                          <div>
+                              ${info.team._ownerId === info.ownerId
+                                  ? html`<a
+                                        href="/edit/${info.team._id}"
+                                        class="action"
+                                        >Edit team</a
+                                    >`
+                                  : html`${!info.cannoJoin
+                                        ? html`<a
+                                              href="#"
+                                              @click=${info.joinHandler}
+                                              class="action"
+                                              >Join team</a
+                                          >`
+                                        : ''}`}
+                              ${info.canLeave
+                                  ? html`<a href="#" class="action invert"
+                                        >Leave team</a
+                                    >`
+                                  : ''}
+                              Membership pending.
+                              <a href="#">Cancel request</a>
+                          </div>
+                      `
+                    : ''}
             </div>
             <div class="pad-large">
                 <h3>Members</h3>
                 <ul class="tm-members">
-                    ${info.members.map(
+                    ${info.joindedMembers.map(
                         (m) => html`<li>${m.user.username}</li>`
                     )}
                 </ul>
             </div>
-            <div class="pad-large">
-                <h3>Membership Requests</h3>
-                <ul class="tm-members">
-                    <li>
-                        John<a href="#" class="tm-control action">Approve</a
-                        ><a href="#" class="tm-control action">Decline</a>
-                    </li>
-                    <li>
-                        Preya<a href="#" class="tm-control action">Approve</a
-                        ><a href="#" class="tm-control action">Decline</a>
-                    </li>
-                </ul>
-            </div>
+            ${info.isLoggedIn
+                ? html`<div class="pad-large">
+                      <h3>Membership Requests</h3>
+                      <ul class="tm-members">
+                          <li>
+                              John<a href="#" class="tm-control action"
+                                  >Approve</a
+                              ><a href="#" class="tm-control action">Decline</a>
+                          </li>
+                          <li>
+                              Preya<a href="#" class="tm-control action"
+                                  >Approve</a
+                              ><a href="#" class="tm-control action">Decline</a>
+                          </li>
+                      </ul>
+                  </div>`
+                : ''}
         </article>
     </section>
 `;
 
+async function joinHandler(context, teamId, e) {
+    e.preventDefault();
+
+    const res = await memberService.join(teamId);
+    console.log(res);
+}
+
 export async function getDetailsPage(context) {
     const team = await teamService.getById(context.params.id);
     const members = await memberService.getAllMemberships(team._id);
+    const joindedMembers = members.filter((m) => m.status === 'member');
+    const pendingMembers = members.filter((m) => m.status === 'pending');
+
+    const cannotJoin = members.find((m) => m.user._id === team._ownerId)
+        ? false
+        : true;
+
+    const canLeave = members.find((m) => m.user._id === authService.getUserId())
+        ? true
+        : false;
+
     console.log(members);
-    team.membersCount = members.length;
+
+    team.membersCount = joindedMembers.length;
     const info = {
         team,
-        members,
+        joindedMembers,
         ownerId: authService.getUserId(),
+        isLoggedIn: authService.isLoggeddIn(),
+        cannotJoin,
+        canLeave,
+        joinHandler: joinHandler.bind(null, context, team._id),
     };
     const templateResult = detailsTemplate(info);
     context.renderView(templateResult);

@@ -15,7 +15,7 @@ const homeTemplate = () => html`
                     like-minded people!
                 </p>
                 <a href="/register" class="action cta">Sign Up Now</a>
-                <a href="/login" class="action cta">Browse Teams</a>
+                <a href="/teams" class="action cta">Browse Teams</a>
             </div>
         </article>
     </section>
