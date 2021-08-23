@@ -20,7 +20,7 @@ const detailsTemplate = (info) => html`
                                         class="action"
                                         >Edit team</a
                                     >`
-                                  : html`${!info.cannoJoin
+                                  : html`${info.canJoin
                                         ? html`<a
                                               href="#"
                                               @click=${info.joinHandler}
@@ -33,8 +33,10 @@ const detailsTemplate = (info) => html`
                                         >Leave team</a
                                     >`
                                   : ''}
-                              Membership pending.
-                              <a href="#">Cancel request</a>
+                              ${info.canCancel
+                                  ? html` Membership pending.
+                                        <a href="#">Cancel request</a>`
+                                  : ''}
                           </div>
                       `
                     : ''}
@@ -48,24 +50,26 @@ const detailsTemplate = (info) => html`
                 </ul>
             </div>
             ${info.isLoggedIn
-                ? html`<div class="pad-large">
-                      <h3>Membership Requests</h3>
-                      <ul class="tm-members">
-                          <li>
-                              John<a href="#" class="tm-control action"
-                                  >Approve</a
-                              ><a href="#" class="tm-control action">Decline</a>
-                          </li>
-                          <li>
-                              Preya<a href="#" class="tm-control action"
-                                  >Approve</a
-                              ><a href="#" class="tm-control action">Decline</a>
-                          </li>
-                      </ul>
-                  </div>`
+                ? html`${info.pendingMembers.length > 0
+                      ? html` <div class="pad-large">
+                            <h3>Membership Requests</h3>
+                            <ul class="tm-members">
+                                ${info.pendingMembers.map((m) =>
+                                    pendingMembersTemplate(m)
+                                )}
+                            </ul>
+                        </div>`
+                      : ''}`
                 : ''}
         </article>
     </section>
+`;
+
+const pendingMembersTemplate = (member) => html`
+    <li>
+        ${member.user.username}<a href="#" class="tm-control action">Approve</a
+        ><a href="#" class="tm-control action">Decline</a>
+    </li>
 `;
 
 async function joinHandler(context, teamId, e) {
@@ -81,13 +85,19 @@ export async function getDetailsPage(context) {
     const joindedMembers = members.filter((m) => m.status === 'member');
     const pendingMembers = members.filter((m) => m.status === 'pending');
 
-    const cannotJoin = members.find((m) => m.user._id === team._ownerId)
+    const canJoin = members.find((m) => m.user._id === authService.getUserId())
         ? false
         : true;
 
-    const canLeave = members.find((m) => m.user._id === authService.getUserId())
+    const canLeave = members.find(
+        (m) => m.user._id === authService.getUserId() && m.status !== 'pending'
+    )
         ? true
         : false;
+
+    const canCancel = members.find(
+        (m) => m.user._id === authService.getUserId() && m.status === 'pending'
+    );
 
     console.log(members);
 
@@ -95,10 +105,12 @@ export async function getDetailsPage(context) {
     const info = {
         team,
         joindedMembers,
+        pendingMembers,
         ownerId: authService.getUserId(),
         isLoggedIn: authService.isLoggeddIn(),
-        cannotJoin,
+        canJoin,
         canLeave,
+        canCancel,
         joinHandler: joinHandler.bind(null, context, team._id),
     };
     const templateResult = detailsTemplate(info);
