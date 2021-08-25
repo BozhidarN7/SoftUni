@@ -1,4 +1,5 @@
 import { html } from '../../node_modules/lit-html/lit-html.js';
+import memberService from '../services/memberService.js';
 import teamService from '../services/teamService.js';
 
 const createTemplate = (formInfo) => html`
@@ -51,10 +52,15 @@ async function submitHandler(context, e) {
 
     try {
         const team = await teamService.create({ name, logoUrl, description });
+        const membershipResponse = await memberService.join(team._id);
+        console.log(membershipResponse);
+        const approveResponse = await memberService.approve(
+            membershipResponse._id
+        );
         console.log(team);
         context.page.redirect(`/details/${team._id}`);
     } catch (err) {
-        showError('Registration failed!');
+        showError(context, 'Creation failed!');
         return;
     }
 }

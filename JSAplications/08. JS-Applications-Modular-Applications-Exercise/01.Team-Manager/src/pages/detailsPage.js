@@ -94,29 +94,44 @@ async function joinHandler(context, teamId, e) {
     e.preventDefault();
 
     const membershipResponse = await memberService.join(teamId);
-    memberService.setMembershipRequestId(membershipResponse._id);
     getData(context);
 }
 
-async function approveHandler(context, e) {
+async function approveHandler(context, teamId, e) {
     e.preventDefault();
 
-    const approveResponse = await memberService.approve(
-        memberService.getMembershipRequestId()
-    );
-    console.log(approveResponse);
-    //memberService.deleteMembershipRequestId();
+    const username = e.target.parentElement.innerText.split(' ')[0];
+    const members = await memberService.getAllMemberships(teamId);
+    const membershipRequestId = members.find(
+        (m) => m.user.username === username
+    )?._id;
+    const approveResponse = await memberService.approve(membershipRequestId);
     getData(context);
 }
 
-async function cancelHandler(context, e) {
+async function cancelHandler(context, teamId, e) {
     e.preventDefault();
-    console.log(e.target.parentElement.textContent);
-    const cancelResponse = await memberService.decline(
-        memberService.getMembershipRequestId()
-    );
-    memberService.deleteMembershipRequestId();
-    getData(context);
+    if (
+        e.target.textContent === 'Cancel request' ||
+        e.target.textContent === 'Leave team'
+    ) {
+        const members = await memberService.getAllMemberships(teamId);
+        const membershipRequestId = members.find(
+            (m) => m.user.username === authService.getUsername()
+        )?._id;
+        const cancelResponse = await memberService.decline(membershipRequestId);
+        getData(context);
+    } else if (e.target.textContent === 'Decline') {
+        const username = e.target.parentElement.innerText.split(' ')[0];
+        const members = await memberService.getAllMemberships(teamId);
+        const membershipRequestId = members.find(
+            (m) => m.user.username === username
+        )?._id;
+        const declineResponse = await memberService.decline(
+            membershipRequestId
+        );
+        getData(context);
+    }
 }
 
 async function getData(context) {
@@ -152,8 +167,8 @@ async function getData(context) {
         canLeave,
         canCancel,
         joinHandler: joinHandler.bind(null, context, team._id),
-        cancelHandler: cancelHandler.bind(null, context),
-        approveHandler: approveHandler.bind(null, context),
+        cancelHandler: cancelHandler.bind(null, context, team._id),
+        approveHandler: approveHandler.bind(null, context, team._id),
     };
     const templateResult = detailsTemplate(info);
     context.renderView(templateResult);
