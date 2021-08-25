@@ -11,6 +11,7 @@ import { getDetailsPage } from './pages/detailsPage.js';
 import { getEditPage } from './pages/editPage.js';
 import { getHomePage } from './pages/homePage.js';
 import { getLoginPage } from './pages/loginPage.js';
+import { getMyTeamsPage } from './pages/myTeamsPage.js';
 import { getRegisterPage } from './pages/registerPage.js';
 import { getTeamsPage } from './pages/teamsPage.js';
 
@@ -29,5 +30,6 @@ page('/teams', decorateContext, navGetView, getTeamsPage);
 page('/create', decorateContext, navGetView, getCreatePage);
 page('/details/:id', decorateContext, navGetView, getDetailsPage);
 page('/edit/:id', decorateContext, navGetView, getEditPage);
+page('/myTeams', decorateContext, navGetView, getMyTeamsPage);
 
 page.start();

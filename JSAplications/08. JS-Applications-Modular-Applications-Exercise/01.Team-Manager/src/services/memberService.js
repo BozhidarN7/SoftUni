@@ -12,6 +12,15 @@ async function getAllMemberships(teamId) {
     );
 }
 
+async function getMyMemberships(userId) {
+    return await jsonRequest(
+        `${baseUrl}?where=_ownerId%3D%22${userId}%22%20AND%20status%3D%22member%22&load=team%3DteamId%3Ateams`
+    );
+}
+
+async function getListOfAllMembersInTeams(queryObj) {
+    return await jsonRequest(`${baseUrl}?${queryObj}`);
+}
 async function join(teamId) {
     return await jsonRequest(`${baseUrl}`, 'POST', { teamId }, true, false);
 }
@@ -45,6 +54,8 @@ function deleteMembershipRequestId() {
 export default {
     getAll,
     getAllMemberships,
+    getMyMemberships,
+    getListOfAllMembersInTeams,
     join,
     decline,
     approve,
