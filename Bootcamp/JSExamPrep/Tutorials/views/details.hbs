@@ -1,0 +1,44 @@
+<main>
+    <div class='container'>
+        <h1 class='my-4'>Title :
+            {{tutorial.title}}
+        </h1>
+
+        <div class='row'>
+
+            <div class='col-md-8'>
+                <img
+                    class='img-fluid'
+                    src='{{tutorial.imageUrl}}'
+                    alt='JavaScript'
+                />
+            </div>
+
+            <div class='col-md-4 text-center'>
+                <h4 class='my-3'>Duration</h4>
+                <p>{{tutorial.duration}}</p>
+                <h3 class='my-3'>Description</h3>
+                <p>{{tutorial.description}}</p>
+
+                {{#if canDeleteAndEdit}}
+                    <a
+                        class='btn btn-danger'
+                        href='/{{tutorial._id}}/delete'
+                    >Delete</a>
+                    <a
+                        class='btn btn-warning'
+                        href='/{{tutorial._id}}/edit'
+                    >Edit</a>
+                {{/if}}
+                {{#if enrolled}}
+                    <span class='enrolled-span'>You are already enrolled</span>
+                {{else}}
+                    <a
+                        class='btn btn-primary'
+                        href='/{{tutorial._id}}/enroll'
+                    >Enroll</a>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</main>
