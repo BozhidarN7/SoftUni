@@ -167,3 +167,55 @@ CREATE TABLE [Orders]
 
  ALTER TABLE [OrderItems]
  ADD CONSTRAINT [PK_OrderItems] PRIMARY KEY ([OrderID], [ItemID])
+
+ -- Problem 6
+
+ CREATE DATABASE [Test2]
+ USE [Test2]
+
+ CREATE TABLE [Majors]
+ (
+	[MajorID] INT PRIMARY KEY IDENTITY NOT NULL,
+	[Name] VARCHAR(50) NOT NULL
+ )
+
+ CREATE TABLE [Students]
+ (
+	[StudentID] INT PRIMARY KEY IDENTITY NOT NULL,
+	[StudentNumber] VARCHAR(50) NOT NULL,
+	[StudentName] VARCHAR(50) NOT NULL,
+	[MajorID] INT FOREIGN KEY REFERENCES [Majors]([MajorID]) NOT NULL
+ )
+
+ CREATE TABLE [Payments]
+ (
+	[PaymentID] INT PRIMARY KEY IDENTITY NOT NULL,
+	[PaymentDate] DATE NOT NULL,
+	[PaymentAmount] DECIMAL(10, 2) NOT NULL,
+	[StudentID] INT FOREIGN KEY REFERENCES [Students]([StudentID])
+ )
+
+ CREATE TABLE [Subjects]
+ (
+	[SubjectID] INT PRIMARY KEY IDENTITY NOT NULL,
+	[SubjectName] VARCHAR(50) NOT NULL
+ )
+
+ CREATE TABLE [Agenda]
+ (
+	[StudentID] INT FOREIGN KEY REFERENCES [Students]([StudentID]) NOT NULL,
+	[SubjectID] INT FOREIGN KEY REFERENCES [Subjects]([SubjectID]) NOT NULL
+ )
+
+ ALTER TABLE [Agenda]
+ ADD CONSTRAINT [PK_StudentIDSubjectID] PRIMARY KEY ([StudentID], [SubjectID])
+
+ -- Problem 9
+
+ SELECT * FROM [Mountains]
+ SELECT * FROM [Peaks]
+
+ SELECT m.[MountainRange], p.[PeakName], p.[Elevation] FROM [Peaks] AS p
+ INNER JOIN [Mountains] AS m ON p.MountainId=m.Id 
+ WHERE m.[MountainRange] = 'Rila'
+ ORDER BY p.[Elevation] DESC
