@@ -105,3 +105,49 @@ WHERE [IpAddress] LIKE '___.1%%.___'
 ORDER BY [Username]
 
 -- Problem 17
+
+SELECT 
+	[Name] AS [Game]
+	, CASE
+		WHEN DATEPART(HOUR, [Start]) >= 0 AND DATEPART(HOUR, [Start]) < 12 THEN 'Morning'
+		WHEN DATEPART(HOUR, [Start]) >= 12 AND DATEPART(HOUR, [Start]) < 18 THEN 'Afternoon'
+		ELSE 'Evening'
+	  END AS [Part of the Day]
+	, CASE
+		WHEN [Duration] <=3 THEN 'Extra Short'
+		WHEN [Duration] BETWEEN 4 AND 6 THEN 'Short'
+		WHEN [Duration] > 6 THEN 'Long'
+		ELSE 'Extra Long'
+	  END AS [Duration]
+FROM [Games]
+ORDER BY [Name], [Duration], [Part of the Day]
+
+-- Problem 18
+
+SELECT [ProductName], [OrderDate], DATEADD("d", 3, [OrderDate]) AS [Pay Due], DATEADD("m", 1, [OrderDate]) AS [Deliver Due] FROM [Orders]
+
+-- Problem 19
+
+CREATE TABLE [People]
+(
+	[Id] INT PRIMARY KEY IDENTITY NOT NULL,
+	[Name] NVARCHAR(50) NOT NULL,
+	[BirthDate] DATETIME2 NOT NULL
+)
+
+
+INSERT INTO [People] VALUES
+('Victor', '2000-12-07 00:00:00.000'),
+('Steven', '1992-09-10 00:00:00.000'),
+('Stephen', '1910-09-19 00:00:00.000'),
+('John', '1910-09-19 00:00:00.000')
+
+SELECT 
+	  [Name]
+	, DATEDIFF(YEAR, [BirthDate], GETDATE()) AS [Age in Years]
+	, DATEDIFF(MONTH, [BirthDate], GETDATE()) AS [Age in Months]
+	, DATEDIFF(Day, [BirthDate], GETDATE()) AS [Age in Days]
+	, DATEDIFF(MINUTE, [BirthDate], GETDATE()) AS [Age in Minutes]
+FROM [People]
+
+SELECT * FROM [People]
