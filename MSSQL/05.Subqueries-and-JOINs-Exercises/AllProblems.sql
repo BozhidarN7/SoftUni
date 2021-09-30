@@ -119,10 +119,68 @@ ON cr.[RiverId] = r.[Id]
 WHERE c.[ContinentCode] = 'AF'
 ORDER BY c.[CountryName]
 
+-- Problem 15
+SELECT [ContinentCode], [CurrencyCode], [CurrencyCount] AS [CurrencyUsage]
+FROM 
+	(SELECT *
+		, DENSE_RANK() OVER (PARTITION BY [ContinentCode] ORDER BY [CurrencyCount] DESC) AS [CurrencyRank]
+		FROM
+			(SELECT [ContinentCode], [CurrencyCode], COUNT([CurrencyCode]) AS [CurrencyCount]
+			FROM [Countries]
+			GROUP BY [ContinentCode], [CurrencyCode]) AS [CurrencyCountSubQuery]
+	WHERE [CurrencyCount] > 1) AS [CurrencyRankingSubQuery]
+WHERE [CurrencyRank] = 1
+ORDER BY [ContinentCode]
+
+-- Problem 16
+SELECT COUNT(c.[CountryCode]) AS [Count] FROM [Countries] AS c
+LEFT JOIN [MountainsCountries] AS mc
+ON c.[CountryCode] = mc.[CountryCode]
+WHERE mc.[MountainId] IS NULL
+
+-- Problem 17
+SELECT TOP(5) c.[CountryName], MAX(p.[Elevation]) AS [HighestPeakElevation], MAX(r.[Length]) AS [LongestRiverLength] FROM [Countries] AS c
+LEFT JOIN [CountriesRivers] AS cr
+ON c.[CountryCode] = cr.[CountryCode]
+LEFT JOIN [Rivers] AS r
+ON cr.[RiverId] = r.[Id]
+LEFT JOIN [MountainsCountries] AS mc
+ON c.[CountryCode] = mc.[CountryCode]
+LEFT JOIN  [Mountains] AS m
+ON mc.[MountainId] = m.[Id]
+LEFT JOIN [Peaks] AS p
+ON m.[Id] = p.[MountainId]
+GROUP BY c.[CountryName]
+ORDER BY [HighestPeakElevation] DESC,[LongestRiverLength] DESC, c.[CountryName]
+
+-- Problem 18
+SELECT TOP (5)	
+[CountryName] AS [Country]
+,ISNULL([PeakName], '(no highest peak)') AS [Highest Peak Name]
+,ISNULL([Elevation], 0) AS [Highest Peak Elevation]
+,ISNULL([MountainRange], '(no mountain)') AS [Mountain]
+FROM 
+(
+	SELECT c.[CountryName], p.[PeakName], p.[Elevation], m.[MountainRange]  ,DENSE_RANK() OVER(PARTITION BY c.[CountryName] ORDER BY p.[Elevation]) AS [PeakRank] FROM [Countries] AS c
+	LEFT JOIN [CountriesRivers] AS cr
+	ON c.[CountryCode] = cr.[CountryCode]
+	LEFT JOIN [Rivers] AS r
+	ON cr.[RiverId] = r.[Id]
+	LEFT JOIN [MountainsCountries] AS mc
+	ON c.[CountryCode] = mc.[CountryCode]
+	LEFT JOIN  [Mountains] AS m
+	ON mc.[MountainId] = m.[Id]
+	LEFT JOIN [Peaks] AS p
+	ON m.[Id] = p.[MountainId]
+) AS [PeakRankingSubQuery]
+WHERE [PeakRank] = 1
+ORDER BY [CountryName], [PeakName]
+
 SELECT * FROM [Peaks]
 SELECT * FROM [Mountains]
 SELECT * FROM [Countries]
 SELECT * FROM [MountainsCountries]
 SELECT * FROM [Rivers]
 SELECT * FROM [Continents]
+SELECT * FROM [Currencies]
 
