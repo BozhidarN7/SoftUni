@@ -63,4 +63,65 @@ WHERE [DepositStartDate] > '01/01/1985'
 GROUP BY [DepositGroup], [IsDepositExpired]
 ORDER BY [DepositGroup] DESC, [IsDepositExpired]
 
+-- Problem 12
+SELECT SUM([Difference]) AS [SumDifference] FROM 
+	(SELECT 
+	[FirstName] AS [Host Wizard]
+	, [DepositAmount] AS [Host Wizard Deposit]
+	, LEAD([FirstName]) OVER (ORDER BY [Id]) AS [Guest Wizard]
+	, LEAD([DepositAmount]) OVER (ORDER BY [Id]) AS [Guest Wizard Deposit]
+	, [DepositAmount] - LEAD([DepositAmount]) OVER (ORDER BY [Id]) AS [Difference]
+	FROM [WizzardDeposits]) AS [Subquery]
+
+-- Problem 13
+SELECT [DepartmentId], SUM([Salary]) AS [TotalSalary] FROM [Employees]
+GROUP BY [DepartmentId]
+ORDER BY [DepartmentId]
+
+-- Problem 14
+SELECT [DepartmentID], MIN([Salary]) AS [MinimumSalary] FROM [Employees]
+WHERE [HireDate] > '01.01.2000' AND [DepartmentID] IN (2, 5, 7)
+GROUP BY [DepartmentID]
+
+-- Problem 15
+SELECT * INTO [EmployeesAverageSalaries] FROM [Employees]
+WHERE [Salary] > 30000
+
+DELETE FROM [EmployeesAverageSalaries]
+WHERE [ManagerID] = 42
+
+UPDATE [EmployeesAverageSalaries]
+SET [Salary] += 5000
+WHERE [DepartmentID] = 1
+
+SELECT [DepartmentID], AVG([Salary]) AS [AverageSalary] FROM [EmployeesAverageSalaries]
+GROUP BY [DepartmentID]
+
+-- Problem 16
+SELECT [DepartmentID], MAX([Salary]) AS [MaxSalary] FROM [Employees]
+GROUP BY [DepartmentID]
+HAVING MAX([Salary]) < 30000 OR MAX([Salary]) > 70000
+
+-- Problem 17
+SELECT COUNT(*) AS [Count] FROM [Employees]
+WHERE [ManagerID] IS NULL
+
+-- Problem 18
+SELECT [DepartmentID], MAX([Salary]) AS [ThirdHighestSalary] FROM 
+	(SELECT *, 
+	DENSE_RANK() OVER(PARTITION BY [DepartmentID] ORDER BY [Salary] DESC) AS [Rank] 
+	FROM [Employees]) AS [Subquery]
+WHERE [Rank] = 3
+GROUP BY [DepartmentID]
+
+-- Problem 19
+SELECT TOP(10) [FirstName], [LastName], [DepartmentID] FROM [Employees] AS outsub
+WHERE [Salary] > (
+				SELECT AVG([Salary]) AS [AvgSalary] FROM [Employees] AS insub
+				WHERE outsub.[DepartmentID] = insub.[DepartmentID]
+				GROUP BY [DepartmentID]) 
+ORDER BY[DepartmentID]
+	
+
+
 SELECT * FROM [WizzardDeposits]
