@@ -37,7 +37,49 @@ EXEC dbo.usp_GetEmployeesFromTown 'sofia'
 
 DROP PROC dbo.usp_GetEmployeesFromTown 
 
+-- Problem 5
+CREATE FUNCTION ufn_GetSalaryLevel(@salary DECIMAL(18,4))
+RETURNS VARCHAR(50)
+AS 
+BEGIN
+	IF (@salary < 30000)
+	BEGIN
+		RETURN 'Low'
+	END
+	IF (@salary BETWEEN 30000 AND 50000)
+	BEGIN 
+		RETURN 'Average'
+	END
 
+	RETURN 'High'
+END
+
+SELECT [Salary], dbo.ufn_GetSalaryLevel([Salary]) AS [Salary Level] FROM [Employees] 
+
+-- Problem 6
+CREATE PROC usp_EmployeesBySalaryLevel(@salaryLevel VARCHAR(50))
+AS 
+	SELECT [FirstName], [LastName] FROM [Employees]
+	WHERE dbo.ufn_GetSalaryLevel([Salary]) = @salaryLevel
+
+EXEC  dbo.usp_EmployeesBySalaryLevel 'high'
+
+-- Problem 7
+CREATE FUNCTION dbo.ufn_IsWordComprised(@setOfLetters VARCHAR(50), @word VARCHAR(50))
+RETURNS BIT
+AS
+BEGIN
+	DECLARE	@index INT = 0
+	WHILE (@index < LEN(@word))
+		BEGIN 
+			IF (@word NOT LIKE '%' + SUBSTRING(@setOfLetters, @index, 1) + '%')
+				BEGIN 
+					RETURN 0
+				END
+			@index += 1
+		END
+	RETURN 1
+END
 
 SELECT * FROM [Employees] 
 SELECT * FROM [Towns]
