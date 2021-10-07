@@ -26,12 +26,12 @@ EXEC dbo.usp_GetTownsStartingWith 'b'
 -- Problem 4
 CREATE PROC dbo.usp_GetEmployeesFromTown(@townName NVARCHAR(50))
 AS 
-	SELECT * FROM [Employees] AS e
+	SELECT e.[FirstName], e.[LastName] FROM [Employees] AS e
 	LEFT JOIN [Addresses] AS a
 	ON e.[AddressID] = a.[AddressID]
 	LEFT JOIN [Towns] AS t
-	ON a.[AddressID] = t.[TownID]
-	WHERE LOWER(t.[Name]) = LOWER(@townName)
+	ON a.[TownID] = t.[TownID]
+	WHERE t.[Name] = @townName
 
 EXEC dbo.usp_GetEmployeesFromTown 'sofia'
 
