@@ -69,16 +69,53 @@ CREATE FUNCTION dbo.ufn_IsWordComprised(@setOfLetters VARCHAR(50), @word VARCHAR
 RETURNS BIT
 AS
 BEGIN
-	DECLARE	@index INT = 0
-	WHILE (@index < LEN(@word))
+	DECLARE	@index INT = 1
+	WHILE (@index <= LEN(@word))
 		BEGIN 
-			IF (@word NOT LIKE '%' + SUBSTRING(@setOfLetters, @index, 1) + '%')
+			IF (LOWER(@setOfLetters) NOT LIKE LOWER('%' + SUBSTRING(@word, @index, 1) + '%'))
 				BEGIN 
 					RETURN 0
 				END
-			@index += 1
+			SET @index += 1
 		END
 	RETURN 1
+END
+
+-- Problem 8
+CREATE PROC dbo.usp_DeleteEmployeesFromDepartment (@departmentId INT) 
+AS
+BEGIN
+	DELETE FROM [EmployeesProjects]
+	WHERE [EmployeeID] IN (
+							SELECT [EmployeeID]
+							  FROM [Employees]
+							 WHERE [DepartmentID] = @departmentId
+						  )
+	UPDATE [Employees]
+	SET [ManagerID] = NULL
+	WHERE [ManagerID] IN (
+							SELECT [EmployeeID]
+							  FROM [Employees]
+							 WHERE [DepartmentID] = @departmentId
+						 )
+	ALTER TABLE [Departments]
+	ALTER COLUMN [ManagerID] INT
+
+	UPDATE [Departments]
+	SET [ManagerID] = NULL
+	WHERE [ManagerID] IN (
+							SELECT [EmployeeID]
+							  FROM [Employees]
+							 WHERE [DepartmentID] = @departmentId
+						 )
+	DELETE FROM [Employees]	
+	WHERE [DepartmentID] = @departmentId
+
+	DELETE FROM [Departments]
+	WHERE [DepartmentID] = @departmentId
+	
+	SELECT COUNT(*) FROM [Employees]
+	WHERE [DepartmentID] = @departmentId
 END
 
 SELECT * FROM [Employees] 
