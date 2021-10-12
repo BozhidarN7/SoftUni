@@ -109,3 +109,61 @@ WHERE  r.[OpenDate] = u.[Birthdate]
 ORDER BY u.[Username], c.[Name]
 
 SELECT FORMAT([OpenDate], 'dd-MM-yyyy') FROM [Reports]
+
+-- Problem 9
+SELECT * FROM [Employees] AS e
+LEFT JOIN [Departments] AS d
+ON e.[DepartmentId] = d.[Id]
+
+
+SELECT * FROM [Departments]
+
+
+-- Problem 10
+SELECT
+	CASE
+		WHEN CONCAT(e.[FirstName], ' ', e.[LastName]) = '' THEN 'None'
+		ELSE CONCAT(e.[FirstName], ' ', e.[LastName])
+	END
+	, d.[Name] AS [Department]
+	,c.[Name] AS [Category]
+	,r.[Description]
+	,FORMAT(r.[OpenDate], 'dd.MM.yyyy') AS [OpenDate]
+	,s.[Label] AS [Status]
+	,u.[Name] AS [User]
+FROM [Reports] AS r
+LEFT JOIN [Employees] AS e
+ON r.[EmployeeId] = e.[Id]
+JOIN [Categories] AS c
+ON r.[CategoryId] = c.[Id]
+JOIN [Departments] AS d
+ON c.[DepartmentId] = d.[Id]
+JOIN [Users] AS u
+ON r.[UserId] = u.[Id]
+JOIN [Status] AS s
+ON r.[StatusId] = s.[Id]
+ORDER BY e.[FirstName] DESC, e.[LastName] DESC, d.[Name], c.[Name], r.[Description], r.[OpenDate], s.[Label], u.[Name]
+
+SELECT * FROM [Employees]
+
+-- Problem 11
+CREATE FUNCTION dbo.udf_HoursToComplete(@StartDate DATETIME, @EndDate DATETIME)
+RETURNS INT
+AS 
+BEGIN 
+	IF (@StartDate IS NULL OR @EndDate IS NULL)
+		RETURN 0
+	RETURN DATEDIFF(HOUR, @StartDate, @EndDate)
+END
+
+
+SELECT dbo.udf_HoursToComplete(OpenDate, CloseDate) AS TotalHours
+   FROM Reports
+
+-- Problem 12
+CREATE PROC dbo.usp_AssignEmployeeToReport(@EmployeeId INT, @ReportId INT)
+AS
+	DECLARE @employeeDepId INT = SELECT [DepartmentId] FROM [Employees] WHERE [Id] = @EmployeeId
+
+SELECT * FROM [Employees]
+SELECT * FROM [Reports]
