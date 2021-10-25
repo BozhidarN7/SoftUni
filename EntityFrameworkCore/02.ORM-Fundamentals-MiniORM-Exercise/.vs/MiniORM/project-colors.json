@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "86d40984-e71a-4041-acf5-b3cc333585a6": {
+      "ProjectGuid": "86d40984-e71a-4041-acf5-b3cc333585a6",
+      "DisplayName": "MiniORM",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}

@@ -57,6 +57,16 @@ namespace MiniORM
             }
         }
 
+        private void PopulateDbSet<TEntity>(PropertyInfo dbSet) where TEntity: class, new()
+        {
+            IEnumerable<TEntity> entitties = LoadTableEntities<TEntity>();
+        }
+
+        private IEnumerable<TEntity> LoadTableEntities<TEntity>() where TEntity : class, new()
+        {
+            throw new NotImplementedException();
+        }
+
         private Dictionary<Type, PropertyInfo> DiscoverDbSets()
         {
             throw new NotImplementedException();
