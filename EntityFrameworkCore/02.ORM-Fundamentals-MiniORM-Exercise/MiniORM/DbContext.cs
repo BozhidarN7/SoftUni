@@ -39,6 +39,42 @@ namespace MiniORM
 
         private void MapAllRelations()
         {
+            foreach (KeyValuePair<Type, PropertyInfo> dbSetProperty in dbSetProperties)
+            {
+                Type dbSetType = dbSetProperty.Key;
+                MethodInfo mapRelationsGeneric = typeof(DbContext)
+                    .GetMethod("MapRelations", BindingFlags.Instance | BindingFlags.NonPublic)
+                    .MakeGenericMethod(dbSetType);
+
+                object dbSet = dbSetProperty.Value.GetValue(this);
+
+                mapRelationsGeneric.Invoke(this, new[] { dbSet });
+            }
+        }
+
+        private void MapRelations<TEntity>(DbSet<TEntity> dbSet) where TEntity : class, new()
+        {
+            Type entityType = typeof(TEntity);
+
+            MapNavigationProperties(dbSet);
+
+            PropertyInfo[] collections = entityType.GetProperties()
+                .Where(pi => pi.PropertyType.IsGenericType && pi.PropertyType.GetGenericTypeDefinition() == typeof(ICollection))
+                .ToArray();
+
+            foreach(PropertyInfo collection in collections)
+            {
+                Type collectionType = collection.PropertyType.GenericTypeArguments.First();
+                MethodInfo mapCollectionMethod = typeof(DbContext)
+                    .GetMethod("MapCollection", BindingFlags.Instance | BindingFlags.NonPublic)
+                    .MakeGenericMethod(entityType, collectionType);
+
+                mapCollectionMethod.Invoke(this, new object[] { dbSet, collection });
+            }
+        }
+
+        private void MapNavigationProperties<TEntity>(DbSet<TEntity> dbSet) where TEntity : class, new()
+        {
             throw new NotImplementedException();
         }
 
@@ -57,10 +93,14 @@ namespace MiniORM
             }
         }
 
-        private void PopulateDbSet<TEntity>(PropertyInfo dbSet) where TEntity: class, new()
+        private void PopulateDbSet<TEntity>(PropertyInfo dbSet) where TEntity : class, new()
         {
             IEnumerable<TEntity> entitties = LoadTableEntities<TEntity>();
+            DbSet<TEntity> dbSetInstance = new DbSet<TEntity>(entitties);
+
+            ReflectionHelper.ReplaceBackingField(this, dbSet.Name, dbSetInstance);
         }
+
 
         private IEnumerable<TEntity> LoadTableEntities<TEntity>() where TEntity : class, new()
         {
@@ -94,7 +134,7 @@ namespace MiniORM
 
             if (dbSet.ChangeTracker.Removed.Any())
             {
-                connection.DeleteEntities(dbSet.ChangeTracker.Removed, tableName, columns); 
+                connection.DeleteEntities(dbSet.ChangeTracker.Removed, tableName, columns);
             }
         }
 
