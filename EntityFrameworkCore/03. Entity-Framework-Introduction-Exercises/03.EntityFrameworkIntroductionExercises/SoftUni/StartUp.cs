@@ -11,10 +11,8 @@ namespace SoftUni
         {
             using (SoftUniContext context = new SoftUniContext())
             {
-                Console.WriteLine(GetEmployeesFullInformation(context));
-                Employee employee = context.Employees.Where(e => e.EmployeeId == 292).FirstOrDefault();
-                Console.WriteLine(employee.MiddleName);
-                Console.WriteLine(employee.MiddleName == null);
+                Console.WriteLine(GetEmployeesWithSalaryOver50000(context));
+
             }
         }
         public static string GetEmployeesFullInformation(SoftUniContext context)
@@ -27,6 +25,15 @@ namespace SoftUni
                 })
                 .OrderBy(e => e.Id)
                 .Select(e => e.EmployeeInfo)
+                .ToList());
+        }
+
+        public static string GetEmployeesWithSalaryOver50000(SoftUniContext context)
+        {
+            return string.Join('\n', context.Employees
+                .Where(e => e.Salary > 50000)
+                .OrderBy(e => e.FirstName)
+                .Select(e => $"{e.FirstName} - {e.Salary:f2}")
                 .ToList());
         }
 
