@@ -1,11 +1,9 @@
 ﻿using System;
-using _01.DatabaseFirst.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using SoftUni.Models;
 
-#nullable disable
-
-namespace _01.DatabaseFirst.Data
+namespace SoftUni.Data
 {
     public partial class SoftUniContext : DbContext
     {
@@ -21,7 +19,7 @@ namespace _01.DatabaseFirst.Data
         public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
-        public virtual DbSet<EmployeesProject> EmployeesProjects { get; set; }
+        public virtual DbSet<EmployeeProject> EmployeesProjects { get; set; }
         public virtual DbSet<Project> Projects { get; set; }
         public virtual DbSet<Town> Towns { get; set; }
 
@@ -35,10 +33,10 @@ namespace _01.DatabaseFirst.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("Relational:Collation", "Cyrillic_General_CI_AS");
-
             modelBuilder.Entity<Address>(entity =>
             {
+                entity.HasKey(e => e.AddressId);
+
                 entity.Property(e => e.AddressId).HasColumnName("AddressID");
 
                 entity.Property(e => e.AddressText)
@@ -56,6 +54,8 @@ namespace _01.DatabaseFirst.Data
 
             modelBuilder.Entity<Department>(entity =>
             {
+                entity.HasKey(e => e.DepartmentId);
+
                 entity.Property(e => e.DepartmentId).HasColumnName("DepartmentID");
 
                 entity.Property(e => e.ManagerId).HasColumnName("ManagerID");
@@ -74,6 +74,8 @@ namespace _01.DatabaseFirst.Data
 
             modelBuilder.Entity<Employee>(entity =>
             {
+                entity.HasKey(e => e.EmployeeId);
+
                 entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
 
                 entity.Property(e => e.AddressId).HasColumnName("AddressID");
@@ -122,7 +124,7 @@ namespace _01.DatabaseFirst.Data
                     .HasConstraintName("FK_Employees_Employees");
             });
 
-            modelBuilder.Entity<EmployeesProject>(entity =>
+            modelBuilder.Entity<EmployeeProject>(entity =>
             {
                 entity.HasKey(e => new { e.EmployeeId, e.ProjectId });
 
@@ -145,6 +147,8 @@ namespace _01.DatabaseFirst.Data
 
             modelBuilder.Entity<Project>(entity =>
             {
+                entity.HasKey(e => e.ProjectId);
+
                 entity.Property(e => e.ProjectId).HasColumnName("ProjectID");
 
                 entity.Property(e => e.Description).HasColumnType("ntext");
@@ -161,6 +165,8 @@ namespace _01.DatabaseFirst.Data
 
             modelBuilder.Entity<Town>(entity =>
             {
+                entity.HasKey(e => e.TownId);
+
                 entity.Property(e => e.TownId).HasColumnName("TownID");
 
                 entity.Property(e => e.Name)
