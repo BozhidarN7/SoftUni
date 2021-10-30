@@ -16,7 +16,7 @@ namespace SoftUni
         {
             using (SoftUniContext context = new SoftUniContext())
             {
-                Console.WriteLine(GetDepartmentsWithMoreThan5Employees(context));
+                Console.WriteLine(GetEmployeesByFirstNameStartingWithSa(context));
 
             }
         }
@@ -117,7 +117,7 @@ namespace SoftUni
             StringBuilder sb = new StringBuilder();
 
             sb.AppendLine($"{employee.FirstName} {employee.LastName} - {employee.JobTitle}");
-            foreach(EmployeeProject ep in employee.EmployeesProjects.OrderBy(ep => ep.Project.Name))
+            foreach (EmployeeProject ep in employee.EmployeesProjects.OrderBy(ep => ep.Project.Name))
             {
                 sb.AppendLine($"{ep.Project.Name}");
             }
@@ -127,28 +127,69 @@ namespace SoftUni
 
         public static string GetDepartmentsWithMoreThan5Employees(SoftUniContext context)
         {
-           List<Department> departments = context.Departments
-                .Where(d => d.Employees.Count > 5)
-                .Include(d => d.Manager)
-                .Include(d=> d.Employees)
-                .Take(5)
-                .OrderBy(d => d.Employees.Count)
-                .ThenBy(d => d.Name)
-                .ToList();
+            List<Department> departments = context.Departments
+                 .Where(d => d.Employees.Count > 5)
+                 .Include(d => d.Manager)
+                 .Include(d => d.Employees)
+                 .Take(5)
+                 .OrderBy(d => d.Employees.Count)
+                 .ThenBy(d => d.Name)
+                 .ToList();
 
             StringBuilder sb = new StringBuilder();
 
-            foreach(Department department in departments)
+            foreach (Department department in departments)
             {
                 sb.AppendLine($"{department.Name} - {department.Manager?.FirstName} {department.Manager?.LastName}");
 
-                foreach(Employee employee in department.Employees.OrderBy(e => e.FirstName).ThenBy(e => e.LastName))
+                foreach (Employee employee in department.Employees.OrderBy(e => e.FirstName).ThenBy(e => e.LastName))
                 {
                     sb.AppendLine($"{employee.FirstName} {employee.LastName} - {employee.JobTitle}");
                 }
             }
 
             return sb.ToString().Trim();
+        }
+
+        public static string GetLatestProjects(SoftUniContext context)
+        {
+            return string.Join(Environment.NewLine, context.Projects
+                .OrderByDescending(p => p.StartDate)
+                .Take(10)
+                .OrderBy(p => p.Name)
+                .Select(p => $"{p.Name}\n{p.Description}\n{p.StartDate.ToString("M/d/yyyy h:mm:ss tt")}"));
+        }
+
+        public static string IncreaseSalaries(SoftUniContext context)
+        {
+            List<Employee> employees = context.Employees
+                .Where(e => e.Department.Name == "Engineering"
+                || e.Department.Name == "Tool Design"
+                || e.Department.Name == "Marketing"
+                || e.Department.Name == "Information Services")
+                .OrderBy(e => e.FirstName)
+                .ThenBy(e => e.LastName)
+                .ToList();
+
+            foreach (Employee employee in employees)
+            {
+                employee.Salary = employee.Salary + employee.Salary * 0.12M;
+            }
+
+            context.SaveChanges();
+
+            return string.Join(Environment.NewLine, employees
+                .Select(e => $"{e.FirstName} {e.LastName} (${e.Salary:f2})"));
+        }
+
+        public static string GetEmployeesByFirstNameStartingWithSa(SoftUniContext context)
+        {
+            return string.Join(Environment.NewLine, context.Employees
+                .Where(e => e.FirstName.StartsWith("Sa"))
+                .OrderBy(e => e.FirstName)
+                .ThenBy(e => e.LastName)
+                .Select(e => $"{e.FirstName} {e.LastName} - {e.JobTitle} - (${e.Salary:f2})")
+                .ToList());
         }
     }
 }
