@@ -201,5 +201,18 @@ namespace SoftUni
 
             return string.Join(Environment.NewLine, context.Projects.Take(10).Select(p => p.Name));
         }
+
+        public static string RemoveTown(SoftUniContext context)
+        {
+            List<Address> seattleAddresses = context.Addresses.Where(x => x.Town.Name == "Seattle").ToList();
+            int deletedAddresses = seattleAddresses.Count;
+            context.Employees.Where(e => e.Address.Town.Name == "Seattle").ToList().ForEach(e => e.AddressId = null);
+            context.Addresses.RemoveRange(seattleAddresses);
+            context.Towns.Remove(context.Towns.Where(t => t.Name == "Seattle").FirstOrDefault());
+
+            context.SaveChanges();
+
+            return $"{deletedAddresses} addresses in Seattle were deleted";
+        }
     }
 }
