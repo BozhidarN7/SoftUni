@@ -16,7 +16,7 @@ namespace SoftUni
         {
             using (SoftUniContext context = new SoftUniContext())
             {
-                Console.WriteLine(GetAddressesByTown(context));
+                Console.WriteLine(GetEmployee147(context));
 
             }
         }
@@ -109,8 +109,20 @@ namespace SoftUni
                 .ThenBy(a => a.AddressText)
                 .Take(10)
                 .Select(a => $"{a.AddressText}, {a.Town.Name} - {a.Employees.Count} employees"));
+        }
+        public static string GetEmployee147(SoftUniContext context)
+        {
+            Employee employee = context.Employees.FirstOrDefault(e => e.EmployeeId == 147);
 
+            StringBuilder sb = new StringBuilder();
 
+            sb.AppendLine($"{employee.FirstName} {employee.LastName} - {employee.JobTitle}");
+            foreach(EmployeeProject ep in employee.EmployeesProjects.OrderBy(ep => ep.Project.Name))
+            {
+                sb.AppendLine($"{ep.Project.Name}");
+            }
+
+            return sb.ToString().Trim();
         }
     }
 }
