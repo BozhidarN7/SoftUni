@@ -16,7 +16,7 @@ namespace SoftUni
         {
             using (SoftUniContext context = new SoftUniContext())
             {
-                Console.WriteLine(GetEmployeesByFirstNameStartingWithSa(context));
+                Console.WriteLine(DeleteProjectById(context));
 
             }
         }
@@ -190,6 +190,16 @@ namespace SoftUni
                 .ThenBy(e => e.LastName)
                 .Select(e => $"{e.FirstName} {e.LastName} - {e.JobTitle} - (${e.Salary:f2})")
                 .ToList());
+        }
+
+        public static string DeleteProjectById(SoftUniContext context)
+        {
+            context.EmployeesProjects.RemoveRange(context.EmployeesProjects.Where(ep => ep.ProjectId == 2).ToList());
+            context.Projects.Remove(context.Projects.Find(2));
+
+            context.SaveChanges();
+
+            return string.Join(Environment.NewLine, context.Projects.Take(10).Select(p => p.Name));
         }
     }
 }
