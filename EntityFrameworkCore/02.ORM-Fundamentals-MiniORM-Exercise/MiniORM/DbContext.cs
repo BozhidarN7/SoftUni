@@ -62,7 +62,7 @@ namespace MiniORM
                 .Where(pi => pi.PropertyType.IsGenericType && pi.PropertyType.GetGenericTypeDefinition() == typeof(ICollection))
                 .ToArray();
 
-            foreach(PropertyInfo collection in collections)
+            foreach (PropertyInfo collection in collections)
             {
                 Type collectionType = collection.PropertyType.GenericTypeArguments.First();
                 MethodInfo mapCollectionMethod = typeof(DbContext)
