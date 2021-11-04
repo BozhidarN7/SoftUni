@@ -1,7 +1,9 @@
 ﻿namespace MusicHub.Data
 {
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
     using MusicHub.Data.Models;
+    using System;
 
     public class MusicHubDbContext : DbContext
     {
@@ -19,7 +21,7 @@
         public DbSet<Performer> Performers { get; set; }
         public DbSet<Producer> Producers { get; set; }
         public DbSet<Writer> Writers { get; set; }
-        public DbSet<SongPerformer> SongsPerformers { get; set;}
+        public DbSet<SongPerformer> SongsPerformers { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -38,6 +40,8 @@
             {
                 e.HasKey(sp => new { sp.SongId, sp.PerformerId });
             });
+
+
         }
     }
 }

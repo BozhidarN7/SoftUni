@@ -19,7 +19,7 @@ namespace MusicHub.Data.Models
         [MaxLength(20)]
         public string Name { get; set; }
 
-        public string? Pseudonym { get; set; }
+        public string Pseudonym { get; set; }
 
         public virtual ICollection<Song> Songs { get; set; }
     }
