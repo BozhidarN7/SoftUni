@@ -14,7 +14,7 @@
             //DbInitializer.ResetDatabase(db);
 
             //string command = Console.ReadLine();
-            Console.WriteLine(GetGoldenBooks(db));
+            Console.WriteLine(GetBooksByPrice(db));
         }
 
         public static string GetBooksByAgeRestriction(BookShopContext context, string command)
@@ -32,6 +32,15 @@
                 .Where(b => b.EditionType == EditionType.Gold && b.Copies < 5000)
                 .OrderBy(b => b.BookId)
                 .Select(b => b.Title));
+        }
+
+        public static string GetBooksByPrice(BookShopContext context)
+        {
+            return string.Join(Environment.NewLine, context.Books.
+                Where(b => b.Price > 40)
+                .OrderByDescending(b => b.Price)
+                .Select(b => $"{b.Title} - ${b.Price:f2}")
+                .ToList());
         }
     }
 }
