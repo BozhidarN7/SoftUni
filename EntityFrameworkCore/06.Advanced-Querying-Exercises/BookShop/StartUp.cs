@@ -18,8 +18,8 @@
             using var db = new BookShopContext();
             //DbInitializer.ResetDatabase(db);
 
-            //string command = Console.ReadLine();
-            Console.WriteLine(GetMostRecentBooks(db));
+            string command = Console.ReadLine();
+            Console.WriteLine(GetBooksReleasedBefore(db, command));
             //IncreasePrices(db);
             //Console.WriteLine(RemoveBooks(db));
         }
@@ -88,16 +88,8 @@
         {
             return string.Join(Environment.NewLine, context.Books
                 .ToList()
-                .Where(b =>
-                {
-                    int result = DateTime.Compare(b.ReleaseDate.Value, DateTime.ParseExact(date, "dd-MM-yyyy", CultureInfo.InvariantCulture));
-                    if (result <= 0)
-                    {
-                        return true;
-                    }
-                    return false;
-                })
-                .OrderByDescending(b => b.ReleaseDate.Value)
+                .Where(b => b.ReleaseDate < DateTime.ParseExact(date, "dd-MM-yyyy", null))
+                .OrderByDescending(b => b.ReleaseDate)
                 .Select(b => $"{b.Title} - {b.EditionType} - ${b.Price:f2}")
                 .ToList());
         }
