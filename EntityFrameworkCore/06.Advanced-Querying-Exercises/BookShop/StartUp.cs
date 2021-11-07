@@ -13,8 +13,8 @@
             using var db = new BookShopContext();
             //DbInitializer.ResetDatabase(db);
 
-            string command = Console.ReadLine();
-            Console.WriteLine(GetBooksByAgeRestriction(db, command));
+            //string command = Console.ReadLine();
+            Console.WriteLine(GetGoldenBooks(db));
         }
 
         public static string GetBooksByAgeRestriction(BookShopContext context, string command)
@@ -24,6 +24,14 @@
                  .Select(b => b.Title)
                  .OrderBy(t => t)
                  .ToList());
+        }
+
+        public static string GetGoldenBooks(BookShopContext context)
+        {
+            return string.Join(Environment.NewLine, context.Books
+                .Where(b => b.EditionType == EditionType.Gold && b.Copies < 5000)
+                .OrderBy(b => b.BookId)
+                .Select(b => b.Title));
         }
     }
 }
