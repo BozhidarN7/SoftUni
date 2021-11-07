@@ -17,61 +17,65 @@
             MusicHubDbContext context =
                 new MusicHubDbContext();
 
-            //DbInitializer.ResetDatabase(context);
+            DbInitializer.ResetDatabase(context);
 
             Console.WriteLine(ExportAlbumsInfo(context, 9));
             //Console.WriteLine(ExportSongsAboveDuration(context, 4));
+
         }
 
         public static string ExportAlbumsInfo(MusicHubDbContext context, int producerId)
         {
-            var albums = context.Albums
-                 .ToList()
-                 .Where(a => a.ProducerId == producerId)
-                 .Select(a => new
-                 {
-                     AlbuName = a.Name,
-                     ReleaseDate = a.ReleaseDate.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
-                     ProdcuerName = a.Producer.Name,
-                     Songs = a.Songs
-                     .OrderByDescending(s => s.Name).ThenBy(s => s.Writer.Name)
-                     .Select(s => new
-                     {
-                         SongName = s.Name,
-                         Price = s.Price,
-                         SongWriterName = s.Writer.Name,
-                     })
-                     .ToList()
-                     .OrderByDescending(s => s.SongName)
-                     .ThenBy(s => s.SongWriterName)
-                     .ToList(),
-                     AlbumPrice = a.Price
-                 })
-                 .ToList()
-                 .OrderByDescending(a => a.AlbumPrice)
-                 .ToList();
-
             StringBuilder sb = new StringBuilder();
 
-            foreach (var album in albums)
-            {
-                sb.AppendLine($"-AlbumName: {album.AlbuName}");
-                sb.AppendLine($"-ReleaseDate: {album.ReleaseDate}");
-                sb.AppendLine($"-ProducerName: {album.ProdcuerName}");
-                sb.AppendLine("-Songs:");
+            var albumsInfo = context
+                .Albums
+                .ToArray()
+                .Where(a => a.ProducerId == producerId)
+                .OrderByDescending(a => a.Price)
+                .Select(a => new
+                {
+                    AlbumName = a.Name,
+                    ReleaseDate = a.ReleaseDate.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture),
+                    ProducerName = a.Producer.Name,
+                    Songs = a.Songs
+                        .ToArray()
+                        .Select(s => new
+                        {
+                            SongName = s.Name,
+                            Price = s.Price.ToString("f2"),
+                            Writer = s.Writer.Name
+                        })
+                        .OrderByDescending(s => s.SongName)
+                        .ThenBy(s => s.Writer)
+                        .ToArray(),
+                    TotalAlbumPrice = a.Price.ToString("f2")
+                })
+                .ToArray();
 
-                int songNumber = 1;
+            foreach (var album in albumsInfo)
+            {
+                sb
+                    .AppendLine($"-AlbumName: {album.AlbumName}")
+                    .AppendLine($"-ReleaseDate: {album.ReleaseDate}")
+                    .AppendLine($"-ProducerName: {album.ProducerName}")
+                    .AppendLine($"-Songs:");
+
+                int i = 1;
                 foreach (var song in album.Songs)
                 {
-                    sb.AppendLine($"---#{songNumber++}");
-                    sb.AppendLine($"---SongName: {song.SongName}");
-                    sb.AppendLine($"---Price: {song.Price:f2}");
-                    sb.AppendLine($"---Writer: {song.SongWriterName}");
+                    sb
+                        .AppendLine($"---#{i++}")
+                        .AppendLine($"---SongName: {song.SongName}")
+                        .AppendLine($"---Price: {song.Price}")
+                        .AppendLine($"---Writer: {song.Writer}");
                 }
-                sb.AppendLine($"-AlbumPrice: {album.AlbumPrice:f2}");
+
+                sb
+                    .AppendLine($"-AlbumPrice: {album.TotalAlbumPrice}");
             }
 
-            return sb.ToString().Trim();
+            return sb.ToString().TrimEnd();
         }
 
         public static string ExportSongsAboveDuration(MusicHubDbContext context, int duration)

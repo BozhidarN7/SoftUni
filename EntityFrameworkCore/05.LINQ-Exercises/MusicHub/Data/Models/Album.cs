@@ -22,7 +22,6 @@ namespace MusicHub.Data.Models
 
         public DateTime ReleaseDate { get; set; }
 
-        [NotMapped]
         public decimal Price => Songs.Sum(s => s.Price);
 
         [ForeignKey(nameof(Producer))]
