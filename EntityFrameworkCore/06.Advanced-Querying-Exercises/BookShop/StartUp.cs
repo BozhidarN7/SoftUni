@@ -19,7 +19,7 @@
             //DbInitializer.ResetDatabase(db);
 
             string command = Console.ReadLine();
-            Console.WriteLine(GetBooksReleasedBefore(db, command));
+            Console.WriteLine(GetAuthorNamesEndingIn(db, command));
             //IncreasePrices(db);
             //Console.WriteLine(RemoveBooks(db));
         }
@@ -98,9 +98,9 @@
         {
             return string.Join(Environment.NewLine, context.Authors
                 .ToList()
-                .Where(a => a.FirstName.ToLower().EndsWith(input.ToLower()))
-                .OrderBy(a => a.FirstName)
+                .Where(a => a.FirstName.EndsWith(input))
                 .Select(a => $"{a.FirstName} {a.LastName}")
+                .OrderBy(a => a)
                 .ToList());
         }
 
