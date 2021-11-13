@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using ProductShop.DataTransferObjects;
+using ProductShop.DataTransferObjects.Input;
+using ProductShop.Models;
 
 namespace ProductShop
 {
@@ -6,6 +9,10 @@ namespace ProductShop
     {
         public ProductShopProfile()
         {
+            CreateMap<UserInputDto, User>();
+            CreateMap<ProductInputDto, Product>();
+            CreateMap<CategoryInputDto, Category>();
+            CreateMap<CategoryProductInputDto, CategoryProduct>();
         }
     }
 }
