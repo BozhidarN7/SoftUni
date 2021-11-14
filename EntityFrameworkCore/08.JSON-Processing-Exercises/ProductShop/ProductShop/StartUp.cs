@@ -102,14 +102,14 @@ namespace ProductShop
         public static string GetSoldProducts(ProductShopContext context)
         {
             var users = context.Users
-                .Where(u => u.ProductsBought.Count() > 1)
+                .Where(u => u.ProductsSold.Any(p => p.Buyer != null))
                 .OrderBy(u => u.LastName)
                 .ThenBy(u => u.FirstName)
                 .Select(u => new
                 {
                     u.FirstName,
                     u.LastName,
-                    soldProducts = u.ProductsBought.Select(p => new
+                    soldProducts = u.ProductsSold.Select(p => new
                     {
                         p.Name,
                         p.Price,
