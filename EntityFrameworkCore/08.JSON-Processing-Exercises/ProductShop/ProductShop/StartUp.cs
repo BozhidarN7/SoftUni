@@ -20,7 +20,7 @@ namespace ProductShop
 
             //string categoriesProductsInput = File.ReadAllText("../../../Datasets/categories-products.json");
 
-            Console.WriteLine(GetSoldProducts(context));
+            Console.WriteLine(GetCategoriesByProductsCount(context));
         }
 
         public static string ImportUsers(ProductShopContext context, string inputJson)
@@ -119,6 +119,30 @@ namespace ProductShop
                 });
 
             string serialized = JsonConvert.SerializeObject(users, new JsonSerializerSettings()
+            {
+                Formatting = Formatting.Indented,
+                ContractResolver = new DefaultContractResolver()
+                {
+                    NamingStrategy = new CamelCaseNamingStrategy()
+                }
+            });
+
+            return serialized;
+        }
+
+        public static string GetCategoriesByProductsCount(ProductShopContext context)
+        {
+            var categories = context.Categories
+                .OrderByDescending(c => c.CategoryProducts.Count)
+                .Select(c => new
+                {
+                    Category = c.Name,
+                    ProductsCount = c.CategoryProducts.Count,
+                    AveragePrice = $"{c.CategoryProducts.Average(p => p.Product.Price):f2}",
+                    TotalRevenue = $"{c.CategoryProducts.Sum(p => p.Product.Price):f2}"
+                });
+
+            string serialized = JsonConvert.SerializeObject(categories, new JsonSerializerSettings()
             {
                 Formatting = Formatting.Indented,
                 ContractResolver = new DefaultContractResolver()
