@@ -21,9 +21,11 @@ namespace CarDealer
 
             string inputSuppliers = File.ReadAllText("../../../Datasets/suppliers.json");
             string inputParts = File.ReadAllText("../../../Datasets/parts.json");
+            string inputCars = File.ReadAllText("../../../Datasets/cars.json");
 
             Console.WriteLine(ImportSuppliers(context, inputSuppliers));
             Console.WriteLine(ImportParts(context, inputParts));
+            Console.WriteLine(ImportCars(context, inputCars));
 
         }
 
@@ -51,6 +53,42 @@ namespace CarDealer
             context.SaveChanges();
 
             return $"Successfully imported {mappedParts.Count}.";
+        }
+
+        public static string ImportCars(CarDealerContext context, string inputJson)
+        {
+            InitializeMapper();
+            List<CarsInputDto> carsDto = JsonConvert.DeserializeObject<List<CarsInputDto>>(inputJson);
+            List<Car> mappedCars = new List<Car>();
+
+            foreach (CarsInputDto car in carsDto)
+            {
+                Car vehicle = mapper.Map<CarsInputDto,Car>(car);
+                mappedCars.Add(vehicle);
+
+                List<int> partIds = car.PartsId.Distinct().ToList();
+
+
+                if (partIds == null)
+                {
+                    continue;
+                }
+
+                partIds.ForEach(pid =>
+                {
+                    PartCar currentPair = new PartCar()
+                    {
+                        Car = vehicle,
+                        PartId = pid
+                    };
+                    vehicle.PartCars.Add(currentPair);
+                });
+            }
+
+            context.Cars.AddRange(mappedCars);
+            context.SaveChanges();
+
+            return $"Successfully imported {mappedCars.Count}.";
         }
 
         private static void InitializeMapper()

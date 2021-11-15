@@ -13,6 +13,7 @@ namespace CarDealer
         {
             CreateMap<SupplierInputDto, Supplier>();
             CreateMap<PartsInputDto, Part>();
+            CreateMap<CarsInputDto, Car>();
         }
     }
 }
