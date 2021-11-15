@@ -20,8 +20,10 @@ namespace CarDealer
             context.Database.EnsureCreated();
 
             string inputSuppliers = File.ReadAllText("../../../Datasets/suppliers.json");
+            string inputParts = File.ReadAllText("../../../Datasets/parts.json");
 
             Console.WriteLine(ImportSuppliers(context, inputSuppliers));
+            Console.WriteLine(ImportParts(context, inputParts));
 
         }
 
@@ -33,8 +35,22 @@ namespace CarDealer
             List<Supplier> mappedSuppliers = mapper.Map<List<Supplier>>(suppliersDto);
 
             context.Suppliers.AddRange(mappedSuppliers);
+            context.SaveChanges();
 
-            return $"Successfully imported {suppliersDto.Count}";
+            return $"Successfully imported {suppliersDto.Count}.";
+        }
+
+        public static string ImportParts(CarDealerContext context, string inputJson)
+        {
+            InitializeMapper();
+            int lastSupplierId = context.Suppliers.Max(s => s.Id);
+            List<PartsInputDto> partsDto = JsonConvert.DeserializeObject<List<PartsInputDto>>(inputJson).Where(p => p.SupplierId <= lastSupplierId).ToList();
+            List<Part> mappedParts = mapper.Map<List<Part>>(partsDto);
+
+            context.Parts.AddRange(mappedParts);
+            context.SaveChanges();
+
+            return $"Successfully imported {mappedParts.Count}.";
         }
 
         private static void InitializeMapper()
