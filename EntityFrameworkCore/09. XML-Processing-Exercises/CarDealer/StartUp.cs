@@ -32,7 +32,7 @@ namespace CarDealer
             //Console.WriteLine(ImportCustomers(context, customersInput));
             //Console.WriteLine(ImportSales(context, salesInput));
 
-            Console.WriteLine(GetCarsFromMakeBmw(context));
+            Console.WriteLine(GetLocalSuppliers(context));
         }
 
         public static string ImportSuppliers(CarDealerContext context, string inputXml)
@@ -235,11 +235,12 @@ namespace CarDealer
 
         public static string GetCarsFromMakeBmw(CarDealerContext context)
         {
-            ExportCarsFromMakeBmwDto [] carsDto = context.Cars
+            ExportCarsFromMakeBmwDto[] carsDto = context.Cars
                 .Where(c => c.Make == "BMW")
                 .OrderBy(c => c.Model)
                 .ThenByDescending(c => c.TravelledDistance)
-                .Select(c => new ExportCarsFromMakeBmwDto() { 
+                .Select(c => new ExportCarsFromMakeBmwDto()
+                {
                     Model = c.Model,
                     Id = c.Id,
                     TravelledDistance = c.TravelledDistance
@@ -255,6 +256,32 @@ namespace CarDealer
             using StringWriter sw = new StringWriter(sb);
 
             xmlSerializer.Serialize(sw, carsDto, namespaces);
+
+            return sb.ToString().TrimEnd();
+
+        }
+
+        public static string GetLocalSuppliers(CarDealerContext context)
+        {
+            ExportLocalSuppliersDto[] suppliersDto = context.Suppliers
+                .Where(s => s.IsImporter == false)
+                .Select(s => new ExportLocalSuppliersDto()
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    PartsCount = s.Parts.Count
+                })
+                .ToArray();
+
+            XmlRootAttribute xmlRoot = new XmlRootAttribute("suppliers");
+            XmlSerializer xmlSerialize = new XmlSerializer(typeof(ExportLocalSuppliersDto[]), xmlRoot);
+            XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+            namespaces.Add(string.Empty, string.Empty);
+
+            StringBuilder sb = new StringBuilder();
+            StringWriter sw = new StringWriter(sb);
+
+            xmlSerialize.Serialize( sw, suppliersDto,namespaces);
 
             return sb.ToString().TrimEnd();
 
