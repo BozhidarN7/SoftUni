@@ -32,7 +32,7 @@ namespace CarDealer
             //Console.WriteLine(ImportCustomers(context, customersInput));
             //Console.WriteLine(ImportSales(context, salesInput));
 
-            Console.WriteLine(GetCarsWithDistance(context));
+            Console.WriteLine(GetCarsFromMakeBmw(context));
         }
 
         public static string ImportSuppliers(CarDealerContext context, string inputXml)
@@ -223,7 +223,7 @@ namespace CarDealer
             XmlRootAttribute xmlRoot = new XmlRootAttribute("cars");
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(ExportCarsWithDistanceDto[]), xmlRoot);
             XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
-            namespaces.Add(String.Empty, String.Empty);
+            namespaces.Add(string.Empty, string.Empty);
 
             StringBuilder sb = new StringBuilder();
             using StringWriter stringWriter = new StringWriter(sb);
@@ -231,6 +231,33 @@ namespace CarDealer
             xmlSerializer.Serialize(stringWriter, carsDto, namespaces);
 
             return sb.ToString().TrimEnd();
+        }
+
+        public static string GetCarsFromMakeBmw(CarDealerContext context)
+        {
+            ExportCarsFromMakeBmwDto [] carsDto = context.Cars
+                .Where(c => c.Make == "BMW")
+                .OrderBy(c => c.Model)
+                .ThenByDescending(c => c.TravelledDistance)
+                .Select(c => new ExportCarsFromMakeBmwDto() { 
+                    Model = c.Model,
+                    Id = c.Id,
+                    TravelledDistance = c.TravelledDistance
+                })
+                .ToArray();
+
+            XmlRootAttribute xmlRoot = new XmlRootAttribute("cars");
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(ExportCarsFromMakeBmwDto[]), xmlRoot);
+            XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+            namespaces.Add(string.Empty, string.Empty);
+
+            StringBuilder sb = new StringBuilder();
+            using StringWriter sw = new StringWriter(sb);
+
+            xmlSerializer.Serialize(sw, carsDto, namespaces);
+
+            return sb.ToString().TrimEnd();
+
         }
     }
 }
