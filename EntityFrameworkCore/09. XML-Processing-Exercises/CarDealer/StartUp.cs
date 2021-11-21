@@ -21,10 +21,12 @@ namespace CarDealer
             string suppliersInput = File.ReadAllText("../../../Datasets/suppliers.xml");
             string partsInput = File.ReadAllText("../../../Datasets/parts.xml");
             string carsInput = File.ReadAllText("../../../Datasets/cars.xml");
+            string customersInput = File.ReadAllText("../../../Datasets/customers.xml");
 
             Console.WriteLine(ImportSuppliers(context, suppliersInput));
             Console.WriteLine(ImportParts(context, partsInput));
             Console.WriteLine(ImportCars(context, carsInput));
+            Console.WriteLine(ImportCustomers(context, customersInput));
         }
 
         public static string ImportSuppliers(CarDealerContext context, string inputXml)
@@ -98,7 +100,7 @@ namespace CarDealer
 
             ICollection<Car> cars = new HashSet<Car>();
 
-            foreach(ImportCarDto carDto in carsDto)
+            foreach (ImportCarDto carDto in carsDto)
             {
                 Car car = new Car()
                 {
@@ -132,6 +134,35 @@ namespace CarDealer
             context.SaveChanges();
 
             return $"Successfully imported {cars.Count}";
+        }
+
+        public static string ImportCustomers(CarDealerContext context, string inputXml)
+        {
+            XmlRootAttribute xmlRoot = new XmlRootAttribute("Customers");
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(ImportCustomerDto[]), xmlRoot);
+
+            using StringReader stringReader = new StringReader(inputXml);
+
+            ImportCustomerDto[] customersDto = (ImportCustomerDto[])xmlSerializer.Deserialize(stringReader);
+
+            ICollection<Customer> customers = new HashSet<Customer>();
+
+            foreach(ImportCustomerDto customerDto in customersDto)
+            {
+                Customer customer = new Customer()
+                {
+                    Name = customerDto.Name,
+                    BirthDate = DateTime.Parse(customerDto.BirthDate),
+                    IsYoungDriver = bool.Parse(customerDto.IsYoungDriver)
+                };
+
+                customers.Add(customer);
+            }
+
+            context.Customers.AddRange(customers);
+            context.SaveChanges();
+
+            return $"Successfully imported {customers.Count}";
         }
     }
 }
