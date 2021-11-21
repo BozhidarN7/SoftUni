@@ -1,10 +1,12 @@
 ﻿using CarDealer.Data;
+using CarDealer.DTO.ExportDto;
 using CarDealer.DTO.ImportDto;
 using CarDealer.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml.Serialization;
 
 namespace CarDealer
@@ -15,18 +17,22 @@ namespace CarDealer
         {
             CarDealerContext context = new CarDealerContext();
 
-            context.Database.EnsureDeleted();
-            context.Database.EnsureCreated();
+            //context.Database.EnsureDeleted();
+            //context.Database.EnsureCreated();
 
-            string suppliersInput = File.ReadAllText("../../../Datasets/suppliers.xml");
-            string partsInput = File.ReadAllText("../../../Datasets/parts.xml");
-            string carsInput = File.ReadAllText("../../../Datasets/cars.xml");
-            string customersInput = File.ReadAllText("../../../Datasets/customers.xml");
+            //string suppliersInput = File.ReadAllText("../../../Datasets/suppliers.xml");
+            //string partsInput = File.ReadAllText("../../../Datasets/parts.xml");
+            //string carsInput = File.ReadAllText("../../../Datasets/cars.xml");
+            //string customersInput = File.ReadAllText("../../../Datasets/customers.xml");
+            //string salesInput = File.ReadAllText("../../../Datasets/sales.xml");
 
-            Console.WriteLine(ImportSuppliers(context, suppliersInput));
-            Console.WriteLine(ImportParts(context, partsInput));
-            Console.WriteLine(ImportCars(context, carsInput));
-            Console.WriteLine(ImportCustomers(context, customersInput));
+            //Console.WriteLine(ImportSuppliers(context, suppliersInput));
+            //Console.WriteLine(ImportParts(context, partsInput));
+            //Console.WriteLine(ImportCars(context, carsInput));
+            //Console.WriteLine(ImportCustomers(context, customersInput));
+            //Console.WriteLine(ImportSales(context, salesInput));
+
+            Console.WriteLine(GetCarsWithDistance(context));
         }
 
         public static string ImportSuppliers(CarDealerContext context, string inputXml)
@@ -147,7 +153,7 @@ namespace CarDealer
 
             ICollection<Customer> customers = new HashSet<Customer>();
 
-            foreach(ImportCustomerDto customerDto in customersDto)
+            foreach (ImportCustomerDto customerDto in customersDto)
             {
                 Customer customer = new Customer()
                 {
@@ -163,6 +169,68 @@ namespace CarDealer
             context.SaveChanges();
 
             return $"Successfully imported {customers.Count}";
+        }
+
+        public static string ImportSales(CarDealerContext context, string inputXml)
+        {
+            XmlRootAttribute xmlRoot = new XmlRootAttribute("Sales");
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(ImportSaleDto[]), xmlRoot);
+
+            using StringReader stringReader = new StringReader(inputXml);
+
+            ImportSaleDto[] salesDto = (ImportSaleDto[])xmlSerializer.Deserialize(stringReader);
+
+            ICollection<Sale> sales = new HashSet<Sale>();
+
+            foreach (ImportSaleDto saleDto in salesDto)
+            {
+                if (!context.Cars.Any(c => c.Id == saleDto.CarId))
+                {
+                    continue;
+                }
+
+                Sale sale = new Sale()
+                {
+                    CarId = saleDto.CarId,
+                    CustomerId = saleDto.CustomerId,
+                    Discount = saleDto.Discount,
+                };
+
+                sales.Add(sale);
+            }
+
+            context.Sales.AddRange(sales);
+            context.SaveChanges();
+
+            return $"Successfully imported {sales.Count}";
+        }
+
+        public static string GetCarsWithDistance(CarDealerContext context)
+        {
+            ExportCarsWithDistanceDto[] carsDto = context.Cars
+                .Where(c => c.TravelledDistance > 2000000)
+                .OrderBy(c => c.Make)
+                .ThenBy(c => c.Model)
+                .Take(10)
+                .Select(c => new ExportCarsWithDistanceDto()
+                {
+                    Make = c.Make,
+                    Model = c.Model,
+                    TravelledDistance = c.TravelledDistance.ToString()
+                })
+                .ToArray();
+
+            XmlRootAttribute xmlRoot = new XmlRootAttribute("cars");
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(ExportCarsWithDistanceDto[]), xmlRoot);
+            XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+            namespaces.Add(String.Empty, String.Empty);
+
+            StringBuilder sb = new StringBuilder();
+            using StringWriter stringWriter = new StringWriter(sb);
+
+            xmlSerializer.Serialize(stringWriter, carsDto, namespaces);
+
+            return sb.ToString().TrimEnd();
         }
     }
 }
