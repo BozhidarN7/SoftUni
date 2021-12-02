@@ -209,13 +209,6 @@
                     continue;
                 }
 
-                //Department department = context.Departments.Find(officerDto.DepartmentId);
-                //if (department == null)
-                //{
-                //    result.AppendLine(ErrorMessage);
-                //    continue;
-                //}
-
                 Officer officer = new Officer()
                 {
                     FullName = officerDto.Name,
