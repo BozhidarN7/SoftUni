@@ -14,7 +14,7 @@
 
             Mapper.Initialize(config => config.AddProfile<SoftJailProfile>());
 
-            ResetDatabase(context, shouldDropDatabase: false);
+            //ResetDatabase(context, shouldDropDatabase: false);
 
             var projectDir = GetProjectDirectory();
 
