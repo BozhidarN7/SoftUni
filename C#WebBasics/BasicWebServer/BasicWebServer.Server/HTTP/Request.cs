@@ -21,7 +21,7 @@ namespace BasicWebServer.Server.HTTP
             string[] lines = request.Split("\r\n");
             string[] startLine = lines.First().Split(" ");
 
-            Method method = ParseMethod(startLine[0]);
+            Method method = ParseMethod(startLine[0].Substring(0,1).ToUpper() + startLine[0].Substring(1).ToLower());
             string url = startLine[1];
             HeaderCollection headers = ParseHeaders(lines.Skip(1));
             string[] bodyLines = lines.Skip(headers.Count + 2).ToArray();
