@@ -32,7 +32,7 @@ namespace BasicWebServer.Server
 
         public HttpServer(Action<IRoutingTable> routingTable) : this(8080, routingTable) { }
 
-        public void Start()
+        public async Task Start()
         {
             serverListener.Start();
 
@@ -41,36 +41,40 @@ namespace BasicWebServer.Server
 
             while (true)
             {
-                TcpClient connection = serverListener.AcceptTcpClient();
+                TcpClient connection = await serverListener.AcceptTcpClientAsync();
 
-                NetworkStream networkStream = connection.GetStream();
-
-                string requestText = ReadRequest(networkStream);
-
-                Console.WriteLine(requestText);
-
-                Request request = Request.Parse(requestText);
-                Response response = routingTable.MatchRequest(request);
-
-                if (response.PreRenderAction != null)
+                _ = Task.Run(async () =>
                 {
-                    response.PreRenderAction(request, response);
-                }
 
-                WriteResponse(networkStream, response);
+                    NetworkStream networkStream = connection.GetStream();
 
-                connection.Close();
+                    string requestText = await ReadRequest(networkStream);
+
+                    Console.WriteLine(requestText);
+
+                    Request request = Request.Parse(requestText);
+                    Response response = routingTable.MatchRequest(request);
+
+                    if (response.PreRenderAction != null)
+                    {
+                        response.PreRenderAction(request, response);
+                    }
+
+                    await WriteResponse(networkStream, response);
+
+                    connection.Close();
+                });
             }
         }
 
-        private void WriteResponse(NetworkStream networkStream, Response response)
+        private async Task WriteResponse(NetworkStream networkStream, Response response)
         {
             byte[] responseBytes = Encoding.UTF8.GetBytes(response.ToString());
 
-            networkStream.Write(responseBytes);
+            await networkStream.WriteAsync(responseBytes);
         }
 
-        private string ReadRequest(NetworkStream networkStream)
+        private async Task<string> ReadRequest(NetworkStream networkStream)
         {
             int bufferLength = 1024;
             byte[] buffer = new byte[bufferLength];
@@ -81,7 +85,7 @@ namespace BasicWebServer.Server
 
             do
             {
-                int bytesRead = networkStream.Read(buffer, 0, bufferLength);
+                int bytesRead = await networkStream.ReadAsync(buffer, 0, bufferLength);
                 totalBytes += bytesRead;
 
                 if (totalBytes > 10 * 1024)
