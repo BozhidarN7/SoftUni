@@ -15,6 +15,8 @@ namespace BasicWebServer.Server.HTTP
 
         public HeaderCollection Headers { get; private set; }
 
+        public CookieCollection Cookies { get; private set; }
+
         public string Body { get; private set; }
 
         public IReadOnlyDictionary<string, string> Form { get; private set; }
@@ -29,6 +31,8 @@ namespace BasicWebServer.Server.HTTP
 
             HeaderCollection headers = ParseHeaders(lines.Skip(1));
 
+            CookieCollection cookies = ParseCookies(headers);
+
             string[] bodyLines = lines.Skip(headers.Count + 2).ToArray();
 
             string body = string.Join("\r\n", bodyLines);
@@ -40,6 +44,7 @@ namespace BasicWebServer.Server.HTTP
                 Method = method,
                 Url = url,
                 Headers = headers,
+                Cookies = cookies,
                 Body = body,
                 Form = form
             };
@@ -62,6 +67,28 @@ namespace BasicWebServer.Server.HTTP
             return formCollection;
         }
 
+        private static CookieCollection ParseCookies(HeaderCollection headers)
+        {
+            CookieCollection cookieCollection = new CookieCollection();
+
+            if (headers.Contains(Header.Cookie))
+            {
+                string cookieHeader = headers[Header.Cookie];
+                string[] allCookies = cookieHeader.Split(';', StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (string cookieText in allCookies)
+                {
+                    string[] cookieParts = cookieText.Split('=', StringSplitOptions.RemoveEmptyEntries);
+
+                    string cookieName = cookieParts[0].Trim();
+                    string cookieValue = cookieParts[1].Trim();
+
+                    cookieCollection.Add(cookieName, cookieValue);
+                }
+            }
+
+            return cookieCollection;
+        }
         private static Dictionary<string, string> ParseFormData(string bodyLines) =>
             HttpUtility.UrlDecode(bodyLines)
             .Split('&')

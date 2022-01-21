@@ -20,9 +20,11 @@ namespace BasicWebServer.Server.HTTP
 
         public HeaderCollection Headers { get; } = new HeaderCollection();
 
+        public CookieCollection Cookies { get; } = new CookieCollection();
+
         public string Body { get; set; }
 
-        public Action<Request,Response> PreRenderAction { get; protected set; }
+        public Action<Request, Response> PreRenderAction { get; protected set; }
 
         public override string ToString()
         {
@@ -30,12 +32,17 @@ namespace BasicWebServer.Server.HTTP
 
             result.AppendLine($"HTTP/1.1 {(int)StatusCode} {StatusCode}");
 
-            foreach(Header header in Headers)
+            foreach (Header header in Headers)
             {
                 result.AppendLine(header.ToString());
             }
 
-            result.AppendLine();
+            foreach (Cookie cookie in Cookies)
+            {
+                result.AppendLine($"{Header.SetCookie}: {cookie}");
+            }
+
+                result.AppendLine();
 
             if (!string.IsNullOrEmpty(Body))
             {

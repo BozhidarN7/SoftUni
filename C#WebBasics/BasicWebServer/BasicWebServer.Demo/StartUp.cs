@@ -1,6 +1,8 @@
 ﻿using BasicWebServer.Server;
 using BasicWebServer.Server.HTTP;
 using BasicWebServer.Server.Responses;
+using System.Text;
+using System.Web;
 
 const string HtmlForm = @"<form action='/HTML' method='POST'>
    Name: <input type='text' name='Name'/>
@@ -22,7 +24,8 @@ await new HttpServer(routes =>
          .MapPost("/HTML", new TextResponse("", AddFormDataAction))
          .MapGet("/Redirect", new RedirectResponse("https://softuni.org/"))
          .MapGet("/Content", new HtmlResponse(DownloadForm))
-         .MapPost("/Content", new TextFileResponse(FileName)))
+         .MapPost("/Content", new TextFileResponse(FileName))
+         .MapGet("/Cookies", new HtmlResponse("", AddCookiesActoin)))
    .Start();
 
 static void AddFormDataAction(Request request, Response response)
@@ -61,4 +64,40 @@ static async Task DownloadSitesAsTextFile(string fileName, string[] urls)
     string responsesString = string.Join(Environment.NewLine + new string('-', 100), responses);
 
     await File.WriteAllTextAsync(fileName, responsesString);
+}
+
+static void AddCookiesActoin(Request request, Response response)
+{
+    bool requsetHasCookies = request.Cookies.Any();
+
+    string bodyText = "";
+
+    if (requsetHasCookies)
+    {
+        StringBuilder cookieText = new StringBuilder();
+        cookieText.AppendLine("<h1>Cookies</h1>");
+
+        cookieText.AppendLine("<table border='1'><tr><th>Name</th><th>Value</th></tr>");
+
+        foreach (Cookie cookie in request.Cookies)
+        {
+            cookieText.Append("<tr>");
+            cookieText.Append($"<td>{HttpUtility.HtmlEncode(cookie.Name)}</td>");
+            cookieText.Append($"<td>{HttpUtility.HtmlEncode(cookie.Value)}</td>");
+            cookieText.Append("</tr>");
+        }
+
+        cookieText.Append("</table>");
+
+        bodyText = cookieText.ToString();
+    }
+    else
+    {
+        bodyText = "<h1>Cookies set!</h1>";
+
+        response.Cookies.Add("My-Cookie", "My-Value");
+        response.Cookies.Add("My-Second-Cookie", "My-Second-Value'");
+    }
+
+    response.Body = bodyText;
 }
