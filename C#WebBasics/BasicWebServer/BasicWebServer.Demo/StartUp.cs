@@ -14,7 +14,16 @@ const string DownloadForm = @"<form action='/Content' method='POST'>
    <input type='submit' value ='Download Sites Content' /> 
 </form>";
 
+const string LoginForm = @"<form action='/Login' method='POST'>
+   Username: <input type='text' name='Username'/>
+   Password: <input type='text' name='Password'/>
+   <input type='submit' value ='Log In' /> 
+</form>";
+
 const string FileName = "content.txt";
+
+const string Username = "user";
+const string Password = "user123";
 
 await DownloadSitesAsTextFile(FileName, new string[] { "https://judge.softuni.org/", "https://softuni.org/" });
 
@@ -26,7 +35,11 @@ await new HttpServer(routes =>
          .MapGet("/Content", new HtmlResponse(DownloadForm))
          .MapPost("/Content", new TextFileResponse(FileName))
          .MapGet("/Cookies", new HtmlResponse("", AddCookiesActoin))
-         .MapGet("/Session", new TextResponse("", DisplaySessionInfoAction)))
+         .MapGet("/Session", new TextResponse("", DisplaySessionInfoAction))
+         .MapGet("/Login", new HtmlResponse(LoginForm))
+         .MapPost("/Login", new HtmlResponse("", LoginAction))
+         .MapGet("/Logout", new HtmlResponse("", LogoutAction))
+         .MapGet("/UserProfile", new HtmlResponse("", GetUserDataAction)))
    .Start();
 
 static void AddFormDataAction(Request request, Response response)
@@ -122,4 +135,51 @@ static void DisplaySessionInfoAction(Request request, Response response)
 
     response.Body = "";
     response.Body += bodyText;
+}
+
+static void LoginAction(Request request, Response response)
+{
+    request.Session.Clear();
+
+    string bodyText = "";
+
+    bool usernameMatches = request.Form["Username"].Trim() == Username;
+    bool passwordMatches = request.Form["Password"].Trim() == Password;
+
+    if (usernameMatches && passwordMatches)
+    {
+        request.Session[Session.SessionUserKey] = "MyUserId";
+        response.Cookies.Add(Session.SessionCookieName, request.Session.Id);
+
+        bodyText = "<h3>Logged successfully!</h3>";
+    }
+    else
+    {
+        bodyText = LoginForm;
+    }
+
+    response.Body = "";
+    response.Body += bodyText;
+}
+
+static void LogoutAction(Request request, Response response)
+{
+    request.Session.Clear();
+
+    response.Body = "";
+    response.Body += "<h3>Logged out successfully!</h3>";
+}
+
+static void GetUserDataAction(Request request, Response response)
+{
+    if (request.Session.ContainsKey(Session.SessionUserKey))
+    {
+        response.Body = "";
+        response.Body += $"<h3>Currently logged-in user is with username '{Username}'</h3>";
+    }
+    else
+    {
+        response.Body = "";
+        response.Body = "<h3>You should first log in - <a href='/Login'>Login</a>";
+    }
 }
