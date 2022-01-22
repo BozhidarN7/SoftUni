@@ -25,7 +25,8 @@ await new HttpServer(routes =>
          .MapGet("/Redirect", new RedirectResponse("https://softuni.org/"))
          .MapGet("/Content", new HtmlResponse(DownloadForm))
          .MapPost("/Content", new TextFileResponse(FileName))
-         .MapGet("/Cookies", new HtmlResponse("", AddCookiesActoin)))
+         .MapGet("/Cookies", new HtmlResponse("", AddCookiesActoin))
+         .MapGet("/Session", new TextResponse("", DisplaySessionInfoAction)))
    .Start();
 
 static void AddFormDataAction(Request request, Response response)
@@ -68,7 +69,7 @@ static async Task DownloadSitesAsTextFile(string fileName, string[] urls)
 
 static void AddCookiesActoin(Request request, Response response)
 {
-    bool requsetHasCookies = request.Cookies.Any();
+    bool requsetHasCookies = request.Cookies.Any(c => c.Name != Session.SessionCookieName);
 
     string bodyText = "";
 
@@ -100,4 +101,25 @@ static void AddCookiesActoin(Request request, Response response)
     }
 
     response.Body = bodyText;
+}
+
+static void DisplaySessionInfoAction(Request request, Response response)
+{
+    bool sessionExists = request.Session.ContainsKey(Session.SessionCurrentDateKey);
+
+    string bodyText = "";
+
+    if (sessionExists)
+    {
+        string currentDate = request.Session[Session.SessionCurrentDateKey];
+
+        bodyText = $"Stored date: {currentDate}!";
+    }
+    else
+    {
+        bodyText = "Current data stored";
+    }
+
+    response.Body = "";
+    response.Body += bodyText;
 }
