@@ -1,4 +1,6 @@
-﻿using BasicWebServer.Server;
+﻿using BasicWebServer.Demo.Controllers;
+using BasicWebServer.Server;
+using BasicWebServer.Server.Controllers;
 using BasicWebServer.Server.HTTP;
 using BasicWebServer.Server.Responses;
 using System.Text;
@@ -27,19 +29,15 @@ const string Password = "user123";
 
 await DownloadSitesAsTextFile(FileName, new string[] { "https://judge.softuni.org/", "https://softuni.org/" });
 
-await new HttpServer(routes =>
-   routes.MapGet("/", new TextResponse("Hello from the server!"))
-         .MapGet("/HTML", new HtmlResponse(HtmlForm))
-         .MapPost("/HTML", new TextResponse("", AddFormDataAction))
-         .MapGet("/Redirect", new RedirectResponse("https://softuni.org/"))
-         .MapGet("/Content", new HtmlResponse(DownloadForm))
-         .MapPost("/Content", new TextFileResponse(FileName))
-         .MapGet("/Cookies", new HtmlResponse("", AddCookiesActoin))
-         .MapGet("/Session", new TextResponse("", DisplaySessionInfoAction))
-         .MapGet("/Login", new HtmlResponse(LoginForm))
-         .MapPost("/Login", new HtmlResponse("", LoginAction))
-         .MapGet("/Logout", new HtmlResponse("", LogoutAction))
-         .MapGet("/UserProfile", new HtmlResponse("", GetUserDataAction)))
+await new HttpServer(routes => routes
+         .MapGet<HomeController>("/", c => c.Index())
+         .MapGet<HomeController>("/Redirect", c => c.Index()))
+         //.MapGet<HomeController>("/HTML", c => c.HTML())
+         //.MapPost<HomeController>("/HTML", c => c.HTMLFormPost())
+         //.MapGet<HomeController>("/Content", c => c.Content())
+         //.MapPost<HomeController>("/Content", c => c.DownloadContent())
+         //.MapGet<HomeController>("/Cookies", c => c.Cookies())
+         //.MapGet<HomeController>("/Session", c => c.Session()))
    .Start();
 
 static void AddFormDataAction(Request request, Response response)
