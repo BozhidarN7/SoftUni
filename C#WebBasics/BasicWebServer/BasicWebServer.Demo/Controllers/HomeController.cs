@@ -59,28 +59,23 @@ namespace BasicWebServer.Demo.Controllers
 
         public Response Session()
         {
-                string currentDateKey = "CurrentDate"
-                bool sessionExists = Request.Session.ContainsKey(currentDateKey);
+            string currentDateKey = "CurrentDate";
+            bool sessionExists = Request.Session.ContainsKey(currentDateKey);
 
-                if (sessionExists)
-                {
-                    string currentDate = Request.Session[currentDateKey];
+            if (sessionExists)
+            {
+                string currentDate = Request.Session[currentDateKey];
 
-                return Text($"Stored date: {currentDate}!")
-                }
-                else
-                {
-                    bodyText = "Current data stored";
-                }
+                return Text($"Stored date: {currentDate}!");
+            }
 
-                response.Body = "";
-                response.Body += bodyText;
-            
+            return Text("Current date stored!");
+
         }
 
         public Response Cookies()
         {
-            bool requsetHasCookies = Request.Cookies.Any(c => c.Name != Session.SessionCookieName);
+            bool requsetHasCookies = Request.Cookies.Any(c => c.Name != Server.HTTP.Session.SessionCookieName);
 
             if (requsetHasCookies)
             {
@@ -134,7 +129,7 @@ namespace BasicWebServer.Demo.Controllers
             var responses = await Task.WhenAll(downloads);
 
             string responsesString = string.Join(Environment.NewLine + new string('-', 100), responses);
-           
+
             await File.WriteAllTextAsync(fileName, responsesString);
         }
     }

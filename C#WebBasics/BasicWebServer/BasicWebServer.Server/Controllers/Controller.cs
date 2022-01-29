@@ -19,7 +19,20 @@ namespace BasicWebServer.Server.Controllers
 
         protected Response Text(string text) => new TextResponse(text);
 
-        protected Response Html(string text) => new HtmlResponse(text);
+        protected Response Html(string html, CookieCollection cookies = null)
+        {
+            Response response = new HtmlResponse(html);
+
+            if (cookies != null)
+            {
+                foreach(Cookie cookie in cookies)
+                {
+                    response.Cookies.Add(cookie.Name, cookie.Value);
+                }
+            }
+
+            return response;
+        }
 
         protected Response BadRequest() => new BadRequsetResponse();
 
@@ -28,7 +41,7 @@ namespace BasicWebServer.Server.Controllers
         protected Response NotFound() => new NotFoundResponse();
 
         protected Response Redirect(string location) => new RedirectResponse(location);
-        
-        protected Response File(string fileName) => new TextFileResponse(fileName);
+
+        protected Response FileResponse(string fileName) => new TextFileResponse(fileName);
     }
 }
