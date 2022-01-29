@@ -1,10 +1,6 @@
 ﻿using BasicWebServer.Server.HTTP;
 using BasicWebServer.Server.Responses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
 
 namespace BasicWebServer.Server.Controllers
 {
@@ -25,7 +21,7 @@ namespace BasicWebServer.Server.Controllers
 
             if (cookies != null)
             {
-                foreach(Cookie cookie in cookies)
+                foreach (Cookie cookie in cookies)
                 {
                     response.Cookies.Add(cookie.Name, cookie.Value);
                 }
@@ -43,5 +39,9 @@ namespace BasicWebServer.Server.Controllers
         protected Response Redirect(string location) => new RedirectResponse(location);
 
         protected Response FileResponse(string fileName) => new TextFileResponse(fileName);
+
+        protected Response View([CallerMemberName] string viewName = "") => new ViewResponse(viewName, GetControllerName());
+
+        private string GetControllerName() => GetType().Name.Replace(nameof(Controller), string.Empty);
     }
 }

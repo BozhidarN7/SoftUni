@@ -1,10 +1,6 @@
 ﻿using BasicWebServer.Demo.Controllers;
 using BasicWebServer.Server;
 using BasicWebServer.Server.Controllers;
-using BasicWebServer.Server.HTTP;
-using BasicWebServer.Server.Responses;
-using System.Text;
-using System.Web;
 
 await new HttpServer(routes => routes
          .MapGet<HomeController>("/", c => c.Index())

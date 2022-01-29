@@ -1,12 +1,8 @@
 ﻿using BasicWebServer.Server.HTTP;
 using BasicWebServer.Server.Routing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BasicWebServer.Server
 {
@@ -54,11 +50,6 @@ namespace BasicWebServer.Server
 
                     Request request = Request.Parse(requestText);
                     Response response = routingTable.MatchRequest(request);
-
-                    if (response.PreRenderAction != null)
-                    {
-                        response.PreRenderAction(request, response);
-                    }
 
                     AddSession(request, response);
 
