@@ -95,7 +95,7 @@ namespace BasicWebServer.Server
 
                 if (totalBytes > 10 * 1024)
                 {
-                    throw new InvalidOperationException("Request is too largel");
+                    throw new InvalidOperationException("Request is too large");
                 }
 
                 requestBuilder.Append(Encoding.UTF8.GetString(buffer, 0, bytesRead));
