@@ -22,7 +22,7 @@ namespace SharedTrip.Data.Common
             return DbSet<T>().AsQueryable();
         }
 
-        public int SaveChagnes()
+        public int SaveChanges()
         {
             return dbContext.SaveChanges();
         }

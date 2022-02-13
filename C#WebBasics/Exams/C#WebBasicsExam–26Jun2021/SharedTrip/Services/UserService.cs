@@ -58,7 +58,7 @@ namespace SharedTrip.Services
             user.Password = HashPassword(model.Password);
 
             repo.Add(user);
-            repo.SaveChagnes();
+            repo.SaveChanges();
         }
 
         public (bool isValid, IEnumerable<ErrorViewModel> errors) ValidateModel(RegisterViewModel model)

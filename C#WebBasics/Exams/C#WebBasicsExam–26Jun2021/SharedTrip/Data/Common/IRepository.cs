@@ -12,6 +12,6 @@ namespace SharedTrip.Data.Common
 
         IQueryable<T> All<T>() where T : class;
 
-        int SaveChagnes();
+        int SaveChanges();
     }
 }
