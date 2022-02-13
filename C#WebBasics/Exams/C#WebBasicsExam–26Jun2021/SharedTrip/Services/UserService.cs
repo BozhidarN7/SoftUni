@@ -22,9 +22,23 @@ namespace SharedTrip.Services
         }
 
         public (string userId, bool isCorrect) IsLoginCorrect(LoginViewModel model)
-
         {
-            throw new NotImplementedException();
+            bool isCorrect = false;
+            string userId = String.Empty;
+
+            User user = GetUserByUsername(model.Username);
+
+            if (user != null)
+            {
+                isCorrect = user.Password == HashPassword(model.Password);
+            }
+
+            if (isCorrect)
+            {
+                userId = user.Id;
+            }
+
+            return (userId, isCorrect);
         }
 
         public void RegisterUser(RegisterViewModel model)

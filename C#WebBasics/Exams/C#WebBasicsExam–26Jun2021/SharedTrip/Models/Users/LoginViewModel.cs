@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace SharedTrip.Models.Users
 {
-	public class LoginViewModel
-	{
-	}
+    public class LoginViewModel
+    {
+        public string Username { get; set; }
+
+        public string Password { get; set; }
+    }
 }
