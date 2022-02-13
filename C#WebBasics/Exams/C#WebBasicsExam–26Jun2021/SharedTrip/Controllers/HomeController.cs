@@ -14,6 +14,11 @@ namespace SharedTrip.Controllers
 
         public Response Index()
         {
+            if (User.IsAuthenticated)
+            {
+                return Redirect("Trips/All");
+            }
+
             return this.View();
         }
     }
