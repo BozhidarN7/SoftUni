@@ -2,6 +2,9 @@
 {
     using BasicWebServer.Server;
     using BasicWebServer.Server.Routing;
+    using SMS.Contracts;
+    using SMS.Data.Common;
+    using SMS.Services;
     using System.Threading.Tasks;
 
     public class StartUp
@@ -12,8 +15,10 @@
                .MapControllers()
                .MapStaticFiles());
 
-            //server.ServiceCollection
-            //    .Add<IUserService, UserService>();
+            server.ServiceCollection
+                .Add<IUserService, UserService>()
+                .Add<IRepository, Repository>()
+                .Add<IValidationService, ValidationService>();
 
             await server.Start();
         }
