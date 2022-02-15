@@ -29,6 +29,26 @@ namespace SMS.Controllers
             return View(new { IsAuthenticated = User.IsAuthenticated });
         }
 
+        [HttpPost]
+        public Response Login(LoginViewModel model)
+        {
+            Request.Session.Clear();
+
+            string id = userService.Login(model);
+
+            if (id == null)
+            {
+                return View(new { ErrorMessage = "LoginFailed" }, "/Error");
+            }
+
+            SignIn(id);
+
+            CookieCollection cookies = new CookieCollection();
+            cookies.Add(Session.SessionCookieName, Request.Session.Id);
+
+            return Redirect("/");
+        }
+
         public Response Register()
         {
             if (User.IsAuthenticated)
@@ -51,6 +71,14 @@ namespace SMS.Controllers
             }
 
             return View(new { ErrorMessage = error }, "/Error");
+        }
+
+        [Authorize]
+        public Response Logout()
+        {
+            SignOut();
+
+            return Redirect("/");
         }
     }
 }

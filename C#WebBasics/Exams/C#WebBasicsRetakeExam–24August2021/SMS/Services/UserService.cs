@@ -21,6 +21,23 @@ namespace SMS.Services
             this.repo = repo;
             this.validationService = validationService;
         }
+
+        public string GetUsername(string userId)
+        {
+            return repo.All<User>()
+                .FirstOrDefault(u => u.Id == userId)?.Username;
+        }
+
+        public string Login(LoginViewModel model)
+        {
+            User user = repo.All<User>()
+                .Where(u => u.Username == model.Username)
+                .Where(u => u.Password == CalculateHash(model.Password))
+                .SingleOrDefault();
+
+            return user?.Id;
+        }
+
         public (bool isRegistered, string error) Register(RegisterViewModel model)
         {
             bool isRegistered = false;
@@ -50,7 +67,7 @@ namespace SMS.Services
                 repo.SaveChanges();
                 isRegistered = true;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 error = "Registration failed!";
             }
