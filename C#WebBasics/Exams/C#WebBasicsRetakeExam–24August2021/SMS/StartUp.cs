@@ -18,6 +18,7 @@
             server.ServiceCollection
                 .Add<IUserService, UserService>()
                 .Add<IRepository, Repository>()
+                .Add<IProductService, ProductService>()
                 .Add<IValidationService, ValidationService>();
 
             await server.Start();
