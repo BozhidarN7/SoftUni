@@ -19,6 +19,7 @@
                 .Add<IUserService, UserService>()
                 .Add<IRepository, Repository>()
                 .Add<IProductService, ProductService>()
+                .Add<ICartService, CartService>()
                 .Add<IValidationService, ValidationService>();
 
             await server.Start();
