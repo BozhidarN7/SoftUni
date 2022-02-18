@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Git.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,7 @@ namespace Git.Contracts
 {
     public interface IUserService
     {
+        (bool isRegister, string error) Register(RegisterViewModel model);
+        string Login(LoginViewModel model);
     }
 }
