@@ -27,7 +27,7 @@ namespace Git.Data.Models
         [ForeignKey(nameof(User))]
         public string OwnerId { get; set; }
 
-        public User owner { get; set; }
+        public User Owner { get; set; }
 
         public ICollection<Commit> Commits { get; set; }
     }

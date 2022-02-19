@@ -20,6 +20,10 @@ namespace Git.Controllers
         }
         public Response Register()
         {
+            if (User.IsAuthenticated)
+            {
+                return Redirect("/");
+            }
             return View(new { IsAuthenticated = false });
         }
 
@@ -38,6 +42,11 @@ namespace Git.Controllers
 
         public Response Login()
         {
+            if (User.IsAuthenticated)
+            {
+                return Redirect("/");
+            }
+
             return View(new { IsAuthenticated = false });
         }
 
@@ -58,7 +67,7 @@ namespace Git.Controllers
             CookieCollection cookies = new CookieCollection();
             cookies.Add(Session.SessionCookieName, Request.Session.Id);
 
-            return Redirect("/");
+            return Redirect("/Repositories/All");
         }
 
         [Authorize]

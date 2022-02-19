@@ -12,7 +12,12 @@ namespace Git.Controllers
 
         public Response Index()
         {
-            return this.View(new { IsAuthenticated = false });
+            if (User.IsAuthenticated)
+            {
+                return View(new { IsAuthenticated = true }, "/Repositories/All");
+            }
+
+            return View(new { IsAuthenticated = false });
         }
     }
 }

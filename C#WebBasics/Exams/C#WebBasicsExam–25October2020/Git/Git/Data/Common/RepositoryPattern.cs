@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Git.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Git.Data.Common
 {
-    public class Repository : IRepository
+    public class RepositoryPattern : IRepository
     {
         private readonly DbContext dbContext;
 
-        public Repository(ApplicationDbContext dbContext)
+        public RepositoryPattern(ApplicationDbContext dbContext)
         {
             this.dbContext = dbContext;
         }

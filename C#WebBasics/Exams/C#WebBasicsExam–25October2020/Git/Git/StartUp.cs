@@ -16,9 +16,11 @@
                .MapStaticFiles());
 
             server.ServiceCollection
-                .Add<IRepository, Repository>()
+                .Add<IRepository, RepositoryPattern>()
                 .Add<IUserService, UserService>()
-                .Add<IValidationService, ValidationService>();
+                .Add<IValidationService, ValidationService>()
+                .Add<IRepositoryService, RepositoryService>()
+                .Add<ICommitService, CommitService>();
 
             await server.Start();
         }

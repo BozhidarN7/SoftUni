@@ -32,6 +32,18 @@
                                     <a class="btn btn-block btn-primary text-white mb-3" href="/Commits/Create?id=X">Commit</a>
                                 </td>
                             </tr>
+                            {{foreach}}
+                            {
+                                <tr class="table-light">
+                                    <th scope="row">{{Name}}</th>
+                                    <td>{{Owner}}</td>
+                                    <td>{{CreatedOn}}</td>
+                                    <td>{{CommitsCount}}</td>
+                                    <td>
+                                        <a class="btn btn-block btn-primary text-white mb-3" href="/Commits/Create?id={{Id}}">Commit</a>
+                                    </td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>

@@ -26,6 +26,17 @@
                                     <a class="btn btn-block btn-primary text-white mb-3" href="/Commits/Delete">Delete</a>
                                 </td>
                             </tr>
+                            {{foreach}}
+                            {
+                               <tr class="table-light">
+                                    <th scope="row">{{Repository}}</th>
+                                    <td>{{Description}}</td>
+                                    <td>{{CreatedOn}}</td>
+                                    <td>
+                                        <a class="btn btn-block btn-primary text-white mb-3" href="/Commits/Delete?id={{Id}}">Delete</a>
+                                    </td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
